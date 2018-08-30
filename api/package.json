@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite3": "^4.1.4",
+    "exit-hook": "^2.0.0",
+    "genaro-web3": "^0.6.2",
     "hapi": "^17.5.4"
   }
 }
