@@ -2,7 +2,10 @@ const Hapi = require('hapi')
 
 const server = Hapi.server({
     host: '0.0.0.0',
-    port: 8000
+    port: 8000,
+    routes: {
+      cors: true 
+    }
 })
 
 server.route({
@@ -131,7 +134,7 @@ server.route({
 // 某个块下的所有交易
 server.route({
   method: 'GET',
-  path: '/txs/{block_height}',
+  path: '/blocks/{block_height}/txs',
   handler: function(request, h) {
     return {
       meta: {
