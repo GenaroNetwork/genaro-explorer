@@ -1,4 +1,5 @@
 # // client side folder
+api/node_modules/*
 ui/node_modules/*
 *.swp
 .DS_Store
