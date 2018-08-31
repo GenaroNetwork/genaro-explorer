@@ -8,7 +8,7 @@ async function sync() {
     const latestBlockReal = await web3.eth.getBlockNumber()
     for(let i = latestBlockHave + 1; i <= latestBlockReal; i ++) {
         const block = await web3.eth.getBlock(i, true)
-        const promiReceipt = block.transactions.map(txHash => web3.eth.getTransactionReceipt(txHash))
+        const promiReceipt = block.transactions.map(tx => web3.eth.getTransactionReceipt(tx.hash))
         const receipts = await Promise.all(promiReceipt)
         // merge receipt
         for(let j = 0; j < block.transactions.length; j ++) {

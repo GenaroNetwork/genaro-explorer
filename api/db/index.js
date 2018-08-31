@@ -110,7 +110,7 @@ function initTables() {
     (
         id INTEGER PRIMARY KEY,
         hash TEXT,
-        status INTEGER
+        status INTEGER,
         nonce INTEGER,
         blockHash TEXT,
         blockNumber INTEGER,
