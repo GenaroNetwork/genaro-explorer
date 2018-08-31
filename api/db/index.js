@@ -46,6 +46,7 @@ function addBlock(block) {
         block.transactions.forEach(tx => {
             pInsertTx.run({
                 hash: tx.hash,
+                status: tx.status ? 1 : 0,
                 nonce: tx.nonce,
                 blockHash: tx.blockHash,
                 blockNumber: tx.blockNumber,
@@ -55,7 +56,10 @@ function addBlock(block) {
                 value: tx.value,
                 gasPrice: tx.gasPrice,
                 gas: tx.gas,
-                input: tx.input
+                contractAddress: tx.contractAddress,
+                cumulativeGasUsed: tx.cumulativeGasUsed,
+                input: tx.input,
+                logs: JSON.stringify(tx.logs)
             })
         })
 
@@ -106,6 +110,7 @@ function initTables() {
     (
         id INTEGER PRIMARY KEY,
         hash TEXT,
+        status INTEGER
         nonce INTEGER,
         blockHash TEXT,
         blockNumber INTEGER,
@@ -115,7 +120,10 @@ function initTables() {
         value TEXT,
         gasPrice TEXT,
         gas INTEGER,
-        input TEXT
+        contractAddress TEXT,
+        cumulativeGasUsed INTEGER,
+        input TEXT,
+        logs TEXT
     );`
     tableSQLs.push(transactionTableSQL)
     indexSQLs.push(`create unique INDEX IF NOT EXISTS index_tx_hash ON TX (hash)`)
@@ -145,8 +153,8 @@ function initTables() {
     )
     
     pInsertTx = db.prepare(
-        `insert into TX (hash, nonce, blockHash, blockNumber, transactionIndex, fromAddress, toAddress, value, gasPrice, gas, input) 
-        values (:hash, :nonce, :blockHash, :blockNumber, :transactionIndex, :fromAddress, :toAddress, :value, :gasPrice, :gas, :input)`
+        `insert into TX (hash, status, nonce, blockHash, blockNumber, transactionIndex, fromAddress, toAddress, value, gasPrice, gas, contractAddress, cumulativeGasUsed, input, logs) 
+        values (:hash, :status, :nonce, :blockHash, :blockNumber, :transactionIndex, :fromAddress, :toAddress, :value, :gasPrice, :gas, :contractAddress, :cumulativeGasUsed, :input, :logs)`
     )
 
     pGetTx = db.prepare(`select * from TX where hash = ?`)
