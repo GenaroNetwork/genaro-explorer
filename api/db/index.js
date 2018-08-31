@@ -8,8 +8,10 @@ const commit = db.prepare('COMMIT');
 const rollback = db.prepare('ROLLBACK');
 
 // prepare statements
-let pInsertBlock, pGetBlockByHash, pGetBlockByNum
-let pInsertTx, pGetTx, pGetTxByBlockNum, pGetTxByAddress
+let pInsertBlock, pInsertTx
+let pGetBlockByHash, pGetBlockByNum, pGetLatestBlock
+let pGetTx, pGetTxByBlockNum, pGetTxByAddress
+let pUpdateStat, pGetStat
 
 function addBlock(block) {
     // 0. prepare data
@@ -59,6 +61,7 @@ function addBlock(block) {
         })
 
         // 3. TODO: update statistics table
+        pUpdateStat.run(block.number, 1, block.transactions.length)
         commit.run();
     } catch (e) {
         console.error(e)
@@ -125,7 +128,8 @@ function initTables() {
     const blockSyncSQL = `create table if not exists statistics
     (
         latestBlock INTEGER,
-        totalTransaction INTEGER
+        blockCount INTEGER,
+        transactionCount INTEGER
     );`
     tableSQLs.push(blockSyncSQL)
 
@@ -152,6 +156,15 @@ function initTables() {
 
     pGetBlockByHash = db.prepare(`select * from BLOCK where hash = ?`)
     pGetBlockByNum = db.prepare(`select * from BLOCK where number = ?`)
+    pGetLatestBlock = db.prepare(`select * from BLOCK order by number desc LIMIT ? OFFSET ?`)
+
+    pUpdateStat = db.prepare('update statistics set latestBlock = ?, blockCount = blockCount + ?, transactionCount = transactionCount + ?')
+    pGetStat = db.prepare('select * from statistics limit 1')
+    // init statistics data
+    const count = db.prepare('select count(1) count from statistics limit 1').get().count
+    if(count === 0) {
+        db.exec('insert into statistics (latestBlock, blockCount, transactionCount) values (0, 0, 0)')
+    }
 }
 
 try {
@@ -179,6 +192,10 @@ function getBlockByHash(hash) {
     return pGetBlockByHash.get(hash)
 }
 
+function getLatestBlocks(offset, limit) {
+    return pGetLatestBlock.all(limit, offset)
+}
+
 // queries: TX
 function getTransaction(txHash) {
     return pGetTx.get(txHash)
@@ -192,6 +209,10 @@ function getTransactionsByBlockNum(address) {
     return pGetTxByBlockNum.all(address)
 }
 
+// queries: stat
+function getStat() {
+    return pGetStat.get()
+}
 
 module.exports = {
     addBlock,
@@ -201,5 +222,8 @@ module.exports = {
     getTransactionsByBlockNum,
     // query block
     getBlockByNum,
-    getBlockByHash
+    getBlockByHash,
+    getLatestBlocks,
+    // query stat
+    getStat
 }

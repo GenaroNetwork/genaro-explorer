@@ -12,9 +12,9 @@ const server = Hapi.server({
 
 server.route({
     method: 'GET',
-    path: '/latest-block',
+    path: '/block-number',
     handler: function (request, h) {
-      return 10000
+      return db.getStat().latestBlock
     }
 })
 
@@ -23,30 +23,23 @@ server.route({
   method: 'GET',
   path: '/block',
   handler: function(request, h) {
+    let offset = parseInt(request.query.offset)
+    let limit = parseInt(request.query.limit)
+    if (!offset || offset > 10000) {
+        offset = 0 // consider return 4xx error
+    }
+    if (!limit || limit > 10000) {
+        limit = 30 // consider return 4xx error
+    }
+    const data = db.getLatestBlocks(offset, limit)
+    const total = db.getStat().blockCount
     return {
       meta: {
-        total: 2
+        total,
+        offset,
+        limit
       },
-      data: [
-        {
-          height: 2902462,
-          timestamps: 1535598141,
-          txn: 22,
-          uncles: 0,
-          miner: 0xda35dee8eddeaa556e4c26268463e26fb91ff74f,
-          gas_used: 1770962,
-          gas_limit: 7086856,
-        },
-        {
-          height: 2902462,
-          timestamps: 1535598141,
-          txn: 22,
-          uncles: 0,
-          miner: 0xda35dee8eddeaa556e4c26268463e26fb91ff74f,
-          gas_used: 1770962,
-          gas_limit: 7086856,
-        }
-      ]
+      data
     }
   }
 })
