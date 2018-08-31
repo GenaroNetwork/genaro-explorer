@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "genaro-web3": "^0.6.2",
     "iview": "^3.0.1",
     "vue": "^2.5.17",
     "vue-i18n": "^8.0.0",
