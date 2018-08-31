@@ -96,7 +96,7 @@ function initTables() {
         uncles TEXT
     );`
     tableSQLs.push(blockTableSQL)
-    indexSQLs.push(`create unique INDEX IF NOT EXISTS index_block_num ON BLOCK (number)`)
+    indexSQLs.push(`create INDEX IF NOT EXISTS index_block_num ON BLOCK (number)`)
     indexSQLs.push(`create unique INDEX IF NOT EXISTS index_block_hash ON BLOCK (hash)`)
     indexSQLs.push(`create INDEX IF NOT EXISTS index_block_miner ON BLOCK (miner)`)
 
