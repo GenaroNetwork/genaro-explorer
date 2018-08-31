@@ -131,7 +131,7 @@ export default {
   name: 'block-detail',
   props: ['height'],
   created() {
-    const height = 87;
+    const height = this.height;
     store.dispatch('get_get_block_detail_async', height);
   },
   computed: {

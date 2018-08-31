@@ -20,7 +20,8 @@ export default new Vuex.Store({
     paginate: {
       total: 0,
       current_page: 1,
-      limit: 10, 
+      offset: 0,
+      limit: 30, 
     }
   },
 
@@ -44,6 +45,7 @@ export default new Vuex.Store({
     },
     change_current_page(state, current_page) {
       state.paginate.current_page = current_page;
+      state.paginate.offset = (current_page - 1) * state.paginate.limit
     },
     change_page_limit(state, pageLimit) {
       state.paginate.limit = pageLimit;
@@ -61,9 +63,9 @@ export default new Vuex.Store({
         commit('set_error_message', error.message);
       })
     },
-    get_blocks_async({commit}) {
+    get_blocks_async({commit}, {offset, limit}) {
       commit('get_all_blocks_start');
-      Api.getAllBlocks().then(res => {
+      Api.getAllBlocks(offset, limit).then(res => {
         commit('get_all_blocks_complete', res.data.data);
         commit('change_data_total',res.data.meta.total);
       }).catch((error) => {
@@ -73,13 +75,16 @@ export default new Vuex.Store({
     get_get_block_detail_async({commit}, height) {
       Api.getBlockDetail(height).then(res => {
         commit('get_block_detail_complete', res.data);
-      })
+      });
     },
-    change_current_page_async({commit, dispatch}, { current_page, type} ) {
-      commit('change_current_page', current_page);
+    change_current_page_async({commit, dispatch, state}, { page, type} ) {
+      commit('change_current_page', page);
       switch (type) {
         case 'blocks':
-          dispatch('get_blocks_async');
+          dispatch('get_blocks_async', {
+            offset: state.paginate.offset,
+            limit: state.paginate.limit
+          });
           break;
         default:
           break;

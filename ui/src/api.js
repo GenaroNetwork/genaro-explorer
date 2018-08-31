@@ -7,7 +7,7 @@ class Api {
     return axios.get(LEASTED_BLOCK);
   }
 
-  static getAllBlocks(offset, limit) {
+  static getAllBlocks(offset=0, limit=30) {
     return axios.get(ALL_BLOCKS, {
       params: {
         offset,

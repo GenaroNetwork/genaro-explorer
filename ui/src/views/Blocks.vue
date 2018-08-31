@@ -14,14 +14,16 @@
         :data="data"
         :loading="loading"
         ellipsis="true"
+        page-size="30"
         size="large">
       </Table>
       <Page 
         :total="total" 
-        size="small"
         show-total
         show-elevator
         show-sizer
+        :page-size="limit"
+        :page-size-opts="[30,60]"
         @on-change="changePgae"
         @on-page-size-change="changePageLimit"
         class="paginate"/>
@@ -49,13 +51,13 @@ export default {
       columns: [
         {
           title: this.$i18n.t('blocks.height'),
-          key: 'height',
+          key: 'number',
           render: (h, params) => {
             return h('router-link', {
               props: {
-                to: `/blocks/${params.row.height}`
+                to: `/blocks/${params.row.number}`
               },
-            }, params.row.height)
+            }, params.row.number)
           }
         },
         {
@@ -64,14 +66,17 @@ export default {
           render: (h, params) => {
             return h('router-link', {
               props: {
-                to: `/blocks/${params.row.txn}/txs`
+                to: `/blocks/${params.row.number}/txs`
               }
-            }, params.row.txn)
+            }, this.count(params.row.transactions))
           }
         },
         {
           title: this.$i18n.t('blocks.uncles'),
           key: 'uncles',
+          render: (h, params) => {
+            return h('p', this.count(params.row.uncles))
+          }
         },
         {
           title: this.$i18n.t('blocks.miner'),
@@ -87,17 +92,20 @@ export default {
         },
         {
           title: this.$i18n.t('blocks.gas_used'),
-          key: 'gas_used',
+          key: 'gasUsed',
         },
         {
           title: this.$i18n.t('blocks.gas_limit'),
-          key: 'gas_limit',
+          key: 'gasLimit',
         }
       ]
     }
   },
   created() {
-    store.dispatch('get_blocks_async')
+    store.dispatch('get_blocks_async', {
+      offset: this.offset,
+      limit: this.limit
+    })
   },
 
   mounted() {
@@ -108,7 +116,9 @@ export default {
       data: state => state.block_component.blocks,
       loading: state => state.block_component.loading,
       error: state => state.message.error,
-      total: state => state.paginate.total
+      total: state => state.paginate.total,
+      offset: state => state.paginate.offset,
+      limit: state => state.paginate.limit,
     })
   },
   methods: {
@@ -117,7 +127,15 @@ export default {
     },
     changePageLimit(pageLimit) {
       store.dispatch('change_page_limit_async', pageLimit)
-    }
+    },
+    count(transactions) {
+      if (transactions) {
+        return transactions.split(",").length;
+      }else{
+        return 0;
+      }
+    },
+
   },
 }
 </script>
