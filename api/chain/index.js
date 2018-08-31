@@ -14,7 +14,6 @@ async function sync() {
         for(let j = 0; j < block.transactions.length; j ++) {
             Object.assign(block.transactions[j], receipts[j]);
         }
-        console.log(block.transactions)
         console.log('add block: ' + block.number + ' ' + Date.now())
         db.addBlock(block)
         console.log('end add block ' + Date.now())
