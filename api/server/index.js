@@ -28,11 +28,12 @@ server.route({
     if (!offset || offset > 10000) {
         offset = 0 // consider return 4xx error
     }
-    if (!limit || limit > 10000) {
+    if (!limit || limit > 100) {
         limit = 30 // consider return 4xx error
     }
     const data = db.getLatestBlocks(offset, limit)
     const total = db.getStat().blockCount
+    if(total > 10000) total = 10000
     return {
       meta: {
         total,
