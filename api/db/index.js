@@ -44,7 +44,6 @@ function addBlock(block) {
         
         // 2. insert tx table
         block.transactions.forEach(tx => {
-            console.log(tx)
             pInsertTx.run({
                 hash: tx.hash,
                 nonce: tx.nonce,

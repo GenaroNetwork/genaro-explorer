@@ -6,15 +6,18 @@ function addBlock(block) {
 }
 
 async function sync() {
-    console.log('start sync')
+    console.log('start sync: ' + Date.now())
     const web3 = getWeb3()
-    for(let i = 0; i < 100; i ++) {
+    const latestBlockHave = db.getStat().latestBlock
+    const latestBlockReal = await web3.eth.getBlockNumber()
+    for(let i = latestBlockHave; i <= latestBlockReal; i ++) {
         const block = await web3.eth.getBlock(i, true);
+        console.log('add block: ' + block.number + ' ' + Date.now())
         addBlock(block)
+        console.log('end add block ' + Date.now())
     }
-    console.log('sync finish')
+    console.log('sync finish' + Date.now())
 }
-
 
 module.exports = {
     sync
