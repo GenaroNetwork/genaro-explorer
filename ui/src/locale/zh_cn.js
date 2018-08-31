@@ -3,7 +3,8 @@ export default {
     home: 'Genaro 浏览器',
     all_blocks: '所有区块',
     block_detail: '区块信息',
-    all_transactions: '所有交易'
+    all_transactions: '所有交易',
+    transaction_detail: '交易信息'
   },
   blocks: {
     height: '区块高度',
@@ -37,5 +38,15 @@ export default {
     from: 'From',
     to: 'To',
     value: 'Value'
+  },
+  transaction_detail: {
+    id: 'ID',
+    hash: '交易哈希',
+    status: '交易状态',
+    nonce: 'Nonce',
+    from: 'From',
+    to: 'To',
+    value: 'Value',
+    
   }
 }

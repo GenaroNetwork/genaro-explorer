@@ -43,6 +43,13 @@ export default {
           title: this.$i18n.t('transaction.from'),
           key: 'fromAddress',
           ellipsis: true,
+          render: (h, params) => {
+            return h('router-link', {
+              props: {
+                to: `/accounts/${params.row.fromAddress}`
+              }
+            }, params.row.fromAddress)
+          }
         },
         {
           title: '',
@@ -55,6 +62,29 @@ export default {
           title: this.$i18n.t('transaction.to'),
           key: 'toAddress',
           ellipsis: true,
+          render: (h, params) => {
+            let is_contract = params.row.contractAddress? true : false;
+            if (is_contract) {
+              return h('p', [
+                h('Icon', {
+                  props: {
+                    type: 'md-copy'
+                  }
+                }),
+                h('router-link', {
+                  props: {
+                    to: `/contracts/${params.row.contractAddress}`
+                  }
+                }, params.row.contractAddress)
+              ])
+            } else {
+             return h('router-link', {
+                props: {
+                  to: `/accounts/${params.row.toAddress}`
+                }
+              }, params.row.toAddress); 
+            }
+          }
         },
         {
           title: this.$i18n.t('transaction.value'),

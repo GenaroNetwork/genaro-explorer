@@ -32,6 +32,12 @@ export default new Router({
       path: '/transaction',
       name: 'transaction',
       component: AllTransaction,
+    },
+    {
+      path: '/transaction/:hash',
+      name: 'transaction_detail',
+      component: () => import('@/views/TransactionDetail.vue'),
+      props: true
     }
     // {
     //   path: '/',

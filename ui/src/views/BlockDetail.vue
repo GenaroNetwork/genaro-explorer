@@ -107,10 +107,12 @@
   </div> 
 </template>
 
+
 <style lang="scss" scoped>
-  .info {
+ .info {
     padding: 5px 40px;
   }
+
   .tip {
     color: #3498db;
   }

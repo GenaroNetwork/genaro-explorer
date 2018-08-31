@@ -109,6 +109,12 @@ export default new Vuex.Store({
       })
     },
 
+    get_transaction_detail_async({commit}, hash) {
+      Api.getTransactionDetail(hash).then(res => {
+        commit('get_transaction_detail_complete', res.data)
+      })
+    },
+
     // paginate
     change_current_page_async({commit, dispatch, state}, { page, type} ) {
       commit('change_current_page', page);
