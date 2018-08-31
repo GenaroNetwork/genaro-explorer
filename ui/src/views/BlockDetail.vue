@@ -9,86 +9,89 @@
       <h3 slot="title">{{$t('title.block_detail')}}: <span>&nbsp&nbsp#{{height}}</span> </h3>
       <template v-if="block">
         <Row class="info">
-          <Col span="4" >ID:</Col>
+          <Col span="4" >{{$t('block_detail.id')}}:</Col>
           <Col span="18">{{block.id}}</Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Number:</Col>
+          <Col span="4" >{{$t('block_detail.number')}}:</Col>
           <Col span="18">{{block.number}}</Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Transactions:</Col>
-          <Col span="18"><span class="tip">{{block.transactions.split(',').length}}</span> in this block </Col>
+          <Col span="4" >{{$t('block_detail.transactions')}}:</Col>
+          <Col span="18">
+            <router-link :to="`/blocks/${block.number}/txn`">{{block.transactions.split(',').length}}</router-link>
+           in this block 
+          </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Hash:</Col>
+          <Col span="4" >{{$t('block_detail.hash')}}:</Col>
           <Col span="18">{{block.hash}}</Col>
         </Row>
         <Row class="info">
-          <Col span="4" >ParentHash:</Col>
+          <Col span="4" >{{$t('block_detail.parent_hash')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.parentHash}}
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Sha3Uncles:</Col>
+          <Col span="4" >{{$t('block_detail.sha3uncles')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.sha3Uncles}}
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Mined By:</Col>
+          <Col span="4" >{{$t('block_detail.miner')}}:</Col>
           <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.miner}}
+            <router-link :to="'/accounts/' + block.miner">{{block.miner}}</router-link>
+            <!-- {{block.miner}} -->
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Difficulty:</Col>
+          <Col span="4" >{{$t('block_detail.diffculty')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.difficulty}}
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >TotalDifficulty:</Col>
+          <Col span="4" >{{$t('block_detail.total_diffculty')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.totalDifficulty}}
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Size:</Col>
+          <Col span="4" >{{$t('block_detail.size')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.size}} bytes
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Gas Used:</Col>
+          <Col span="4" >{{$t('block_detail.gas_used')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.gasUsed}}
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Gas Limit:</Col>
+          <Col span="4" >{{$t('block_detail.gas_limit')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.gasLimit}}
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Nonce:</Col>
+          <Col span="4" >{{$t('block_detail.nonce')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.nonce}}
           </Col>
         </Row>
         <Row class="info">
-          <Col span="4" >Extra Data:</Col>
+          <Col span="4" >{{$t('block_detail.extra_data')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             {{block.extraData.slice(0, 60)}}
