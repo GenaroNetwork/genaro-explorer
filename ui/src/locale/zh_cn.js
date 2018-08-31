@@ -1,8 +1,9 @@
 export default {
   title: {
-    home: '首页',
+    home: 'Genaro 浏览器',
     all_blocks: '所有区块',
     block_detail: '区块信息',
+    all_transactions: '所有交易'
   },
   blocks: {
     height: '区块高度',
@@ -27,5 +28,14 @@ export default {
     gas_limit: 'Gas上限',
     nonce: 'Nonce',
     extra_data: '额外数据'
+  },
+  transaction: {
+    block_hash: '区块哈希',
+    block_number: '区块号',
+    hash: '交易哈希',
+    transaction_index: '位置',
+    from: 'From',
+    to: 'To',
+    value: 'Value'
   }
 }

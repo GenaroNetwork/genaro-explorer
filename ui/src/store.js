@@ -14,6 +14,11 @@ export default new Vuex.Store({
       loading: true,
       block: null,
     },
+    transaction_component: {
+      transactions: [],
+      loading: true,
+      transaction: null
+    },
     message: {
       error: null,
     },
@@ -29,6 +34,8 @@ export default new Vuex.Store({
     get_latest_block(state,latest_block) {
       state.latest_block = latest_block;
     },
+
+    // 区块
     get_all_blocks_start(state) {
       state.block_component.loading = true;
     },
@@ -39,6 +46,19 @@ export default new Vuex.Store({
     get_block_detail_complete(state, block) {
       state.block_component.block = block;
       state.block_component.loading = false;
+    },
+    
+    // 交易
+    get_all_transactions_start(state) {
+      state.transaction_component.loading = true;
+    },
+    get_all_transactions_complete(state, transactions) {
+      state.transaction_component.transactions = transactions;
+      state.transaction_component.loading = false;
+    },
+    get_transaction_detail_complete(state, transaction) {
+      state.transaction_component.transaction = transaction;
+      state.transaction_component.loading = false;
     },
     change_data_total(state, total) {
       state.paginate.total = total;
@@ -77,6 +97,19 @@ export default new Vuex.Store({
         commit('get_block_detail_complete', res.data);
       });
     },
+
+    // 交易
+    get_transactions_async({commit}, {offset, limit}) {
+      commit('get_all_transactions_start');
+      Api.getAllTransactions(offset, limit).then(res => {
+        commit('get_all_transactions_complete', res.data.data);
+        commit('change_data_total',res.data.meta.total);
+      }).catch((error) => {
+        commit('set_error_message', error.message);
+      })
+    },
+
+    // paginate
     change_current_page_async({commit, dispatch, state}, { page, type} ) {
       commit('change_current_page', page);
       switch (type) {
@@ -84,6 +117,12 @@ export default new Vuex.Store({
           dispatch('get_blocks_async', {
             offset: state.paginate.offset,
             limit: state.paginate.limit
+          });
+          break;
+        case 'all_transactions':
+          dispatch('get_transactions_async', {
+            offset: state.paginate.offset,
+            limit: state.paginate.limit 
           });
           break;
         default:

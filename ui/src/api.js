@@ -1,6 +1,9 @@
 const axios = require('axios');
 
-const { LEASTED_BLOCK, ALL_BLOCKS, BLOCK_DETAIL } = require('./constant');
+const { LEASTED_BLOCK, 
+        ALL_BLOCKS,
+        BLOCK_DETAIL,
+        ALL_TRANSACTIONS, } = require('@/constant');
 
 class Api {
   static getLeastBlock() {
@@ -14,6 +17,15 @@ class Api {
         limit
       }
     });
+  }
+
+  static getAllTransactions(offset=0, limit=30) {
+    return axios.get(ALL_TRANSACTIONS, {
+      params: {
+        offset,
+        limit
+      }
+    })
   }
 
   static getBlockDetail(height) {

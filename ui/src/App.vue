@@ -10,12 +10,10 @@
            <Icon type="ios-paper" />
           {{ $t("title.all_blocks")}}
          </MenuItem>
-        <!-- <MenuItem name="2">
-          <router-link to="txs">
-            <Icon type="ios-people" />
-            交易
-          </router-link>
-        </MenuItem> -->
+        <MenuItem name="2" to="/transaction">
+          <Icon type="ios-people" />
+          {{ $t("title.all_transactions")}}
+        </MenuItem>
         </Menu>
     </div>
     <div id="main">

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home'
-import Blocks from './views/Blocks.vue'
-import BlockDetail from './views/BlockDetail.vue'
+import Home from '@/views/Home'
+import Blocks from '@/views/Blocks.vue'
+import AllTransaction from '@/views/AllTransaction.vue'
 
 
 Vue.use(Router)
@@ -25,8 +25,13 @@ export default new Router({
     {
       path: '/blocks/:height',
       name: 'block_detail',
-      component: BlockDetail,
+      component: () => import('@/views/BlockDetail.vue'),
       props: true,
+    },
+    {
+      path: '/transaction',
+      name: 'transaction',
+      component: AllTransaction,
     }
     // {
     //   path: '/',
