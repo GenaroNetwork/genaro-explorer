@@ -19,7 +19,7 @@ function getLatestTxs(offset, limit) {
 
 function getLatestBlocks(offset, limit) {
     const data = db.getLatestBlocks(offset, limit)
-    const total = db.getStat().blockCount
+    let total = db.getStat().blockCount
     if(total > 10000) total = 10000
     return {
       meta: {
