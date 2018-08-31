@@ -7,6 +7,7 @@
     </Breadcrumb>
     <Card border="none">
       <h3 slot="title">{{$t('title.block_detail')}}: <span>&nbsp&nbsp#{{height}}</span> </h3>
+      <template v-if="block">
         <Row class="info">
           <Col span="4" >ID:</Col>
           <Col span="18">{{block.id}}</Col>
@@ -93,6 +94,12 @@
             {{block.extraData.slice(0, 60)}}
           </Col>
         </Row>
+      </template>
+      <template v-else>
+        <div class="spin-container">
+          <Spin size="large"></Spin>
+        </div>
+      </template>
     </Card>
   </div> 
 </template>
@@ -109,6 +116,10 @@
       font-size: 14px;
       font-weight: 400;
     }
+  }
+  .spin-container {
+    display: flex;
+    justify-content: center;
   }
 </style>
 
