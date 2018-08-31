@@ -5,7 +5,7 @@ async function sync() {
     console.log('start sync: ' + Date.now())
     const web3 = getWeb3()
     const latestBlockHave = db.getStat().latestBlock
-    const latestBlockReal = 100 //await web3.eth.getBlockNumber()
+    const latestBlockReal = await web3.eth.getBlockNumber()
     for(let i = latestBlockHave + 1; i <= latestBlockReal; i ++) {
         const block = await web3.eth.getBlock(i, true)
         const promiReceipt = block.transactions.map(txHash => web3.eth.getTransactionReceipt(txHash))
