@@ -1,10 +1,10 @@
 const API_BASE = 'http://localhost:8000';
 const LEASTED_BLOCK = `${API_BASE}/latest-block`;
-const ALL_BLOCKS = `${API_BASE}/blocks`;
+const ALL_BLOCKS = `${API_BASE}/block`;
 
 
 const BLOCK_DETAIL = function(height) {
-  return `${API_BASE}/blocks/${height}`
+  return `${API_BASE}/block/${height}`
 }
 export {
   LEASTED_BLOCK,

@@ -19,7 +19,8 @@ export default new Router({
     {
       path: '/blocks',
       name: 'blocks',
-      component: Blocks
+      component: Blocks,
+      props: true
     },
     {
       path: '/blocks/:height',

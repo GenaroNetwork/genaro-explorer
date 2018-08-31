@@ -30,10 +30,12 @@
       "node": true
     },
     "extends": [
+      "plugin:vue/essential",
       "eslint:recommended"
     ],
     "rules": {},
     "parserOptions": {
+      "ecmaVersion": 6,
       "parser": "babel-eslint"
     }
   },

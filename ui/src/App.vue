@@ -2,24 +2,20 @@
   <div>
     <div id="header">
        <Menu mode="horizontal" theme="dark" active-name="1">
-        <MenuItem name="1">
-            <Icon type="ios-paper" />
-            <router-link to="/blocks">
-              区块
-            </router-link>
-        </MenuItem>
-        <MenuItem name="2">
+         <MenuItem name="1" to="/">
+          <Icon type="ios-home" />
+          {{ $t("title.home")}}
+         </MenuItem>
+         <MenuItem name="1" to="/blocks">
+           <Icon type="ios-paper" />
+          {{ $t("title.all_blocks")}}
+         </MenuItem>
+        <!-- <MenuItem name="2">
+          <router-link to="txs">
             <Icon type="ios-people" />
-            <router-link to="txs">
-              交易
-            </router-link>
-        </MenuItem>
-        <MenuItem name="3">
-            <Icon type="ios-construct" />
-            <router-link to="accounts">
-              账户
-            </router-link>
-        </MenuItem>
+            交易
+          </router-link>
+        </MenuItem> -->
         </Menu>
     </div>
     <div id="main">
@@ -39,6 +35,10 @@
 a {
   text-decoration: none;
   color: rgba(255,255,255,.7);
+}
+.ivu-menu-item-selected {
+  margin-bottom: -1px;
+  // border-bottom: 1px solid #000000;
 }
 </style>
 
