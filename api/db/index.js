@@ -10,7 +10,7 @@ const rollback = db.prepare('ROLLBACK');
 // prepare statements
 let pInsertBlock, pInsertTx
 let pGetBlockByHash, pGetBlockByNum, pGetLatestBlock
-let pGetTx, pGetTxByBlockNum, pGetTxByAddress
+let pGetTx, pGetTxByBlockNum, pGetTxByAddress, pGetLatestTx
 let pUpdateStat, pGetStat
 
 function addBlock(block) {
@@ -153,6 +153,7 @@ function initTables() {
     pGetTx = db.prepare(`select * from TX where hash = ?`)
     pGetTxByBlockNum = db.prepare(`select * from TX where blockNumber = ?`)
     pGetTxByAddress = db.prepare(`select * from TX where fromAddress = ? or toAddress = ?`)
+    pGetLatestTx = db.prepare('select * from TX order by blockNumber desc, transactionIndex desc LIMIT ? OFFSET ?')
 
     pGetBlockByHash = db.prepare(`select * from BLOCK where hash = ?`)
     pGetBlockByNum = db.prepare(`select * from BLOCK where number = ?`)
@@ -209,6 +210,10 @@ function getTransactionsByBlockNum(address) {
     return pGetTxByBlockNum.all(address)
 }
 
+function getLatestTxs(offset, limit) {
+    return pGetLatestTx.all(limit, offset)
+}
+
 // queries: stat
 function getStat() {
     return pGetStat.get()
@@ -220,6 +225,7 @@ module.exports = {
     getTransaction,
     getTransactionsByAddress,
     getTransactionsByBlockNum,
+    getLatestTxs,
     // query block
     getBlockByNum,
     getBlockByHash,
