@@ -7,8 +7,13 @@ class Api {
     return axios.get(LEASTED_BLOCK);
   }
 
-  static getAllBlocks() {
-    return axios.get(ALL_BLOCKS);
+  static getAllBlocks(offset, limit) {
+    return axios.get(ALL_BLOCKS, {
+      params: {
+        offset,
+        limit
+      }
+    });
   }
 
   static getBlockDetail(height) {
