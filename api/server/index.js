@@ -47,7 +47,7 @@ server.route({
 // 获取所有交易
 server.route({
   method: 'GET',
-  path: '/trasaction',
+  path: '/transaction',
   handler: function(request, h) {
     let offset = parseInt(request.query.offset)
     let limit = parseInt(request.query.limit)
@@ -64,7 +64,7 @@ server.route({
 // http://127.0.0.1:8000/trasaction/0xe57e7b805ca05f7fbd8659547f5f553cd2fa6cb0dec9371611f4337a9122bdaa
 server.route({
   method: 'GET',
-  path: '/trasaction/{txHash}',
+  path: '/transaction/{txHash}',
   handler: function(request, h) {
       return db.getTransaction(request.params.txHash)
   }
