@@ -16,7 +16,7 @@ async function sync() {
         }
         console.log(block.transactions)
         console.log('add block: ' + block.number + ' ' + Date.now())
-        db.addBlock(block, receipts)
+        db.addBlock(block)
         console.log('end add block ' + Date.now())
     }
     console.log('sync finish' + Date.now())
