@@ -4,7 +4,7 @@ const db = require('../db')
 
 function getLatestTxs(offset, limit) {
     // TODO: add pending transactions
-    const data = db.getLatestTxs(limit, offset)
+    const data = db.getLatestTxs(offset, limit)
     const total = db.getStat().transactionCount
     return {
         meta: {
