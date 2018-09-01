@@ -47,6 +47,12 @@ export default {
     from: 'From',
     to: 'To',
     value: 'Value',
-    
+    block_number:'区块高度',
+    timestamp: '时间',
+    gas_limit: 'Gas上限',
+    gas_used: 'Gas使用量',
+    gas_price: 'Gas价格',
+    fee: 'Fee',
+    input_data: '输入数据'
   }
 }

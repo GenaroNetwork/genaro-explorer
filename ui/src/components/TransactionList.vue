@@ -55,7 +55,22 @@ export default {
           title: '',
           align: 'center',
           render: (h, params) => {
-            return h('b', '=>')
+            let to   = params.row.fromAddress;
+            let from = params.row.toAddress;
+            if (to === from) {
+              return h('Tag', {
+                props: {
+                  color: 'primary'
+                }
+              }, 'SLEF')
+            } else {
+              return h('img', {
+                attrs: {
+                  alt: 'out',
+                  src: require('@/assets/green-arrow-right.png')
+                },
+              })
+            }
           }
         },
         {
