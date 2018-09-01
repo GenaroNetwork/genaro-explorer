@@ -94,7 +94,11 @@
           <Col span="4" >{{$t('block_detail.extra_data')}}:</Col>
           <Col span="18">
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.extraData.slice(0, 60)}}
+            <Input 
+              type="textarea"
+              autosize="true"
+              :value="block.extraData"
+              class="input-info"/>
           </Col>
         </Row>
       </template>
