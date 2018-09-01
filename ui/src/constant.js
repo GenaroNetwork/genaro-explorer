@@ -11,10 +11,15 @@ const BLOCK_DETAIL = function(height) {
 const TRANSACTION_DETAIL = function(hash) {
   return `${API_BASE}/transaction/${hash}`
 };
+
+const TRANSACTION_FOR_BLOCK = function(height) {
+  return `${API_BASE}/block/${height}/transaction`
+}
 export {
   LEASTED_BLOCK,
   ALL_BLOCKS,
   BLOCK_DETAIL,
   ALL_TRANSACTIONS,
-  TRANSACTION_DETAIL
+  TRANSACTION_DETAIL,
+  TRANSACTION_FOR_BLOCK
 }

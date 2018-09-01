@@ -38,6 +38,12 @@ export default new Router({
       name: 'transaction_detail',
       component: () => import('@/views/TransactionDetail.vue'),
       props: true
+    },
+    {
+      path: '/blocks/:height/txs',
+      name: 'block_transaction_list',
+      component: () => import('@/views/BlockTransactionList.vue'),
+      props: true
     }
     // {
     //   path: '/',

@@ -114,6 +114,12 @@ export default new Vuex.Store({
         commit('get_transaction_detail_complete', res.data)
       })
     },
+    get_transaction_for_block_async({commit}, height) {
+      commit('get_all_transactions_start');
+      Api.getTransactionForBlock(height).then(res => {
+        commit('get_all_transactions_complete', res.data)
+      })
+    },
 
     // paginate
     change_current_page_async({commit, dispatch, state}, { page, type} ) {
