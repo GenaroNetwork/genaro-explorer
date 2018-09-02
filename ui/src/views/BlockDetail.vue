@@ -17,6 +17,12 @@
           <Col span="18">{{block.number}}</Col>
         </Row>
         <Row class="info">
+          <Col span="4" >{{$t('block_detail.timestamp')}}:</Col>
+          <Col span="18">
+            {{ block.timestamp | toTime | formatTime}}
+          </Col>
+        </Row>
+        <Row class="info">
           <Col span="4" >{{$t('block_detail.transactions')}}:</Col>
           <Col span="18">
             <router-link :to="`/blocks/${block.number}/txn`">{{block.transactions.split(',').length}}</router-link>
@@ -96,7 +102,7 @@
             <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
             <Input 
               type="textarea"
-              autosize="true"
+              :autosize="true"
               :value="block.extraData"
               class="input-info"/>
           </Col>

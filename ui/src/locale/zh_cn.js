@@ -12,7 +12,8 @@ export default {
     uncles: '叔伯块',
     miner: '矿工',
     gas_used: 'Gas使用量',
-    gas_limit: 'Gas上限'
+    gas_limit: 'Gas上限',
+    timestamp: '出块时间'
   },
   block_detail: {
     id: 'ID',
@@ -28,7 +29,8 @@ export default {
     gas_used: 'Gas使用量',
     gas_limit: 'Gas上限',
     nonce: 'Nonce',
-    extra_data: '额外数据'
+    extra_data: '额外数据',
+    timestamp: '出块时间'
   },
   transaction: {
     block_hash: '区块哈希',

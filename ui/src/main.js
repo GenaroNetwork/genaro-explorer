@@ -8,7 +8,16 @@ import zh_cn from './locale/zh_cn'
 
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
-import './app.scss'
+import '@/app.scss'
+
+import '@/filter'
+
+import dayis from 'dayjs'
+
+Object.defineProperty(Vue.prototype, '$dayjs',{
+  value: dayis
+})
+
 
 
 Vue.config.productionTip = false

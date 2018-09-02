@@ -69,6 +69,15 @@ export default {
           }
         },
         {
+          title: this.$i18n.t('blocks.timestamp'),
+          key: 'txn',
+          render: (h, params) => {
+            return h('span',[
+              this.formatDateTime(params.row.timestamp)
+            ])
+          }
+        },
+        {
           title: this.$i18n.t('blocks.uncles'),
           key: 'uncles',
           render: (h, params) => {
@@ -132,6 +141,9 @@ export default {
         return 0;
       }
     },
+    formatDateTime(timestamp) {
+      return this.$dayjs(new Date(parseInt(timestamp* 1000))).format('YYYY-MM-DD HH:mm:ss')
+    }
 
   },
 }

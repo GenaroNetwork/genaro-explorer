@@ -99,9 +99,9 @@
               </Col>
               <Col span="18">
                 <Input :value="transaction.input"
-                      autosize="true"
-                      type="textarea"
-                      class="input-info"/>
+                       :autosize="true"
+                       type="textarea"
+                       class="input-info"/>
               </Col>
             </Row>
           </template>
