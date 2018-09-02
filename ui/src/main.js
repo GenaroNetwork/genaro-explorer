@@ -13,12 +13,15 @@ import '@/app.scss'
 import '@/filter'
 
 import dayis from 'dayjs'
+import web3Utils from 'web3-utils'
 
 Object.defineProperty(Vue.prototype, '$dayjs',{
   value: dayis
 })
 
-
+Object.defineProperty(Vue.prototype, '$web3Utils', {
+  value: web3Utils
+})
 
 Vue.config.productionTip = false
 Vue.use(VueI18n)
