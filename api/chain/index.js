@@ -6,28 +6,40 @@ let gPendingTxs = []
 
 async function sync () {
     syncPending()
-    logger.info('start sync')
+    syncBlock()
+}
+
+async function syncBlock () {
     const web3 = getWeb3()
     const latestBlockHave = db.getStat().latestBlock
     const latestBlockReal = await web3.eth.getBlockNumber()
-    // const latestBlockReal = 100;
-    for (let i = latestBlockHave + 1; i <= latestBlockReal; i++) {
-        try {
-            const block = await web3.eth.getBlock(i, true)
-            const promiReceipt = block.transactions.map(tx => web3.eth.getTransactionReceipt(tx.hash))
-            const receipts = await Promise.all(promiReceipt)
-            // merge receipt
-            for (let j = 0; j < block.transactions.length; j++) {
-                Object.assign(block.transactions[j], receipts[j])
+    if(latestBlockHave < latestBlockReal) {
+        logger.info(`sync from ${latestBlockHave} to ${latestBlockReal}`)
+        for (let i = latestBlockHave + 1; i <= latestBlockReal; i++) {
+            try {
+                const block = await web3.eth.getBlock(i, true)
+                const promiReceipt = block.transactions.map(tx => web3.eth.getTransactionReceipt(tx.hash))
+                const receipts = await Promise.all(promiReceipt)
+                // merge receipt
+                for (let j = 0; j < block.transactions.length; j++) {
+                    Object.assign(block.transactions[j], receipts[j])
+                }
+                if(block.number % 1000 === 0) {
+                    logger.info('add block: ' + block.number)
+                }
+                logger.debug('add block: ' + block.number)
+                db.addBlock(block)
+                logger.debug('add block done: ' + block.number)
+            } catch (error) {
+                throw error
             }
-            logger.debug('add block: ' + block.number)
-            db.addBlock(block)
-            logger.debug('add block done: ' + block.number)
-        } catch (error) {
-            throw error
         }
+        logger.info(`sync finished from ${latestBlockHave} to ${latestBlockReal}`)
+        syncBlock()
+    } else if(latestBlockHave === latestBlockReal) {
+        logger.info(`synced at ${latestBlockReal}, wait 1 secend`)
+        setTimeout(syncBlock, 1000)
     }
-    logger.info('sync finish')
 }
 
 async function syncPending () {
