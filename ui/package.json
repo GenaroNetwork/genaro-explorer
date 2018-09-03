@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bignumber.js": "^7.2.1",
     "dayjs": "^1.7.5",
     "iview": "^3.0.1",
     "vue": "^2.5.17",
