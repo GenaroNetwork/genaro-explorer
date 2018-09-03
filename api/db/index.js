@@ -15,55 +15,23 @@ let pUpdateStat, pGetStat
 
 function addBlock (block) {
     // 0. prepare data
+    const txs = block.transactions
     const txIds = block.transactions.map(tx => tx.hash).join(',')
     const uncles = block.uncles.map(u => u.hash).join(',')
 
     begin.run()
     try {
         // 1. insert block table
-        pInsertBlock.run({
-            number: block.number,
-            hash: block.hash,
-            parentHash: block.parentHash,
-            nonce: block.nonce,
-            sha3Uncles: block.sha3Uncles,
-            logsBloom: block.logsBloom,
-            transactionsRoot: block.transactionsRoot,
-            stateRoot: block.stateRoot,
-            miner: block.miner,
-            difficulty: block.difficulty,
-            totalDifficulty: block.totalDifficulty,
-            extraData: block.extraData,
-            size: block.size,
-            gasLimit: block.gasLimit,
-            gasUsed: block.gasUsed,
-            timestamp: block.timestamp,
-            transactions: txIds,
-            uncles
-        })
+        block.transactions = txIds
+        block.uncles = uncles
+        pInsertBlock.run(block)
 
         // 2. insert tx table
-        block.transactions.forEach(tx => {
-            pInsertTx.run({
-                hash: tx.hash,
-                status: tx.status ? 1 : 0,
-                nonce: tx.nonce,
-                blockHash: tx.blockHash,
-                blockNumber: tx.blockNumber,
-                transactionIndex: tx.transactionIndex,
-                fromAddress: tx.from, //
-                toAddress: tx.to, //
-                value: tx.value,
-                gasPrice: tx.gasPrice,
-                gas: tx.gas,
-                gasUsed: tx.gasUsed,
-                timestamp: block.timestamp,
-                contractAddress: tx.contractAddress,
-                cumulativeGasUsed: tx.cumulativeGasUsed,
-                input: tx.input,
-                extraInfo: tx.extraInfo,
-                logs: JSON.stringify(tx.logs)
-            })
+        txs.forEach(tx => {
+            tx.logs = JSON.stringify(tx.logs)
+            tx.status = tx.status ? 1 : 0
+            tx.timestamp = block.timestamp
+            pInsertTx.run(tx)
         })
 
         // 3. TODO: update statistics table
@@ -118,8 +86,8 @@ function initTables () {
         blockHash TEXT,
         blockNumber INTEGER,
         transactionIndex INTEGER,
-        fromAddress TEXT,
-        toAddress TEXT,
+        "from" TEXT,
+        "to" TEXT,
         value TEXT,
         gasPrice TEXT,
         gas INTEGER,
@@ -135,8 +103,8 @@ function initTables () {
     indexSQLs.push(`create unique INDEX IF NOT EXISTS index_tx_hash ON TX (hash)`)
     indexSQLs.push(`create INDEX IF NOT EXISTS index_tx_blockHash ON TX (blockHash)`)
     indexSQLs.push(`create INDEX IF NOT EXISTS index_tx_blockNumber ON TX (blockNumber)`)
-    indexSQLs.push(`create INDEX IF NOT EXISTS index_tx_fromAddress ON TX (fromAddress)`)
-    indexSQLs.push(`create INDEX IF NOT EXISTS index_tx_toAddress ON TX (toAddress)`)
+    indexSQLs.push(`create INDEX IF NOT EXISTS index_tx_from ON TX ("from")`)
+    indexSQLs.push(`create INDEX IF NOT EXISTS index_tx_to ON TX ("to")`)
 
     const blockSyncSQL = `create table if not exists statistics
     (
@@ -159,19 +127,19 @@ function initTables () {
     )
 
     pInsertTx = db.prepare(
-        `insert into TX (hash, status, nonce, blockHash, blockNumber, transactionIndex, fromAddress, toAddress, value, gasPrice, gas, gasUsed, timestamp, contractAddress, cumulativeGasUsed, input, extraInfo, logs) 
-        values (:hash, :status, :nonce, :blockHash, :blockNumber, :transactionIndex, :fromAddress, :toAddress, :value, :gasPrice, :gas, :gasUsed, :timestamp, :contractAddress, :cumulativeGasUsed, :input, :extraInfo, :logs)`
+        `insert into TX (hash, status, nonce, blockHash, blockNumber, transactionIndex, "from", "to", value, gasPrice, gas, gasUsed, timestamp, contractAddress, cumulativeGasUsed, input, extraInfo, logs) 
+        values (:hash, :status, :nonce, :blockHash, :blockNumber, :transactionIndex, :from, :to, :value, :gasPrice, :gas, :gasUsed, :timestamp, :contractAddress, :cumulativeGasUsed, :input, :extraInfo, :logs)`
     )
 
     pGetTx = db.prepare(`select * from TX where hash = ?`)
     pGetTxByBlockNum = db.prepare(`select * from TX where blockNumber = ?`)
     pGetTxByAddress = db.prepare(
         `select * from TX 
-        where fromAddress = ? or toAddress = ? 
+        where "from" = ? or "to" = ? 
         order by blockNumber desc, transactionIndex desc 
         LIMIT ? OFFSET ?`
     )
-    pGetTxCountByAddress = db.prepare('select count(1) count from TX where fromAddress = ? or toAddress = ?')
+    pGetTxCountByAddress = db.prepare('select count(1) count from TX where "from" = ? or "to" = ?')
     pGetLatestTx = db.prepare('select * from TX order by blockNumber desc, transactionIndex desc LIMIT ? OFFSET ?')
 
     pGetBlockByHash = db.prepare(`select * from BLOCK where hash = ?`)
