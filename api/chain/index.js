@@ -37,8 +37,8 @@ async function syncBlock () {
         logger.info(`sync finished from ${latestBlockHave} to ${latestBlockReal}`)
         syncBlock()
     } else if(latestBlockHave === latestBlockReal) {
-        logger.info(`synced at ${latestBlockReal}, wait 1 secend`)
-        setTimeout(syncBlock, 1000)
+        logger.info(`synced at ${latestBlockReal}, wait 2 secend`)
+        setTimeout(syncBlock, 2000)
     }
 }
 
