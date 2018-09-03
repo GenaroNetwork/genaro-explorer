@@ -17,8 +17,8 @@ function getLatestTxs(offset, limit) {
 
 function getTransactionsByAddress(address, offset, limit) {
   const pendingTx = chain.getPendingTxsForAddress(address)
-  const dbTxs = db.getTransactionsByAddress(request.params.address, offset, limit)
-  const total = db.getTransactionCountByAddress(request.params.address) + pendingTx.length
+  const dbTxs = db.getTransactionsByAddress(address, offset, limit)
+  const total = db.getTransactionCountByAddress(address) + pendingTx.length
   offset += pendingTx.length
   limit += pendingTx.length
   const data = pendingTx.concat(dbTxs)
