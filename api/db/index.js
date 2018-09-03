@@ -34,11 +34,10 @@ function addBlock (block) {
             pInsertTx.run(tx)
         })
 
-        // 3. TODO: update statistics table
         pUpdateStat.run(block.number, 1, block.transactions.length)
         commit.run()
     } catch (e) {
-        console.error(e)
+        throw e
     } finally {
         if (db.inTransaction) rollback.run()
     }
