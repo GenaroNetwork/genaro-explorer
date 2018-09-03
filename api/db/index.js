@@ -56,9 +56,12 @@ function addBlock(block) {
                 value: tx.value,
                 gasPrice: tx.gasPrice,
                 gas: tx.gas,
+                gasUsed: tx.gasUsed,
+                timestamp: block.timestamp,
                 contractAddress: tx.contractAddress,
                 cumulativeGasUsed: tx.cumulativeGasUsed,
                 input: tx.input,
+                extraInfo: tx.extraInfo,
                 logs: JSON.stringify(tx.logs)
             })
         })
@@ -96,7 +99,7 @@ function initTables() {
         extraData TEXT,
         size INTEGER,
         gasLimit INTEGER,
-        gasUsed TEXT,
+        gasUsed INTEGER,
         timestamp INTEGER,
         transactions TEXT,
         uncles TEXT
@@ -120,9 +123,12 @@ function initTables() {
         value TEXT,
         gasPrice TEXT,
         gas INTEGER,
+        gasUsed INTEGER,
+        timestamp INTEGER,
         contractAddress TEXT,
         cumulativeGasUsed INTEGER,
         input TEXT,
+        extraInfo TEXT,
         logs TEXT
     );`
     tableSQLs.push(transactionTableSQL)
@@ -153,8 +159,8 @@ function initTables() {
     )
     
     pInsertTx = db.prepare(
-        `insert into TX (hash, status, nonce, blockHash, blockNumber, transactionIndex, fromAddress, toAddress, value, gasPrice, gas, contractAddress, cumulativeGasUsed, input, logs) 
-        values (:hash, :status, :nonce, :blockHash, :blockNumber, :transactionIndex, :fromAddress, :toAddress, :value, :gasPrice, :gas, :contractAddress, :cumulativeGasUsed, :input, :logs)`
+        `insert into TX (hash, status, nonce, blockHash, blockNumber, transactionIndex, fromAddress, toAddress, value, gasPrice, gas, gasUsed, timestamp, contractAddress, cumulativeGasUsed, input, extraInfo, logs) 
+        values (:hash, :status, :nonce, :blockHash, :blockNumber, :transactionIndex, :fromAddress, :toAddress, :value, :gasPrice, :gas, :gasUsed, :timestamp, :contractAddress, :cumulativeGasUsed, :input, :extraInfo, :logs)`
     )
 
     pGetTx = db.prepare(`select * from TX where hash = ?`)
