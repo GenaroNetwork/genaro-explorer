@@ -6,6 +6,7 @@ export default {
     all_transactions: '所有交易',
     transaction_detail: '交易信息',
     address_detail: '地址',
+    transactions: '交易列表'
   },
   home: {
     transaction_hash: '交易哈希',

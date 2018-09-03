@@ -6,6 +6,7 @@ const { LEASTED_BLOCK,
         ALL_TRANSACTIONS,
         TRANSACTION_DETAIL,
         TRANSACTION_FOR_BLOCK,
+        ACCOUNT_DETAIL,
         ACCOUNT_TRANSACTIONS } = require('@/constant');
 
 class Api {
@@ -43,8 +44,13 @@ class Api {
     return axios.get(TRANSACTION_FOR_BLOCK(height));
   }
 
-  static getAccountTransactions(addr) {
-    return axios.get(ACCOUNT_TRANSACTIONS(addr),)
+  static getAccountTransactions(addr, offset, limit) {
+    return axios.get(ACCOUNT_TRANSACTIONS(addr), {
+      params: {
+        offset,
+        limit
+      }
+    })
   }
 
   static getHomeBlocks() {
@@ -53,6 +59,10 @@ class Api {
 
   static getHomeTransaction() {
     return this.getAllTransactions(0, 50)
+  }
+
+  static getAccountDetail(addr) {
+    return axios.get(ACCOUNT_DETAIL(addr))
   }
 
 }

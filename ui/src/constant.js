@@ -16,6 +16,9 @@ const TRANSACTION_FOR_BLOCK = function(height) {
   return `${API_BASE}/block/${height}/transaction`
 }
 
+const ACCOUNT_DETAIL = function(addr) {
+  return `${API_BASE}/address/${addr}`
+}
 
 const ACCOUNT_TRANSACTIONS= function(account) {
   return `${API_BASE}/address/${account}/transaction`
@@ -27,5 +30,6 @@ export {
   ALL_TRANSACTIONS,
   TRANSACTION_DETAIL,
   TRANSACTION_FOR_BLOCK,
+  ACCOUNT_DETAIL,
   ACCOUNT_TRANSACTIONS
 }

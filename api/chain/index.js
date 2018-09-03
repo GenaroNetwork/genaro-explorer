@@ -9,6 +9,7 @@ async function sync () {
     const web3 = getWeb3()
     const latestBlockHave = db.getStat().latestBlock
     const latestBlockReal = await web3.eth.getBlockNumber()
+    // const latestBlockReal = 100;
     for (let i = latestBlockHave + 1; i <= latestBlockReal; i++) {
         try {
             const block = await web3.eth.getBlock(i, true)

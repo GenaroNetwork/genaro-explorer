@@ -31,6 +31,7 @@ export default new Vuex.Store({
     },
     account_component: {
       transactions: [],
+      account: null,
       loading: true,
     },
     message: {
@@ -111,6 +112,10 @@ export default new Vuex.Store({
     get_home_transactions_complete(state, transactions) {
       state.home_component.transactions.data = transactions;
       state.home_component.transactions.loading = false; 
+    },
+
+    get_account_detail(state, account) {
+      state.account_component.account = account;
     }
   },
   
@@ -160,16 +165,16 @@ export default new Vuex.Store({
       })
     },
 
-    get_account_transactions_async({commit}, addr) {
+    get_account_transactions_async({commit}, {addr, offset, limit}) {
       commit('get_account_transactions_start');
-      Api.getAccountTransactions(addr).then(res => {
+      Api.getAccountTransactions(addr, offset, limit).then(res => {
         commit('get_account_transactions_complete', res.data.data)
         commit('change_data_total',res.data.meta.total);
       });
     },
 
     // paginate
-    change_current_page_async({commit, dispatch, state}, { page, type} ) {
+    change_current_page_async({commit, dispatch, state}, { page, type, extra} ) {
       commit('change_current_page', page);
       switch (type) {
         case 'blocks':
@@ -182,6 +187,13 @@ export default new Vuex.Store({
           dispatch('get_transactions_async', {
             offset: state.paginate.offset,
             limit: state.paginate.limit 
+          });
+          break;
+        case 'account_transactions':
+          dispatch('get_account_transactions_async', {
+            offset: state.paginate.offset,
+            limit: state.paginate.limit,
+            addr: extra
           });
           break;
         default:
@@ -203,6 +215,12 @@ export default new Vuex.Store({
       commit('get_home_transactions_start')
       Api.getHomeTransaction().then(res => {
         commit('get_home_transactions_complete', res.data.data)
+      })
+    },
+    
+    get_account_detail_async({commit}, addr) {
+      Api.getAccountDetail(addr).then(res => {
+        commit('get_account_detail', res.data)
       })
     }
 

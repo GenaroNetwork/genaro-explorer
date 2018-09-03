@@ -119,7 +119,7 @@
           </template>
         </div>
       </TabPane>
-      <TabPane label="Event Logs">标签二的内容</TabPane>
+      <TabPane label="Event Logs"></TabPane>
    </Tabs>
   
 </template>
