@@ -1,10 +1,6 @@
 {
     "extends": ["eslint:recommended", "standard"],
-    "overrides": [
-        {
-            "rules": {
-                "indent": ["error", 4]
-            }
-        }
-    ]
+    "rules": {
+        "indent": ["error", 4]
+    }
 }
