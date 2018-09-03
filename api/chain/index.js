@@ -33,6 +33,16 @@ async function syncPending() {
     setTimeout(syncPending, 3000)
 }
 
+async function getAddressInfo(address) {
+    const web3 = getWeb3()
+    const balance = await web3.eth.getBalance(address)
+    const transactionCount = await web3.eth.getTransactionCount(address)
+    return {
+        balance,
+        transactionCount
+    }
+}
+
 function getPendingTxs() {
     return gPendingTxs
 }
@@ -44,5 +54,6 @@ function getPendingTxsForAddress(address) {
 module.exports = {
     sync,
     getPendingTxs,
-    getPendingTxsForAddress
+    getPendingTxsForAddress,
+    getAddressInfo
 }

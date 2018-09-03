@@ -1,6 +1,7 @@
 const Hapi = require('hapi')
 const service = require('./service')
 const db = require('../db')
+const chain = require('../chain')
 
 const server = Hapi.server({
     host: '0.0.0.0',
@@ -79,12 +80,13 @@ server.route({
   }
 })
 
-// server.route({
-//   method: 'GET',
-//   path: '/accounts',
-//   handler: function(request, h) {
-//   }
-// })
+server.route({
+  method: 'GET',
+  path: '/address/{address}',
+  handler: function(request, h) {
+    return chain.getAddressInfo(request.params.address)
+  }
+})
 
 server.route({
   method: 'GET',
