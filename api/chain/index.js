@@ -43,7 +43,7 @@ async function syncBlock () {
 }
 
 async function syncPending () {
-    logger.info('sync Pending ' + Date.now())
+    logger.info('sync Pending')
     const web3 = getWeb3()
     const txIds = await web3.genaro.getPendingTransactions()
     const promiTxDetails = txIds.map(txId => web3.eth.getTransaction(txId))
