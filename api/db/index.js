@@ -1,5 +1,6 @@
 const Database = require('better-sqlite3')
 const exitHook = require('exit-hook')
+const logger = require('../log')
 
 const db = new Database('chain.db')
 
@@ -44,7 +45,7 @@ function addBlock (block) {
 }
 
 function initTables () {
-    console.log('checking or creating tables')
+    logger.info('checking or creating tables')
 
     const tableSQLs = []
     const indexSQLs = []
@@ -155,19 +156,19 @@ function initTables () {
 }
 
 try {
-    console.log('init db')
+    logger.info('init db')
     initTables()
 } catch (error) {
-    console.log(error)
+    logger.error(error)
     process.exit()
 }
 
 exitHook(() => {
-    console.log('closing db')
+    logger.error('closing db')
     if (db.open) {
         db.close()
     }
-    console.log('db closed')
+    logger.error('db closed')
 })
 
 // queries: BLOCK

@@ -2,6 +2,7 @@ const Hapi = require('hapi')
 const service = require('./service')
 const db = require('../db')
 const chain = require('../chain')
+const logger = require('../log')
 
 const server = Hapi.server({
     host: '0.0.0.0',
@@ -100,9 +101,9 @@ server.route({
 })
 
 async function run () {
-    console.log('start api')
+    logger.info('start Hapi api')
     await server.start()
-    console.log('Server running at:', server.info.uri)
+    logger.info('Hapi Server running at:', server.info.uri)
 }
 
 module.exports = {

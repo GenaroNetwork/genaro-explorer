@@ -1,11 +1,12 @@
 const db = require('../db')
 const getWeb3 = require('./web3Manager')
+const logger = require('../log')
 
 let gPendingTxs = []
 
 async function sync () {
     syncPending()
-    console.log('start sync: ' + Date.now())
+    logger.info('start sync')
     const web3 = getWeb3()
     const latestBlockHave = db.getStat().latestBlock
     const latestBlockReal = await web3.eth.getBlockNumber()
@@ -19,18 +20,18 @@ async function sync () {
             for (let j = 0; j < block.transactions.length; j++) {
                 Object.assign(block.transactions[j], receipts[j])
             }
-            console.log('add block: ' + block.number + ' ' + Date.now())
+            logger.debug('add block: ' + block.number)
             db.addBlock(block)
-            console.log('end add block ' + Date.now())
+            logger.debug('add block done: ' + block.number)
         } catch (error) {
             throw error
         }
     }
-    console.log('sync finish' + Date.now())
+    logger.info('sync finish')
 }
 
 async function syncPending () {
-    console.log('sync Pending ' + Date.now())
+    logger.info('sync Pending ' + Date.now())
     const web3 = getWeb3()
     const txIds = await web3.genaro.getPendingTransactions()
     const promiTxDetails = txIds.map(txId => web3.eth.getTransaction(txId))

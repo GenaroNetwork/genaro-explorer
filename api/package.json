@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/.bin/eslint . --fix"
+    "lint": "./node_modules/.bin/eslint . --fix",
+    "start": "NODE_ENV=production node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +14,8 @@
     "better-sqlite3": "^4.1.4",
     "exit-hook": "^2.0.0",
     "genaro-web3": "^0.6.3",
-    "hapi": "^17.5.4"
+    "hapi": "^17.5.4",
+    "winston": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^5.5.0",
