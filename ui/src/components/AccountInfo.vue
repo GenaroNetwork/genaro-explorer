@@ -7,7 +7,7 @@
             <tbody>
               <tr>
                 <td width="35%">GNX余额</td>
-                <td align="right">{{account.balance}}</td>
+                <td align="right">{{ balanceGNX }} GNX</td>
               </tr>
               <tr>
                 <td width="35%">交易数量</td>
@@ -19,7 +19,7 @@
         <Col span="24" class="mar-top">
           <Tabs type="card">
             <TabPane :label="$i18n.t('title.transactions')">
-              <TransactionListForAddress :data="transactions" :addr="addr"/>
+              <TransactionListForAddress :data="transactions" :addr="addr" :loading="loading"/>
             </TabPane>
             <!-- <TabPane label="标签二">标签二的内容</TabPane> -->
             <!-- <TabPane label="标签三">标签三的内容</TabPane> -->
@@ -46,12 +46,24 @@ table {
 
 
 <script>
+import { mapState } from 'vuex'
 import TransactionListForAddress from '@/components/TransactionListForAddress.vue'
+import store from "@/store";
+
 export default {
   name: 'account-info',
   props: ['account', 'transactions', 'addr'],
   components: {
     TransactionListForAddress
+  },
+  computed: {
+    balanceGNX() {
+      return this.$web3Utils.fromWei(this.account.balance, 'ether')
+    },
+    ...mapState({
+      loading: state => state.account_component.loading
+    })
+
   }
 }
 </script>

@@ -11,6 +11,11 @@
         <span>
           &nbsp&nbsp# {{hash}}
         </span>
+        <a class="clipboard"
+           v-clipboard:copy="hash"
+           @click="handleClipboard">
+          <Icon type="md-clipboard" />
+        </a>
       </h3>
       <TransactionInfo :transaction="transaction"/> 
     </Card>
@@ -18,12 +23,18 @@
 </template>
 
 <style lang="scss" scoped>
- h3 {
+  h3 {
     span {
       font-size: 14px;
       font-weight: 400;
+      color: #969595;
     }
   }
+  .clipboard{ 
+    color: #969595;
+    cursor: pointer;
+  }
+
 </style>
 
 
@@ -45,6 +56,11 @@ export default {
     ...mapState({
       transaction: state => state.transaction_component.transaction
     })
+  },
+  methods: {
+    handleClipboard() {
+      this.$Message.info('复制成功!');
+    }
   }
 }
 </script>

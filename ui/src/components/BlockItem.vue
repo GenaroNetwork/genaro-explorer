@@ -7,11 +7,7 @@
              {{ block.number }}
           </router-link>
         </h3>
-        <p>由
-          <router-link :to="`/accounts/${block.miner}`">
-            {{ block.miner}}
-          </router-link>
-          开采
+        <p>由<router-link :to="`/accounts/${block.miner}`">{{ block.miner}} </router-link>开采
         </p>
         <p>
           <router-link :to="`/blocks/${block.height}/txs`">
