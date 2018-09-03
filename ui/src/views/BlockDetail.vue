@@ -25,7 +25,7 @@
         <Row class="info">
           <Col span="4" >{{$t('block_detail.transactions')}}:</Col>
           <Col span="18">
-            <router-link :to="`/blocks/${block.number}/txn`">{{block.transactions.split(',').length}}</router-link>
+            <router-link :to="`/blocks/${block.number}/txs`">{{block.transactions.split(',').length}}</router-link>
            in this block 
           </Col>
         </Row>

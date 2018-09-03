@@ -12,6 +12,10 @@
               <Col span="18">{{transaction.hash}}</Col>
             </Row>
             <Row class="info">
+              <Col span="4" >{{$t('transaction_detail.timestamp')}}:</Col>
+              <Col span="18">{{transaction.timestamp | toTime | formatTime}}</Col>
+            </Row>
+            <Row class="info">
               <Col span="4" >{{$t('transaction_detail.status')}}:</Col>
               <Col span="18">
                 <template v-if="statusStr === 'success'">
@@ -66,7 +70,7 @@
                 {{$t('transaction_detail.gas_limit')}}:
               </Col>
               <Col span="18">
-                {{ transaction.gasLimit }}
+                {{ transaction.gas }}
               </Col>
             </Row>
             <Row class="info">
@@ -83,6 +87,14 @@
               </Col>
               <Col span="18">
                 {{ gasPriceGnx }}
+              </Col>
+            </Row>
+            <Row class="info">
+              <Col span="4">
+                {{$t('transaction_detail.fee')}}:
+              </Col>
+              <Col span="18">
+                {{ txFee }}
               </Col>
             </Row>
             <Row class="info">
@@ -120,6 +132,8 @@
 
 
 <script>
+import bn from 'big.js/big.min'
+
 export default {
   name: 'transaction-iofo',
   props: ['transaction'],
@@ -135,7 +149,14 @@ export default {
     },
 
     gasPriceGnx: function() {
-      return this.transaction.gasPrice
+      return this.$web3Utils.fromWei(this.transaction.gasPrice, 'ether')
+    },
+
+    txFee: function() {
+      let price = bn(this.transaction.gasPrice);
+      let gasUsed = bn(this.transaction.gasUsed);
+      let value = price * gasUsed;
+      return this.$web3Utils.fromWei(value.toString(), 'ether');
     }
   }
 }

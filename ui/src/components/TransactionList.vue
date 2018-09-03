@@ -9,7 +9,7 @@
 
 
 <script>
-
+import bn from 'big.js/big.min'
 
 export default {
   name: 'transaction_list',
@@ -37,6 +37,13 @@ export default {
                 to: `/blocks/${params.row.blockNumber}`
               }
             }, params.row.blockNumber)
+          }
+        },
+        {
+          title: this.$i18n.t('transaction.timestamp'),
+          key: 'timestamp',
+          render: (h, params) => {
+            return h('span', this.formatDateTime(params.row.timestamp))
           }
         },
         {
@@ -104,8 +111,28 @@ export default {
         {
           title: this.$i18n.t('transaction.value'),
           key: 'value',
+        },
+        {
+          title: this.$i18n.t('transaction.txfee'),
+          key: 'value',
+          render: (h, params) => {
+            return h('span',[
+              this.txFee(params.row)
+            ])
+          }
         }
       ]
+    }
+  },
+  methods: {
+    txFee(tx) {
+      let price = bn(tx.gasPrice);
+      let gasUsed = bn(tx.gasUsed);
+      let value = price * gasUsed;
+      return this.$web3Utils.fromWei(value.toString(), 'ether');
+    },
+    formatDateTime(timestamp) {
+      return this.$dayjs(new Date(parseInt(timestamp* 1000))).format('YYYY-MM-DD HH:mm:ss')
     }
   }
 }
