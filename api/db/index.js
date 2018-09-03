@@ -1,11 +1,11 @@
 const Database = require('better-sqlite3')
 const exitHook = require('exit-hook')
 
-const db = new Database('chain.db');
+const db = new Database('chain.db')
 
-const begin = db.prepare('BEGIN');
-const commit = db.prepare('COMMIT');
-const rollback = db.prepare('ROLLBACK');
+const begin = db.prepare('BEGIN')
+const commit = db.prepare('COMMIT')
+const rollback = db.prepare('ROLLBACK')
 
 // prepare statements
 let pInsertBlock, pInsertTx
@@ -13,12 +13,12 @@ let pGetBlockByHash, pGetBlockByNum, pGetLatestBlock
 let pGetTx, pGetTxByBlockNum, pGetTxByAddress, pGetTxCountByAddress, pGetLatestTx
 let pUpdateStat, pGetStat
 
-function addBlock(block) {
+function addBlock (block) {
     // 0. prepare data
-    const txIds = block.transactions.map(tx => tx.hash).join(",")
+    const txIds = block.transactions.map(tx => tx.hash).join(',')
     const uncles = block.uncles.map(u => u.hash).join(',')
 
-    begin.run();
+    begin.run()
     try {
         // 1. insert block table
         pInsertBlock.run({
@@ -41,7 +41,7 @@ function addBlock(block) {
             transactions: txIds,
             uncles
         })
-        
+
         // 2. insert tx table
         block.transactions.forEach(tx => {
             pInsertTx.run({
@@ -68,15 +68,15 @@ function addBlock(block) {
 
         // 3. TODO: update statistics table
         pUpdateStat.run(block.number, 1, block.transactions.length)
-        commit.run();
+        commit.run()
     } catch (e) {
         console.error(e)
     } finally {
-        if (db.inTransaction) rollback.run();
+        if (db.inTransaction) rollback.run()
     }
 }
 
-function initTables() {
+function initTables () {
     console.log('checking or creating tables')
 
     const tableSQLs = []
@@ -157,7 +157,7 @@ function initTables() {
         `insert into BLOCK (number, hash, parentHash, nonce, sha3Uncles, logsBloom, transactionsRoot, stateRoot, miner, difficulty, totalDifficulty, extraData, size, gasLimit, gasUsed, timestamp, transactions, uncles) 
         values (:number, :hash, :parentHash, :nonce, :sha3Uncles, :logsBloom, :transactionsRoot, :stateRoot, :miner, :difficulty, :totalDifficulty, :extraData, :size, :gasLimit, :gasUsed, :timestamp, :transactions, :uncles)`
     )
-    
+
     pInsertTx = db.prepare(
         `insert into TX (hash, status, nonce, blockHash, blockNumber, transactionIndex, fromAddress, toAddress, value, gasPrice, gas, gasUsed, timestamp, contractAddress, cumulativeGasUsed, input, extraInfo, logs) 
         values (:hash, :status, :nonce, :blockHash, :blockNumber, :transactionIndex, :fromAddress, :toAddress, :value, :gasPrice, :gas, :gasUsed, :timestamp, :contractAddress, :cumulativeGasUsed, :input, :extraInfo, :logs)`
@@ -182,7 +182,7 @@ function initTables() {
     pGetStat = db.prepare('select * from statistics limit 1')
     // init statistics data
     const count = db.prepare('select count(1) count from statistics limit 1').get().count
-    if(count === 0) {
+    if (count === 0) {
         db.exec('insert into statistics (latestBlock, blockCount, transactionCount) values (0, 0, 0)')
     }
 }
@@ -197,49 +197,49 @@ try {
 
 exitHook(() => {
     console.log('closing db')
-    if(db.open) {
+    if (db.open) {
         db.close()
     }
     console.log('db closed')
 })
 
 // queries: BLOCK
-function getBlockByNum(blockNum) {
+function getBlockByNum (blockNum) {
     return pGetBlockByNum.get(blockNum)
 }
 
-function getBlockByHash(hash) {
+function getBlockByHash (hash) {
     return pGetBlockByHash.get(hash)
 }
 
-function getLatestBlocks(offset, limit) {
+function getLatestBlocks (offset, limit) {
     return pGetLatestBlock.all(limit, offset)
 }
 
 // queries: TX
-function getTransaction(txHash) {
+function getTransaction (txHash) {
     return pGetTx.get(txHash)
 }
 
-function getTransactionsByAddress(address, offset, limit) {
+function getTransactionsByAddress (address, offset, limit) {
     return pGetTxByAddress.all(address, address, limit, offset)
 }
 
 // consider use another statistics table
-function getTransactionCountByAddress(address) {
+function getTransactionCountByAddress (address) {
     return pGetTxCountByAddress.get(address, address).count
 }
 
-function getTransactionsByBlockNum(address) {
+function getTransactionsByBlockNum (address) {
     return pGetTxByBlockNum.all(address)
 }
 
-function getLatestTxs(offset, limit) {
+function getLatestTxs (offset, limit) {
     return pGetLatestTx.all(limit, offset)
 }
 
 // queries: stat
-function getStat() {
+function getStat () {
     return pGetStat.get()
 }
 
