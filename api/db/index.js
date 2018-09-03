@@ -10,7 +10,7 @@ const rollback = db.prepare('ROLLBACK');
 // prepare statements
 let pInsertBlock, pInsertTx
 let pGetBlockByHash, pGetBlockByNum, pGetLatestBlock
-let pGetTx, pGetTxByBlockNum, pGetTxByAddress, pGetLatestTx
+let pGetTx, pGetTxByBlockNum, pGetTxByAddress, pGetTxCountByAddress, pGetLatestTx
 let pUpdateStat, pGetStat
 
 function addBlock(block) {
@@ -159,7 +159,13 @@ function initTables() {
 
     pGetTx = db.prepare(`select * from TX where hash = ?`)
     pGetTxByBlockNum = db.prepare(`select * from TX where blockNumber = ?`)
-    pGetTxByAddress = db.prepare(`select * from TX where fromAddress = ? or toAddress = ?`)
+    pGetTxByAddress = db.prepare(
+        `select * from TX 
+        where fromAddress = ? or toAddress = ? 
+        order by blockNumber desc, transactionIndex desc 
+        LIMIT ? OFFSET ?`
+    )
+    pGetTxCountByAddress = db.prepare('select count(1) count from TX where fromAddress = ? or toAddress = ?')
     pGetLatestTx = db.prepare('select * from TX order by blockNumber desc, transactionIndex desc LIMIT ? OFFSET ?')
 
     pGetBlockByHash = db.prepare(`select * from BLOCK where hash = ?`)
@@ -209,8 +215,13 @@ function getTransaction(txHash) {
     return pGetTx.get(txHash)
 }
 
-function getTransactionsByAddress(address) {
-    return pGetTxByAddress.all(address, address)
+function getTransactionsByAddress(address, offset, limit) {
+    return pGetTxByAddress.all(address, address, limit, offset)
+}
+
+// consider use another statistics table
+function getTransactionCountByAddress(address) {
+    return pGetTxCountByAddress.get(address, address).count
 }
 
 function getTransactionsByBlockNum(address) {
@@ -231,6 +242,7 @@ module.exports = {
     // query Tx
     getTransaction,
     getTransactionsByAddress,
+    getTransactionCountByAddress,
     getTransactionsByBlockNum,
     getLatestTxs,
     // query block

@@ -1,7 +1,10 @@
 const db = require('../db')
 const getWeb3 = require('./web3Manager')
 
+let gPendingTxs = []
+
 async function sync() {
+    syncPending()
     console.log('start sync: ' + Date.now())
     const web3 = getWeb3()
     const latestBlockHave = db.getStat().latestBlock
@@ -21,8 +24,25 @@ async function sync() {
     console.log('sync finish' + Date.now())
 }
 
-// function getPending
+async function syncPending() {
+    console.log('sync Pending ' + Date.now())
+    const web3 = getWeb3()
+    const txIds = await web3.genaro.getPendingTransactions()
+    const promiTxDetails = txIds.map(txId => web3.eth.getTransaction(txId))
+    gPendingTxs = await Promise.all(promiTxDetails)
+    setTimeout(syncPending, 3000)
+}
+
+function getPendingTxs() {
+    return gPendingTxs
+}
+
+function getPendingTxsForAddress(address) {
+    return gPendingTxs.filter(tx => (tx.from === address || tx.to === address))
+}
 
 module.exports = {
-    sync
+    sync,
+    getPendingTxs,
+    getPendingTxsForAddress
 }

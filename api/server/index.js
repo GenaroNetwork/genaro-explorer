@@ -90,8 +90,15 @@ server.route({
   method: 'GET',
   path: '/address/{address}/transaction',
   handler: function(request, h) {
-    // todo: add query limit
-    return db.getTransactionsByAddress(request.params.address)
+    let offset = parseInt(request.query.offset)
+    let limit = parseInt(request.query.limit)
+    if (!offset || offset > 10000) {
+        offset = 0 // consider return 4xx error
+    }
+    if (!limit || limit > 100) {
+        limit = 30 // consider return 4xx error
+    }
+    return service.getTransactionsByAddress(request.params.address, offset, limit)
   } 
 })
 
