@@ -21,7 +21,6 @@ async function sync () {
             console.log('add block: ' + block.number + ' ' + Date.now())
             db.addBlock(block)
             console.log('end add block ' + Date.now())
-
         } catch (error) {
             throw error
         }
