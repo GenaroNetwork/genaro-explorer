@@ -37,8 +37,8 @@
             <Row class="info">
               <Col span="4">{{$t('transaction_detail.from')}}:</Col>
               <Col span="18">
-                <router-link :to="`/accounts/${transaction.fromAddress}`">
-                  {{transaction.fromAddress}}
+                <router-link :to="`/accounts/${transaction.from}`">
+                  {{transaction.from}}
                 </router-link>
               </Col>
             </Row>

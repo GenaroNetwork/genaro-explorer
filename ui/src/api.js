@@ -5,7 +5,8 @@ const { LEASTED_BLOCK,
         BLOCK_DETAIL,
         ALL_TRANSACTIONS,
         TRANSACTION_DETAIL,
-        TRANSACTION_FOR_BLOCK } = require('@/constant');
+        TRANSACTION_FOR_BLOCK,
+        ACCOUNT_TRANSACTIONS } = require('@/constant');
 
 class Api {
   static getLeastBlock() {
@@ -42,8 +43,17 @@ class Api {
     return axios.get(TRANSACTION_FOR_BLOCK(height));
   }
 
- 
+  static getAccountTransactions(addr) {
+    return axios.get(ACCOUNT_TRANSACTIONS(addr),)
+  }
 
+  static getHomeBlocks() {
+    return this.getAllBlocks(0, 50)
+  }
+
+  static getHomeTransaction() {
+    return this.getAllTransactions(0, 50)
+  }
 
 }
 

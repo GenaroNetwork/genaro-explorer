@@ -15,11 +15,17 @@ const TRANSACTION_DETAIL = function(hash) {
 const TRANSACTION_FOR_BLOCK = function(height) {
   return `${API_BASE}/block/${height}/transaction`
 }
+
+
+const ACCOUNT_TRANSACTIONS= function(account) {
+  return `${API_BASE}/address/${account}/transaction`
+}
 export {
   LEASTED_BLOCK,
   ALL_BLOCKS,
   BLOCK_DETAIL,
   ALL_TRANSACTIONS,
   TRANSACTION_DETAIL,
-  TRANSACTION_FOR_BLOCK
+  TRANSACTION_FOR_BLOCK,
+  ACCOUNT_TRANSACTIONS
 }

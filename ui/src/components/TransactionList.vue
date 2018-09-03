@@ -48,22 +48,22 @@ export default {
         },
         {
           title: this.$i18n.t('transaction.from'),
-          key: 'fromAddress',
+          key: 'from',
           ellipsis: true,
           render: (h, params) => {
             return h('router-link', {
               props: {
-                to: `/accounts/${params.row.fromAddress}`
+                to: `/accounts/${params.row.from}`
               }
-            }, params.row.fromAddress)
+            }, params.row.from)
           }
         },
         {
           title: '',
           align: 'center',
           render: (h, params) => {
-            let to   = params.row.fromAddress;
-            let from = params.row.toAddress;
+            let to   = params.row.from;
+            let from = params.row.to;
             if (to === from) {
               return h('Tag', {
                 props: {
@@ -82,7 +82,7 @@ export default {
         },
         {
           title: this.$i18n.t('transaction.to'),
-          key: 'toAddress',
+          key: 'to',
           ellipsis: true,
           render: (h, params) => {
             let is_contract = params.row.contractAddress? true : false;
@@ -102,9 +102,9 @@ export default {
             } else {
              return h('router-link', {
                 props: {
-                  to: `/accounts/${params.row.toAddress}`
+                  to: `/accounts/${params.row.to}`
                 }
-              }, params.row.toAddress); 
+              }, params.row.to); 
             }
           }
         },

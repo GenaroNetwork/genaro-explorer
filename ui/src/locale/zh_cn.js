@@ -5,7 +5,12 @@ export default {
     block_detail: '区块信息',
     all_transactions: '所有交易',
     transaction_detail: '交易信息',
-    address_detail: '地址'
+    address_detail: '地址',
+  },
+  home: {
+    transaction_hash: '交易哈希',
+    transaction_from: 'From',
+    transaction_to: 'To'
   },
   blocks: {
     height: '区块高度',

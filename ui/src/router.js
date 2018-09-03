@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import Blocks from '@/views/Blocks.vue'
 import AllTransaction from '@/views/AllTransaction.vue'
+import AccountDetail from '@/views/AccountDetail.vue'
 
 
 Vue.use(Router)
@@ -34,6 +35,12 @@ export default new Router({
       component: AllTransaction,
     },
     {
+      path: '/accounts/:addr',
+      name: 'account_detail',
+      component: AccountDetail,
+      props: true
+    },
+    {
       path: '/transaction/:hash',
       name: 'transaction_detail',
       component: () => import('@/views/TransactionDetail.vue'),
@@ -44,7 +51,8 @@ export default new Router({
       name: 'block_transaction_list',
       component: () => import('@/views/BlockTransactionList.vue'),
       props: true
-    }
+    },
+    
     // {
     //   path: '/',
     //   name: 'home',

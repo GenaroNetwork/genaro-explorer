@@ -23,6 +23,7 @@ Object.defineProperty(Vue.prototype, '$web3Utils', {
   value: web3Utils
 })
 
+
 Vue.config.productionTip = false
 Vue.use(VueI18n)
 Vue.use(iView)

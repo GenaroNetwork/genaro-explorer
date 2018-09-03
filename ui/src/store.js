@@ -9,6 +9,16 @@ export default new Vuex.Store({
   plugins: [createLogger()],
   state: {
     latest_block: 0,
+    home_component: {
+      blocks: {
+        data: [],
+        loading: true
+      },
+      transactions: {
+        data: [],
+        loading: false
+      }
+    },
     block_component: {
       blocks: [],
       loading: true,
@@ -18,6 +28,10 @@ export default new Vuex.Store({
       transactions: [],
       loading: true,
       transaction: null
+    },
+    account_component: {
+      transactions: [],
+      loading: true,
     },
     message: {
       error: null,
@@ -60,6 +74,14 @@ export default new Vuex.Store({
       state.transaction_component.transaction = transaction;
       state.transaction_component.loading = false;
     },
+
+    get_account_transactions_start(state) {
+      state.account_component.loading = true;
+    },
+    get_account_transactions_complete(state, transactions) {
+      state.account_component.transactions = transactions;
+      state.account_component.loading = false;
+    },
     change_data_total(state, total) {
       state.paginate.total = total;
     },
@@ -72,6 +94,23 @@ export default new Vuex.Store({
     },
     set_error_message(state, message) {
       state.message.error = message;
+    },
+
+    get_home_blocks_start(state) {
+      state.home_component.blocks.loading = true;
+    },
+    get_home_blocks_complete(state, blocks) {
+      state.home_component.blocks.data = blocks;
+      state.home_component.blocks.loading = false;
+    },
+
+    get_home_transactions_start(state) {
+      state.home_component.transactions.loading = true;
+    },
+
+    get_home_transactions_complete(state, transactions) {
+      state.home_component.transactions.data = transactions;
+      state.home_component.transactions.loading = false; 
     }
   },
   
@@ -121,6 +160,14 @@ export default new Vuex.Store({
       })
     },
 
+    get_account_transactions_async({commit}, addr) {
+      commit('get_account_transactions_start');
+      Api.getAccountTransactions(addr).then(res => {
+        commit('get_account_transactions_complete', res.data.data)
+        commit('change_data_total',res.data.meta.total);
+      });
+    },
+
     // paginate
     change_current_page_async({commit, dispatch, state}, { page, type} ) {
       commit('change_current_page', page);
@@ -143,6 +190,21 @@ export default new Vuex.Store({
     },
     change_page_limit_async({commit}, page_limit) {
       commit('change_page_limit', page_limit);
+    },
+
+    get_home_blocks_async({commit}) {
+      commit('get_home_blocks_start')
+      Api.getHomeBlocks().then(res => {
+        commit('get_home_blocks_complete', res.data.data)
+      })
+    },
+
+    get_home_transactions_async({commit}) {
+      commit('get_home_transactions_start')
+      Api.getHomeTransaction().then(res => {
+        commit('get_home_transactions_complete', res.data.data)
+      })
     }
+
   }
 })

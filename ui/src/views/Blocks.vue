@@ -91,7 +91,7 @@ export default {
           render: (h, params) => {
             return h('router-link', {
               props: {
-                to: `/account/${params.row.miner}`
+                to: `/accounts/${params.row.miner}`
               },
             }, params.row.miner)
           }
