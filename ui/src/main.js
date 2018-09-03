@@ -14,6 +14,7 @@ import '@/filter'
 
 import dayis from 'dayjs'
 import web3Utils from 'web3-utils'
+import VueClipboard from 'vue-clipboard2'
 
 Object.defineProperty(Vue.prototype, '$dayjs',{
   value: dayis
@@ -27,6 +28,7 @@ Object.defineProperty(Vue.prototype, '$web3Utils', {
 Vue.config.productionTip = false
 Vue.use(VueI18n)
 Vue.use(iView)
+Vue.use(VueClipboard)
 
 
 const i18n = new VueI18n({

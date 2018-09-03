@@ -12,6 +12,14 @@
         <span>
           &nbsp&nbsp # {{addr}}
         </span>
+       
+        <a class="clipboard"
+           v-clipboard:copy="addr"
+           @click="handleClipboard">
+          <Icon type="md-clipboard"  
+            v-clipboard:copy="addr"/>
+        </a>
+       
       </h3>
       <AccountInfo :account="account" :transactions="transactions" :addr="addr"/>
       <Page 
@@ -30,10 +38,18 @@
 
 <style lang="scss" scoped>
  h3 {
+   line-height: 18px;
     span {
       font-weight: 400;
       color: #969595;
     }
+  }
+  .clipboard{ 
+    color: #969595;
+    cursor: pointer;
+  }
+  .ivu-poptip-inner {
+    background-color: rgba(70,76,91,.9) !important;
   }
 </style>
 
@@ -69,7 +85,10 @@ export default {
     },
     changePageLimit(limit) {
       store.dispatch('change_page_limit_async', limit);
-    }
+    },
+    handleClipboard() {
+       this.$Message.info('复制成功!');
+    },
   },
   computed: {
     ...mapState({
@@ -79,6 +98,9 @@ export default {
       offset: state => state.paginate.offset,
       limit: state => state.paginate.limit,
     })
-  }
+  },
+  watch: {
+    '$route': 'getData'
+  },
 }
 </script>

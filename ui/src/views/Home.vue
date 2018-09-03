@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <Row :gutter="10">
+    <Row :gutter="20">
       <Col :sm='24' :md='12'>
         <Card>
           <template
@@ -59,7 +59,7 @@
     float: right;
   }
   .data-content {
-    max-height: 800px;
+    max-height: 1000px;
     overflow: scroll;
   }
 </style>
