@@ -35,7 +35,7 @@ function getTransactionsByAddress (address, offset, limit) {
 function getLatestBlocks (offset, limit) {
     const data = db.getLatestBlocks(offset, limit)
     let total = db.getStat().blockCount
-    if (total > 10000) total = 10000
+    //if (total > 10000) total = 10000
     return {
         meta: {
             total,

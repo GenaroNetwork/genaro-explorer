@@ -35,7 +35,7 @@ function addBlock (block) {
             pInsertTx.run(tx)
         })
 
-        pUpdateStat.run(block.number, 1, block.transactions.length)
+        pUpdateStat.run(block.number, 1, txs.length)
         commit.run()
     } catch (e) {
         throw e
