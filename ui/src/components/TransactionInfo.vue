@@ -18,12 +18,12 @@
             <Row class="info">
               <Col span="4" >{{$t('transaction_detail.status')}}:</Col>
               <Col span="18">
-                <template v-if="statusStr === 'success'">
+                <template v-if="statusStr === 'Success'">
                   <span class="text-success">
                     {{ statusStr }}
                   </span>
                 </template>
-                <template v-else-if="statusStr === 'failed'">
+                <template v-else-if="statusStr === 'Fail'">
                 <span class="text-error">
                     {{ statusStr }}
                   </span> 
@@ -175,7 +175,10 @@ export default {
     statusStr: function () {
       switch (this.transaction.status) {
         case 1:
-          return 'success'
+          return 'Success'
+          break;
+        case 0:
+          return 'Fail';
           break;
         default:
           break;
