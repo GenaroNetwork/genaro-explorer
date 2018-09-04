@@ -17,7 +17,7 @@
           <Icon type="ios-people" />
           {{ $t("title.all_transactions")}}
         </MenuItem>
-        <MenuItem class="latest_block">
+        <MenuItem class="latest_block" name="null">
           {{$t("title.latest_block")}}:  {{ latest_block }}
         </MenuItem>
       </Menu>

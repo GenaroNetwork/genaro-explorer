@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from './api';
-import createLogger from 'vuex/dist/logger'
+// import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  plugins: [createLogger()],
+  // plugins: [createLogger()],
   state: {
     latest_block: 0,
     home_component: {
