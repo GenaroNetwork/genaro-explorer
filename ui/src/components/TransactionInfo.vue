@@ -51,8 +51,8 @@
                   </router-link>
                 </template>
                 <template v-else>
-                  <router-link :to="`/accounts/${transaction.toAddress}`">
-                    {{transaction.toAddress}}
+                  <router-link :to="`/accounts/${transaction.to}`">
+                    {{transaction.to}}
                   </router-link>
                 </template>
               </Col>
