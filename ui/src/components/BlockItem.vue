@@ -16,8 +16,6 @@
           in this block
         </p>
       </Col>
-      <Col span="12">
-      </Col>
     </Row>
   </div>
 </template>

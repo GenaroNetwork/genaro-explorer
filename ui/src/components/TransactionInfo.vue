@@ -176,10 +176,8 @@ export default {
       switch (this.transaction.status) {
         case 1:
           return 'Success'
-          break;
         case 0:
           return 'Fail';
-          break;
         default:
           break;
       }

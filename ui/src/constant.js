@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'http://47.100.212.191';
 const LEASTED_BLOCK = `${API_BASE}/block-number`;
 const ALL_BLOCKS = `${API_BASE}/block`;
 const ALL_TRANSACTIONS = `${API_BASE}/transaction`;
