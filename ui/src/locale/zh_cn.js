@@ -1,9 +1,9 @@
 export default {
   title: {
     home: 'Genaro 浏览器',
-    all_blocks: '所有区块',
+    all_blocks: '最近区块',
     block_detail: '区块信息',
-    all_transactions: '所有交易',
+    all_transactions: '最近交易',
     transaction_detail: '交易信息',
     address_detail: '地址',
     transactions: '交易列表',

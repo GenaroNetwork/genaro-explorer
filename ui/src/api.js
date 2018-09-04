@@ -44,7 +44,7 @@ class Api {
     return axios.get(TRANSACTION_FOR_BLOCK(height));
   }
 
-  static getAccountTransactions(addr, offset, limit) {
+  static getAccountTransactions(addr, offset=0, limit=30) {
     return axios.get(ACCOUNT_TRANSACTIONS(addr), {
       params: {
         offset,
@@ -54,11 +54,11 @@ class Api {
   }
 
   static getHomeBlocks() {
-    return this.getAllBlocks(0, 50)
+    return this.getAllBlocks(0, 10)
   }
 
   static getHomeTransaction() {
-    return this.getAllTransactions(0, 50)
+    return this.getAllTransactions(0, 10)
   }
 
   static getAccountDetail(addr) {
