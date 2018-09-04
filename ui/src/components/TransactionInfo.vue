@@ -119,7 +119,41 @@
           </template>
         </div>
       </TabPane>
-      <TabPane label="Event Logs"></TabPane>
+      <TabPane label="Event Logs" v-if="transaction && hasLogs" >
+        <b>Transaction Receipt Event Logs </b>
+        <br>
+        <br>
+        <table>
+          <tbody>
+            <template v-for="log in logs" >
+              <tr :key="log.id">
+                <td>[{{log.logIndex}}]</td>
+                <td>
+                  &nbsp;&nbsp;&nbsp;
+                  <b>Address</b>
+                  &nbsp;&nbsp;&nbsp;
+                </td>
+                <td>
+                  <router-link to="`/accounts/${log.address}`">{{log.address}}</router-link>
+                </td>
+              </tr>
+              <template v-for="(topic, key) in log.topics">
+                <tr :key="topic">
+                <td></td>
+                <td>
+                  <template v-if="key == 0">
+                    &nbsp;&nbsp;&nbsp;
+                    Topics
+                    &nbsp;&nbsp;&nbsp;
+                  </template>
+                </td>
+                <td>[{{key}}] {{topic}}</td>
+              </tr>
+              </template>
+            </template>
+          </tbody>
+        </table>
+      </TabPane>
    </Tabs>
   
 </template>
@@ -157,6 +191,12 @@ export default {
       let gasUsed = bn(this.transaction.gasUsed);
       let value = price * gasUsed;
       return this.$web3Utils.fromWei(value.toString(), 'ether');
+    },
+    hasLogs() {
+      return JSON.parse(this.transaction.logs).length > 0;
+    },
+    logs() {
+      return JSON.parse(this.transaction.logs);
     }
   }
 }
