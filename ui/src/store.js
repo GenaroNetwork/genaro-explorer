@@ -42,10 +42,17 @@ export default new Vuex.Store({
       current_page: 1,
       offset: 0,
       limit: 30, 
-    }
+    },
+    global: {
+      head_menu_index: "1"
+    },
   },
 
   mutations: {
+    change_head_menu_index(state, index) {
+      state.global.head_menu_index = index;
+    },
+
     get_latest_block(state,latest_block) {
       state.latest_block = latest_block;
     },

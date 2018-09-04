@@ -1,20 +1,26 @@
 <template>
   <div>
     <div id="header">
-       <Menu mode="horizontal" theme="dark" active-name="1">
-         <MenuItem name="1" to="/">
+      <Menu mode="horizontal"
+             ref="head_menu"
+             theme="dark"
+             :active-name="head_menu_index">
+        <MenuItem name="1" to="/">
           <Icon type="ios-home" />
           {{ $t("title.home")}}
-         </MenuItem>
-         <MenuItem name="2" to="/blocks">
-           <Icon type="ios-paper" />
+        </MenuItem>
+        <MenuItem name="2" to="/blocks">
+          <Icon type="ios-paper" />
           {{ $t("title.all_blocks")}}
          </MenuItem>
         <MenuItem name="3" to="/transaction">
           <Icon type="ios-people" />
           {{ $t("title.all_transactions")}}
         </MenuItem>
-        </Menu>
+        <MenuItem class="latest_block">
+          {{$t("title.latest_block")}}:  {{ latest_block }}
+        </MenuItem>
+      </Menu>
     </div>
     <div id="main">
       <transition>
@@ -47,6 +53,10 @@ a {
     color: #FFFFFF;
   }
 }
+.latest_block {
+  float: right !important;
+  padding-right: 40px !important;
+}
 </style>
 
 
@@ -56,10 +66,17 @@ a {
 
   export default {
     computed: mapState({
-      latest_block: state => state.latest_block
+      latest_block: state => state.latest_block,
+      head_menu_index: state => state.global.head_menu_index
     }),
     created() {
-      store.dispatch('get_latest_block_async')
-    }
+      store.dispatch('get_latest_block_async');
+    },
+    mounted() {
+      console.log('sada');
+      this.$nextTick(() => {
+        this.$refs['head_menu'].updateActiveName()
+      })
+    },
   }
 </script>

@@ -111,11 +111,10 @@ export default {
     store.dispatch('get_blocks_async', {
       offset: this.offset,
       limit: this.limit
-    })
+    });
+    store.commit('change_head_menu_index', "2")
   },
 
-  mounted() {
-  },
 
   computed: {
     ...mapState({

@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     handleClipboard() {
-      this.$Message.info('复制成功!');
+      this.$Message.info(this.$i18n.t('title.copy_success'));
     }
   }
 }

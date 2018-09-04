@@ -43,7 +43,8 @@ export default {
     store.dispatch('get_transactions_async', {
       offset: this.offset,
       limit: this.limit
-    })
+    });
+    store.commit('change_head_menu_index', "3")
   },
   
   computed: {
