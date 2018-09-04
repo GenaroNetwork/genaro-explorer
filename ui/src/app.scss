@@ -35,3 +35,21 @@ body {
   margin: 10px 0;
   border: 1px solid #EFEFEF;
 }
+
+//footer
+html, body, .container{ 
+  height:100%
+}
+#footer {
+  margin-top:-30px;
+  height:30px;
+  background-color:#eee;
+}
+.wrap-main{
+  min-height: 100%;
+}
+#main{
+  padding-bottom:30px;
+  overflow:hidden;
+}
+

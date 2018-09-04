@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div id="header">
       <Menu mode="horizontal"
              ref="head_menu"
@@ -22,10 +22,12 @@
         </MenuItem>
       </Menu>
     </div>
-    <div id="main">
-      <transition>
-        <router-view></router-view>
-      </transition>
+    <div class="wrap-main">
+      <div id="main">
+        <transition>
+          <router-view></router-view>
+        </transition>
+      </div>
     </div>
     <div id="footer">
       <span class="c-info">@Genaro Explorer</span>
