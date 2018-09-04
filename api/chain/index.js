@@ -13,7 +13,7 @@ async function syncBlock () {
     const web3 = getWeb3()
     const latestBlockHave = db.getStat().latestBlock
     const latestBlockReal = await web3.eth.getBlockNumber()
-    if(latestBlockHave < latestBlockReal) {
+    if (latestBlockHave < latestBlockReal) {
         logger.info(`sync from ${latestBlockHave} to ${latestBlockReal}`)
         for (let i = latestBlockHave + 1; i <= latestBlockReal; i++) {
             try {
@@ -24,7 +24,7 @@ async function syncBlock () {
                 for (let j = 0; j < block.transactions.length; j++) {
                     Object.assign(block.transactions[j], receipts[j])
                 }
-                if(block.number % 1000 === 0) {
+                if (block.number % 1000 === 0) {
                     logger.info('add block: ' + block.number)
                 }
                 logger.debug('add block: ' + block.number)
@@ -36,7 +36,7 @@ async function syncBlock () {
         }
         logger.info(`sync finished from ${latestBlockHave} to ${latestBlockReal}`)
         syncBlock()
-    } else if(latestBlockHave === latestBlockReal) {
+    } else if (latestBlockHave === latestBlockReal) {
         logger.info(`synced at ${latestBlockReal}, wait 2 secend`)
         setTimeout(syncBlock, 2000)
     }

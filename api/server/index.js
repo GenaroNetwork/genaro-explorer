@@ -3,7 +3,7 @@ const service = require('./service')
 const db = require('../db')
 const chain = require('../chain')
 const logger = require('../log')
-const Boom = require('boom');
+const Boom = require('boom')
 
 const server = Hapi.server({
     host: '0.0.0.0',
@@ -41,7 +41,7 @@ server.route({
     method: 'GET',
     path: '/block/{blockNum}',
     handler: function (request, h) {
-        return db.getBlockByNum(request.params.blockNum) || Boom.notFound("block not found")
+        return db.getBlockByNum(request.params.blockNum) || Boom.notFound('block not found')
     }
 })
 
@@ -65,7 +65,7 @@ server.route({
     method: 'GET',
     path: '/transaction/{txHash}',
     handler: function (request, h) {
-        return db.getTransaction(request.params.txHash) || Boom.notFound("transaction not found")
+        return db.getTransaction(request.params.txHash) || Boom.notFound('transaction not found')
     }
 })
 
@@ -73,7 +73,7 @@ server.route({
     method: 'GET',
     path: '/block/{blockNum}/transaction',
     handler: function (request, h) {
-        return db.getTransactionsByBlockNum(request.params.blockNum) || Boom.notFound("block not found")
+        return db.getTransactionsByBlockNum(request.params.blockNum) || Boom.notFound('block not found')
     }
 })
 
@@ -81,7 +81,7 @@ server.route({
     method: 'GET',
     path: '/address/{address}',
     handler: function (request, h) {
-        return chain.getAddressInfo(request.params.address) || Boom.notFound("address not found")
+        return chain.getAddressInfo(request.params.address) || Boom.notFound('address not found')
     }
 })
 
@@ -97,7 +97,7 @@ server.route({
         if (!limit || limit > 100) {
             limit = 30 // consider return 4xx error
         }
-        return service.getTransactionsByAddress(request.params.address, offset, limit) || Boom.notFound("address not found")
+        return service.getTransactionsByAddress(request.params.address, offset, limit) || Boom.notFound('address not found')
     }
 })
 
