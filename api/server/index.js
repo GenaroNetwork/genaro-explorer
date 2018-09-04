@@ -27,12 +27,12 @@ server.route({
     handler: function (request, h) {
         let offset = parseInt(request.query.offset)
         let limit = parseInt(request.query.limit)
-        if (!offset || offset > 10000) {
-            offset = 0 // consider return 4xx error
-        }
-        if (!limit || limit > 100) {
-            limit = 30 // consider return 4xx error
-        }
+        // if (!offset || offset > 10000) {
+        //     offset = 0 // consider return 4xx error
+        // }
+        // if (!limit || limit > 100) {
+        //     limit = 30 // consider return 4xx error
+        // }
         return service.getLatestBlocks(offset, limit)
     }
 })
@@ -51,12 +51,12 @@ server.route({
     handler: function (request, h) {
         let offset = parseInt(request.query.offset)
         let limit = parseInt(request.query.limit)
-        if (!offset || offset > 10000) {
-            offset = 0 // consider return 4xx error
-        }
-        if (!limit || limit > 100) {
-            limit = 30 // consider return 4xx error
-        }
+        // if (!offset || offset > 10000) {
+        //     offset = 0 // consider return 4xx error
+        // }
+        // if (!limit || limit > 100) {
+        //     limit = 30 // consider return 4xx error
+        // }
         return service.getLatestTxs(offset, limit)
     }
 })
@@ -91,12 +91,12 @@ server.route({
     handler: function (request, h) {
         let offset = parseInt(request.query.offset)
         let limit = parseInt(request.query.limit)
-        if (!offset || offset > 10000) {
-            offset = 0 // consider return 4xx error
-        }
-        if (!limit || limit > 100) {
-            limit = 30 // consider return 4xx error
-        }
+        // if (!offset || offset > 10000) {
+        //     offset = 0 // consider return 4xx error
+        // }
+        // if (!limit || limit > 100) {
+        //     limit = 30 // consider return 4xx error
+        // }
         return service.getTransactionsByAddress(request.params.address, offset, limit) || Boom.notFound('address not found')
     }
 })
