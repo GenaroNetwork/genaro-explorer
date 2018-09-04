@@ -25,8 +25,8 @@ server.route({
     method: 'GET',
     path: '/block',
     handler: function (request, h) {
-        let offset = parseInt(request.query.offset)
-        let limit = parseInt(request.query.limit)
+        let offset = parseInt(request.query.offset) || 0
+        let limit = parseInt(request.query.limit) || 30
         // if (!offset || offset > 10000) {
         //     offset = 0 // consider return 4xx error
         // }
@@ -49,8 +49,8 @@ server.route({
     method: 'GET',
     path: '/transaction',
     handler: function (request, h) {
-        let offset = parseInt(request.query.offset)
-        let limit = parseInt(request.query.limit)
+        let offset = parseInt(request.query.offset) || 0
+        let limit = parseInt(request.query.limit) || 30
         // if (!offset || offset > 10000) {
         //     offset = 0 // consider return 4xx error
         // }
@@ -89,8 +89,8 @@ server.route({
     method: 'GET',
     path: '/address/{address}/transaction',
     handler: function (request, h) {
-        let offset = parseInt(request.query.offset)
-        let limit = parseInt(request.query.limit)
+        let offset = parseInt(request.query.offset) || 0
+        let limit = parseInt(request.query.limit) || 30
         // if (!offset || offset > 10000) {
         //     offset = 0 // consider return 4xx error
         // }
