@@ -53,3 +53,10 @@ html, body, .container{
   overflow:hidden;
 }
 
+//hack safari
+.ivu-table {
+  td, th {
+    max-width: 0 !important;
+  }
+}
+
