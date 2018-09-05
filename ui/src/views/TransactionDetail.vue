@@ -17,7 +17,7 @@
           <Icon type="md-clipboard" />
         </a>
       </h3>
-      <TransactionInfo :transaction="transaction"/> 
+      <TransactionInfo :transaction="transaction" :error="error"/> 
     </Card>
   </div> 
 </template>
@@ -54,7 +54,8 @@ export default {
   },
   computed: {
     ...mapState({
-      transaction: state => state.transaction_component.transaction
+      transaction: state => state.transaction_component.transaction,
+      error: state => state.transaction_component.error,
     })
   },
   methods: {

@@ -48,7 +48,7 @@ export default {
     transaction_index: '位置',
     from: 'From',
     to: 'To',
-    value: 'Value',
+    value: 'Value[GNX]',
     timestamp: '交易时间',
     txfee: 'TxFee'
   },

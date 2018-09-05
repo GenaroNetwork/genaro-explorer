@@ -7,7 +7,7 @@
     </Breadcrumb>
     <Card border="none">
       <h3 slot="title">{{$t('title.block_detail')}}: <span>&nbsp&nbsp#{{height}}</span> </h3>
-      <template v-if="block">
+      <template v-if="block != null ">
         <Row class="info">
           <Col span="4" >{{$t('block_detail.id')}}:</Col>
           <Col span="18">{{block.id}}</Col>
@@ -108,6 +108,11 @@
           </Col>
         </Row>
       </template>
+      <template v-else-if="error">
+        <div class="show-error">
+          Unable to locate Block #{{height}}
+        </div>
+      </template>
       <template v-else>
         <div class="spin-container">
           <Spin size="large"></Spin>
@@ -119,7 +124,8 @@
 
 
 <style lang="scss" scoped>
- .info {
+  
+  .info {
     padding: 5px 40px;
   }
 
@@ -146,13 +152,22 @@ export default {
   name: 'block-detail',
   props: ['height'],
   created() {
-    const height = this.height;
-    store.dispatch('get_get_block_detail_async', height);
+    this.getData();
   },
   computed: {
     ...mapState({
-      block: state => state.block_component.block
+      block: state => state.block_component.block,
+      error: state => state.block_component.error,
     })
+  },
+  methods: {
+    getData() {
+      const height = this.height;
+      store.dispatch('get_get_block_detail_async', height);
+    }
+  },
+  watch: {
+    '$route': 'getData'
   }
 }
 </script>

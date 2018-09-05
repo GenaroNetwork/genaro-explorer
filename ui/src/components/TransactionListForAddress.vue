@@ -125,6 +125,9 @@ export default {
         {
           title: this.$i18n.t('transaction.value'),
           key: 'value',
+          render: (h, params) => {
+            return h('span', this.formatValueToGnx(params.row.value))
+          }
         },
         {
           title: this.$i18n.t('transaction.txfee'),
@@ -147,6 +150,9 @@ export default {
     },
     formatDateTime(timestamp) {
       return this.$dayjs(new Date(parseInt(timestamp* 1000))).format('YYYY-MM-DD HH:mm:ss')
+    },
+    formatValueToGnx(value) {
+      return this.$web3Utils.fromWei(value, 'ether');
     }
   }
 }

@@ -23,11 +23,13 @@ export default new Vuex.Store({
       blocks: [],
       loading: true,
       block: null,
+      error: null
     },
     transaction_component: {
       transactions: [],
       loading: true,
-      transaction: null
+      transaction: null,
+      error: null
     },
     account_component: {
       transactions: [],
@@ -69,6 +71,10 @@ export default new Vuex.Store({
       state.block_component.block = block;
       state.block_component.loading = false;
     },
+
+    get_block_detail_error(state, error) {
+      state.block_component.error = error;
+    },
     
     // 交易
     get_all_transactions_start(state) {
@@ -82,7 +88,9 @@ export default new Vuex.Store({
       state.transaction_component.transaction = transaction;
       state.transaction_component.loading = false;
     },
-
+    get_transaction_detail_error(state, error) {
+      state.transaction_component.error = error;
+    },
     get_account_transactions_start(state) {
       state.account_component.loading = true;
     },
@@ -146,6 +154,19 @@ export default new Vuex.Store({
     get_get_block_detail_async({commit}, height) {
       Api.getBlockDetail(height).then(res => {
         commit('get_block_detail_complete', res.data);
+      }).catch(err => {
+        let status = err.response.status;
+        let message;
+        switch (status) {
+          case '404':
+            message = '没找到数据'
+            break;
+        
+          default:
+            message = '未知错误'
+            break;
+        }
+        commit('get_block_detail_error', message)
       });
     },
 
@@ -163,7 +184,20 @@ export default new Vuex.Store({
     get_transaction_detail_async({commit}, hash) {
       Api.getTransactionDetail(hash).then(res => {
         commit('get_transaction_detail_complete', res.data)
-      })
+      }).catch(err => {
+        let status = err.response.status;
+        let message;
+        switch (status) {
+          case '404':
+            message = '没找到数据'
+            break;
+        
+          default:
+            message = '未知错误'
+            break;
+        }
+        commit('get_block_detail_error', message)
+      });
     },
     get_transaction_for_block_async({commit}, height) {
       commit('get_all_transactions_start');
