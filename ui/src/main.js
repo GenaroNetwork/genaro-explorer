@@ -6,6 +6,8 @@ import store from './store'
 
 import zh_cn from './locale/zh_cn'
 
+import 'normalize.css'
+
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import '@/app.scss'
