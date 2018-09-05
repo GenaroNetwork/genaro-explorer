@@ -10,7 +10,7 @@
         <p>由<router-link :to="`/accounts/${block.miner}`">{{ block.miner}} </router-link>开采
         </p>
         <p>
-          <router-link :to="`/blocks/${block.height}/txs`">
+          <router-link :to="`/blocks/${block.number}/txs`">
             {{count(block.transactions)}}
           </router-link>
           in this block
