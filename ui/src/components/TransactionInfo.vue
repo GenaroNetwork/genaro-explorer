@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="error">
+    <template v-if="transaction">
       <Tabs type="card">
         <TabPane label="Overview">
           <div>
