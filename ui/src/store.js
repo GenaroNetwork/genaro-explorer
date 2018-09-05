@@ -35,6 +35,7 @@ export default new Vuex.Store({
       transactions: [],
       account: null,
       loading: true,
+      error: null
     },
     message: {
       error: null,
@@ -131,6 +132,10 @@ export default new Vuex.Store({
 
     get_account_detail(state, account) {
       state.account_component.account = account;
+    },
+
+    get_account_detail_error(state, error) {
+      state.account_component.error = error;
     }
   },
   
@@ -262,6 +267,19 @@ export default new Vuex.Store({
     get_account_detail_async({commit}, addr) {
       Api.getAccountDetail(addr).then(res => {
         commit('get_account_detail', res.data)
+      }).catch(error => {
+        let status = error.response.status;
+        let message;
+        switch (status) {
+          case '404':
+            message = '没找到数据'
+            break;
+        
+          default:
+            message = '未知错误'
+            break;
+        }
+        commit('get_account_detail_error', message)
       })
     }
 

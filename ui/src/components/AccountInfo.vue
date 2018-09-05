@@ -19,7 +19,7 @@
         <Col span="24" class="mar-top">
           <Tabs type="card">
             <TabPane :label="$i18n.t('title.transactions')">
-              <TransactionListForAddress :data="transactions" :addr="addr" :loading="loading"/>
+              <TransactionListForAddress :data="transactions" :addr="addr" :loading="loading" />
             </TabPane>
             <!-- <TabPane label="标签二">标签二的内容</TabPane> -->
             <!-- <TabPane label="标签三">标签三的内容</TabPane> -->
@@ -27,6 +27,7 @@
         </Col>
       </Row>
     </template>
+   
   </div>
 </template>
 
@@ -52,7 +53,7 @@ import store from "@/store";
 
 export default {
   name: 'account-info',
-  props: ['account', 'transactions', 'addr'],
+  props: ['account', 'transactions', 'addr', 'error'],
   components: {
     TransactionListForAddress
   },
@@ -61,7 +62,7 @@ export default {
       return this.$web3Utils.fromWei(this.account.balance, 'ether')
     },
     ...mapState({
-      loading: state => state.account_component.loading
+      loading: state => state.account_component.loading,
     })
 
   }

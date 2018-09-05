@@ -176,7 +176,6 @@
 
 <script>
 import bn from 'big.js/big.min'
-import { mapState } from 'vuex'
 
 export default {
   name: 'transaction-iofo',

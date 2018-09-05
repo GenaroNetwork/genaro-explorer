@@ -7,6 +7,7 @@
     </Breadcrumb>
     <Card
       border="none">
+     
       <h3 slot="title">
         {{$t('title.address_detail')}}
         <span>
@@ -21,17 +22,24 @@
         </a>
        
       </h3>
-      <AccountInfo :account="account" :transactions="transactions" :addr="addr"/>
-      <Page 
-        :total="total" 
-        show-total
-        show-elevator
-        show-sizer
-        :page-size="limit"
-        :page-size-opts="[30,60]"
-        @on-change="changePgae"
-        @on-page-size-change="changePageLimit"
-        class="paginate"/>
+       <template v-if="error">
+        <div class="show-error">
+          Unable to locate Account #{{addr}}
+        </div>
+      </template>
+      <template v-else>
+         <AccountInfo :account="account" :transactions="transactions" :addr="addr" :error="error"/>
+        <Page 
+          :total="total" 
+          show-total
+          show-elevator
+          show-sizer
+          :page-size="limit"
+          :page-size-opts="[30,60]"
+          @on-change="changePgae"
+          @on-page-size-change="changePageLimit"
+          class="paginate"/>
+      </template>
     </Card>
   </div>
 </template>
@@ -93,6 +101,7 @@ export default {
   computed: {
     ...mapState({
       account: state => state.account_component.account,
+      error: state => state.account_component.error,
       transactions: state => state.account_component.transactions,
       total: state => state.paginate.total,
       offset: state => state.paginate.offset,
