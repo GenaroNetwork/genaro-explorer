@@ -32,7 +32,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import store from '@/store.js'
+import store from '@/store'
 import TransactionList from '@/components/TransactionList.vue';
 
 export default {

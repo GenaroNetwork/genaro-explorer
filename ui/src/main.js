@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueI18n from 'vue-i18n'
 import router from './router'
-import store from './store'
+import store from './store/index'
 
 import zh_cn from './locale/zh_cn'
 
