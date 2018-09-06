@@ -9,6 +9,7 @@ const moduleBlocks = {
   },
   mutations: {
     get_all_blocks_start(state) {
+      state.error = null;
       state.loading = true;
     },
     get_all_blocks_complete(state, blocks) {

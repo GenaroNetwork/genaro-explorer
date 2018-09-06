@@ -9,6 +9,7 @@ const moduleAccount = {
   },
   mutations: {
     get_account_transactions_start(state) {
+      state.error = null;
       state.loading = true;
     },
     get_account_transactions_complete(state, transactions) {
