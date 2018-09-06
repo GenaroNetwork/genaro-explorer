@@ -8,7 +8,8 @@ export default {
     address_detail: '地址',
     transactions: '交易列表',
     copy_success: '拷贝成功',
-    latest_block: '最新块高'
+    latest_block: '最新块高',
+    candidates: '当前委员会'
   },
   home: {
     transaction_hash: '交易哈希',

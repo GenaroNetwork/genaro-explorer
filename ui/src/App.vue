@@ -11,12 +11,16 @@
             {{ $t("title.home")}}
           </MenuItem>
           <MenuItem name="2" to="/blocks">
-            <Icon type="ios-paper" />
+            <Icon type="ios-apps" />
             {{ $t("title.all_blocks")}}
           </MenuItem>
           <MenuItem name="3" to="/transaction">
-            <Icon type="ios-people" />
+            <Icon type="ios-paper" />
             {{ $t("title.all_transactions")}}
+          </MenuItem>
+          <MenuItem name="4" to="http://sentinel.genaro.network" target="_blank">
+            <Icon type="ios-people" />
+            {{ $t("title.candidates")}}
           </MenuItem>
         </Menu>
       </div>
