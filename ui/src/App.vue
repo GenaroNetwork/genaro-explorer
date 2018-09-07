@@ -18,10 +18,15 @@
             <Icon type="ios-paper" />
             {{ $t("title.all_transactions")}}
           </MenuItem>
-          <MenuItem name="4" to="http://sentinel.genaro.network" target="_blank">
+          <MenuItem name="4" to="/recharge" >
+            <Icon type="ios-people" />
+            {{ $t("title.recharge")}}
+          </MenuItem>
+          <MenuItem name="5" to="http://sentinel.genaro.network" target="_blank">
             <Icon type="ios-people" />
             {{ $t("title.candidates")}}
           </MenuItem>
+         
         </Menu>
       </div>
       <div class="search">

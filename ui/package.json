@@ -10,7 +10,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "dayjs": "^1.7.5",
+    "ethereumjs-tx": "^1.3.7",
+    "genaro-web3": "^0.6.4",
     "iview": "^3.0.1",
+    "lowdb": "^1.0.0",
     "normalize.css": "^8.0.0",
     "vue": "^2.5.17",
     "vue-clipboard2": "^0.2.1",

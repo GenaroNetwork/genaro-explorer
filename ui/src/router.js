@@ -52,6 +52,11 @@ export default new Router({
       component: () => import('@/views/BlockTransactionList.vue'),
       props: true
     },
+    {
+      path: '/recharge',
+      name: 'recharge',
+      component: () => import('@/views/ReCharge.vue')
+    }
     
     // {
     //   path: '/',
