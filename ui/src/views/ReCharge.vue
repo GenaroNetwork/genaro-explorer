@@ -66,20 +66,6 @@
 
 
 <script>
-import low from 'lowdb'
-import LocalStorage from 'lowdb/adapters/LocalStorage'
-import getWeb3 from '@/web3Manager'
-import Tx from 'ethereumjs-tx'
-
-import { POOL_ACCOUNT_ADDRESS, POOL_ACCOUNT_ADDRESS_PK } from '@/constant.js'
-
-const adapter = new LocalStorage('db')
-const db = low(adapter)
-db.defaults({
-  recharges: []
-}).write()
-
-const web3 = getWeb3()
 
 import { mapState } from 'vuex'
 import store from '@/store'
