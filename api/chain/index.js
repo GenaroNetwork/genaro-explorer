@@ -47,18 +47,13 @@ async function safeAddBlock (block) {
     const web3 = getWeb3()
     const pHash = block.parentHash
     // 获取数据库中最新block
-    const dbLatestBlock = db.getLatestBlocks(0, 1)
-    let dbLatestHash
-    if (dbLatestBlock[0]) {
-        dbLatestHash = dbLatestBlock[0].hash
-    } else {
-        dbLatestHash = null
-    }
+    const dbLatestBlock = db.getLatestBlock()
+    let dbLatestHash = dbLatestBlock ? dbLatestBlock.hash : null
     logger.info('phash: ' + pHash)
     logger.info('dbHash: ' + dbLatestHash)
     if (dbLatestHash && pHash !== dbLatestHash) {
         // 1. delete db latest hash and related transactions
-        db.delBlock(dbLatestHash)
+        db.delBlock(dbLatestBlock)
         // 2. get onchain block info by parentHash
         const chainBlock = await web3.eth.getBlock(pHash)
         // 3. safeAddBlock

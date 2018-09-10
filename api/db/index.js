@@ -12,8 +12,8 @@ const rollback = db.prepare('ROLLBACK')
 let pInsertBlock, pInsertTx
 let pGetBlockByHash, pGetBlockByNum, pGetLatestBlock
 let pGetTx, pGetTxByBlockNum, pGetTxByAddress, pGetTxCountByAddress, pGetLatestTx
-let pUpdateStat, pGetStat
-let pDeleteTxsByBlockHash, pDeleteBlockByHash
+let pUpdateStat, pUpdateStatWithDelete, pGetStat
+let pDeleteTxsByBlockNumber, pDeleteBlockByNumber
 
 function addBlock (block) {
     // 0. prepare data
@@ -148,10 +148,11 @@ function initTables () {
     pGetLatestBlock = db.prepare(`select * from BLOCK order by number desc LIMIT ? OFFSET ?`)
 
     pUpdateStat = db.prepare('update statistics set latestBlock = ?, blockCount = blockCount + ?, transactionCount = transactionCount + ?')
+    pUpdateStatWithDelete = db.prepare('update statistics set latestBlock = ?, blockCount = blockCount - ?, transactionCount = transactionCount - ?')
     pGetStat = db.prepare('select * from statistics limit 1')
 
-    pDeleteTxsByBlockHash = db.prepare(`delete from TX where "blockHash" = ?`)
-    pDeleteBlockByHash = db.prepare(`delete from BLOCK where "hash" = ?`)
+    pDeleteTxsByBlockNumber = db.prepare(`delete from TX where "blockNumber" = ?`)
+    pDeleteBlockByNumber = db.prepare(`delete from BLOCK where "number" = ?`)
     // init statistics data
     const count = db.prepare('select count(1) count from statistics limit 1').get().count
     if (count === 0) {
@@ -188,6 +189,10 @@ function getLatestBlocks (offset, limit) {
     return pGetLatestBlock.all(limit, offset)
 }
 
+function getLatestBlock () {
+    return db.prepare('select * from block order by number desc limit 1').get()
+}
+
 // queries: TX
 function getTransaction (txHash) {
     return pGetTx.get(txHash)
@@ -215,18 +220,21 @@ function getStat () {
     return pGetStat.get()
 }
 
-function delBlock (hash) {
+function delBlock (block) {
+    const number = block.number
+    const { txCount } = db.prepare('select count(*) as txCount from tx where blockNumber = ? ').get(number)
     begin.run()
     try {
-        pDeleteTxsByBlockHash.run(hash)
-        pDeleteBlockByHash.run(hash)
-        logger.debug('delBlock' + hash)
+        pDeleteTxsByBlockNumber.run(number)
+        pDeleteBlockByNumber.run(number)
+        pUpdateStatWithDelete.run(number - 1, 1, txCount)
+        logger.debug('delBlock' + number)
         commit.run()
     } catch (e) {
         throw e
     } finally {
         if (db.inTransaction) {
-            logger.debug('delBlock Rollback' + hash)
+            logger.debug('delBlock Rollback' + number)
             rollback.run()
         }
     }
@@ -246,5 +254,6 @@ module.exports = {
     getLatestBlocks,
     // query stat
     getStat,
-    delBlock
+    delBlock,
+    getLatestBlock
 }
