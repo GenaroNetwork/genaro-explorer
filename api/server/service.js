@@ -1,5 +1,16 @@
 const db = require('../db')
 const chain = require('../chain')
+const getWeb3 = require('../chain/web3Manager')
+const Tx = require('ethereumjs-tx')
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+const dayJs = require('dayjs')
+
+const adapter = new FileSync('./transferDb.json')
+const jsonDb = low(adapter)
+jsonDb.defaults({
+    recharges: []
+}).write()
 
 function getLatestTxs (offset, limit) {
     // TODO: add pending transactions
@@ -46,10 +57,60 @@ function getLatestBlocks (offset, limit) {
     }
 }
 
+function reCharge (address) {
+    if (checkRecharge(address)) {
+        return transfer(address)
+    } else {
+        throw new Error('今天已经充值过了，明天再来吧!')
+    }
+}
+
+function recordRecharge (address) {
+    jsonDb.get('recharges').push({
+        address,
+        date: formatNow()
+    }).write()
+}
+
+function checkRecharge (address) {
+    let r = jsonDb.get('recharges').find({ address: address, date: formatNow() }).value()
+    return !r
+}
+
+function formatNow () {
+    return dayJs().startOf('day').unix()
+}
+
+async function transfer (address) {
+    let web3 = getWeb3()
+    let nonce = await web3.eth.getTransactionCount('0x75cfd81d9ecc6ffa0012625029add6aef4111bae', web3.eth.defaultBlock.pending)
+    let rawTx = {
+        nonce: web3.utils.toHex(nonce++),
+        gasLimit: web3.utils.toHex(180000),
+        gasPrice: web3.utils.toHex(21000),
+        from: '0x75cfd81d9ecc6ffa0012625029add6aef4111bae',
+        to: address,
+        value: web3.utils.toHex(web3.utils.toWei('5', 'ether'))
+    }
+    let privateKey = Buffer.from('33B9BF81F6F84A1050D0AD9CE53AB2B0C3C3D145BEB60F62A7A046E13E2F60E9', 'hex')
+    let tx = new Tx(rawTx)
+    tx.sign(privateKey)
+    let serializedTx = tx.serialize()
+    return new Promise((resolve, reject) => {
+        web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')).once('transactionHash', hash => {
+            console.log(hash)
+        }).on('receipt', receipt => {
+            resolve(receipt)
+            recordRecharge(address)
+        })
+    })
+}
+
 module.exports = {
     // trasaction
     getLatestTxs,
     getTransactionsByAddress,
     // block
-    getLatestBlocks
+    getLatestBlocks,
+    reCharge
 }

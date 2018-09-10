@@ -101,6 +101,22 @@ server.route({
     }
 })
 
+server.route({
+    method: 'POST',
+    path: '/recharge/{address}',
+    handler: async function (request, h) {
+        let address = request.params.address
+        try {
+            const hash = await service.reCharge(address)
+            return hash
+        } catch (error) {
+            const response = h.response(error.message)
+            response.statusCode = 400
+            return response
+        }
+    }
+})
+
 async function run () {
     logger.info('start Hapi api')
     await server.start()

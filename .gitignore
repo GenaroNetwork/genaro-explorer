@@ -26,3 +26,4 @@ yarn-error.log*
 *.sw*
 api/chain.db
 *.log
+api/transferDb.json
