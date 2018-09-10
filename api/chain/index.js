@@ -54,6 +54,8 @@ async function safeAddBlock (block) {
     } else {
         dbLatestHash = null
     }
+    logger.info('phash: ' + pHash)
+    logger.info('dbHash: ' + dbLatestHash)
     if (dbLatestHash && pHash !== dbLatestHash) {
         // 1. delete db latest hash and related transactions
         db.delBlock(dbLatestHash)
@@ -61,6 +63,7 @@ async function safeAddBlock (block) {
         const chainBlock = await web3.eth.getBlock(pHash)
         // 3. safeAddBlock
         safeAddBlock(chainBlock)
+        db.addBlock(block)
     } else {
         logger.info('addBlock:' + block.number)
         db.addBlock(block)
