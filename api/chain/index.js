@@ -28,7 +28,7 @@ async function syncBlock () {
                     logger.info('add block: ' + block.number)
                 }
                 logger.debug('add block: ' + block.number)
-                db.addBlock(block)
+                safeAddBlock(block)
                 logger.debug('add block done: ' + block.number)
             } catch (error) {
                 throw error
@@ -39,6 +39,31 @@ async function syncBlock () {
     } else if (latestBlockHave === latestBlockReal) {
         logger.info(`synced at ${latestBlockReal}, wait 2 secend`)
         setTimeout(syncBlock, 2000)
+    }
+}
+
+async function safeAddBlock (block) {
+    logger.info('safeAddBlock:' + block.number)
+    const web3 = getWeb3()
+    const pHash = block.parentHash
+    // 获取数据库中最新block
+    const dbLatestBlock = db.getLatestBlocks(0, 1)
+    let dbLatestHash
+    if (dbLatestBlock[0]) {
+        dbLatestHash = dbLatestBlock[0].hash
+    } else {
+        dbLatestHash = null
+    }
+    if (dbLatestHash && pHash !== dbLatestHash) {
+        // 1. delete db latest hash and related transactions
+        db.delBlock(dbLatestHash)
+        // 2. get onchain block info by parentHash
+        const chainBlock = await web3.eth.getBlock(pHash)
+        // 3. safeAddBlock
+        safeAddBlock(chainBlock)
+    } else {
+        logger.info('addBlock:' + block.number)
+        db.addBlock(block)
     }
 }
 

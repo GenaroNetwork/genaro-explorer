@@ -13,6 +13,7 @@ let pInsertBlock, pInsertTx
 let pGetBlockByHash, pGetBlockByNum, pGetLatestBlock
 let pGetTx, pGetTxByBlockNum, pGetTxByAddress, pGetTxCountByAddress, pGetLatestTx
 let pUpdateStat, pGetStat
+let pDeleteTxsByBlockHash, pDeleteBlockByHash
 
 function addBlock (block) {
     // 0. prepare data
@@ -148,6 +149,9 @@ function initTables () {
 
     pUpdateStat = db.prepare('update statistics set latestBlock = ?, blockCount = blockCount + ?, transactionCount = transactionCount + ?')
     pGetStat = db.prepare('select * from statistics limit 1')
+
+    pDeleteTxsByBlockHash = db.prepare(`delete from TX where "blockHash" = ?`)
+    pDeleteBlockByHash = db.prepare(`delete from BLOCK where "hash" = ?`)
     // init statistics data
     const count = db.prepare('select count(1) count from statistics limit 1').get().count
     if (count === 0) {
@@ -211,6 +215,23 @@ function getStat () {
     return pGetStat.get()
 }
 
+function delBlock (hash) {
+    begin.run()
+    try {
+        pDeleteTxsByBlockHash.run(hash)
+        pDeleteBlockByHash.run(hash)
+        logger.debug('delBlock' + hash)
+        commit.run()
+    } catch (e) {
+        throw e
+    } finally {
+        if (db.inTransaction) {
+            logger.debug('delBlock Rollback' + hash)
+            rollback.run()
+        }
+    }
+}
+
 module.exports = {
     addBlock,
     // query Tx
@@ -224,5 +245,6 @@ module.exports = {
     getBlockByHash,
     getLatestBlocks,
     // query stat
-    getStat
+    getStat,
+    delBlock
 }
