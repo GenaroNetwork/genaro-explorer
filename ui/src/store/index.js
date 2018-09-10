@@ -6,6 +6,8 @@ import moduleBlock from './modules/blocks'
 import moduleHome from './modules/home'
 import moduleTransaction from './modules/transactions'
 import modulePaginate from './modules/paginate';
+import moduleRecharge from './modules/recharge';
+
 
 
 
@@ -18,6 +20,7 @@ export default new Vuex.Store({
     home_component: moduleHome,
     transaction_component: moduleTransaction,
     paginate: modulePaginate,
+    recharge_component: moduleRecharge,
   },
   // plugins: [createLogger()],
   state: {

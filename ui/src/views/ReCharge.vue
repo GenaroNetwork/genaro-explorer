@@ -3,10 +3,18 @@
     <Card
       class="content"
       height="800px">
-      <div class="recharge">
-        <h1>充值中心</h1>
-        <Input search enter-button="充值" placeholder="输入地址..." @on-search="recharge" v-model="address"/>
-      </div>
+        <template v-if="!running">
+          <div class="recharge">
+            <h1>充值中心</h1>
+            <Input search enter-button="充值" placeholder="输入地址..." @on-search="recharge" v-model="address"/>
+          </div>
+        </template>
+        <template v-else>
+          <div class="loading">
+            <Spin size="large"></Spin>
+          </div>
+        </template>
+       
     </Card>
   </div>
 </template>
@@ -24,11 +32,17 @@
   h1 {
     margin: 20px 0;
   }
+  
 }
-
 </style>
 
 <style lang="scss">
+  .loading {
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 .ivu-input-search {
   background: #515a6e!important;
   border-color:#515a6e!important;
@@ -67,15 +81,19 @@ db.defaults({
 
 const web3 = getWeb3()
 
+import { mapState } from 'vuex'
+import store from '@/store'
+
 export default {
   name: 're-charge',
   data() {
     return {
-      address: ''
+      address: '',
     }
   },
   methods: {
     recharge() {
+      this.rechargeable = true
       if (this.address.length == 0) {
         this.$Message.error('地址不能为空')
         return        
@@ -85,58 +103,35 @@ export default {
         this.$Message.error('地址格式错误')
         return;
       }
-
-      if ( this.checkRecharge(this.address)) {
-        this.transfer(this.address).then(res => {
-          this.$Message.info('充值成功')
-          this.address = ''
-
-        });
-      } else {
-        this.address = ''
-        this.$Message.error({
-          content: '今天已经充值过了，明天再来吧!',
+      store.dispatch('recharge_async', this.address)
+    },
+  },
+  computed: {
+    ...mapState({
+      running: state => state.recharge_component.running,
+      error: state => state.recharge_component.error,
+      success_tag: state => state.recharge_component.success_tag
+    })
+  },
+  watch: {
+    'error': function() {
+        if (this.error) {
+         this.$Message.error({
+          content: this.error,
           duration: 3
-        })
+          })
+        }
+        store.commit('clear_info')
+    },
+    'success_tag': function() {
+      if (this.success_tag) {
+        this.address = ''
+        this.$Message.info({
+        content: this.success_tag,
+        duration: 3
+        }) 
       }
-    },
-
-    formatNow() {
-      return this.$dayjs().startOf('day').unix()
-    },
-
-    checkRecharge(address) {
-      let r = db.get('recharges').find({address: address, date: this.formatNow()}).value();
-      return !r
-    },
-
-    recordRecharge(address) {
-      db.get('recharges').push({
-        address: address,
-        date: this.formatNow()
-      }).write()
-    },
-
-    async transfer(address) {
-      this.recordRecharge(address)
-      const nonce = await web3.eth.getTransactionCount(POOL_ACCOUNT_ADDRESS, web3.eth.defaultBlock.pending)
-      let rawTx = {
-        nonce: web3.utils.toHex(nonce++),
-        gasLimit: web3.utils.toHex(180000),
-        gasPrice: web3.utils.toHex(21000),
-        from: POOL_ACCOUNT_ADDRESS,
-        to: address,
-        value: web3.utils.toHex(web3.utils.toWei('5', 'ether')),
-      };
-      let privateKey = Buffer.from(POOL_ACCOUNT_ADDRESS_PK, 'hex');
-       let tx = new Tx(rawTx);
-      tx.sign(privateKey);
-      let serializedTx = tx.serialize();
-      return new Promise((resolve, reject) => {
-        web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')).once('transactionHash', hash => {
-          resolve(hash);
-        })
-      })
+      store.commit('clear_info')
 
     }
   }

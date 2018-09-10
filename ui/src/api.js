@@ -7,7 +7,8 @@ const { LEASTED_BLOCK,
         TRANSACTION_DETAIL,
         TRANSACTION_FOR_BLOCK,
         ACCOUNT_DETAIL,
-        ACCOUNT_TRANSACTIONS } = require('@/constant');
+        ACCOUNT_TRANSACTIONS,
+        RECHARGE_URL } = require('@/constant');
 
 class Api {
   static getLeastBlock() {
@@ -63,6 +64,10 @@ class Api {
 
   static getAccountDetail(addr) {
     return axios.get(ACCOUNT_DETAIL(addr))
+  }
+
+  static reCharge(address) {
+    return axios.post(RECHARGE_URL(address))
   }
 
 }

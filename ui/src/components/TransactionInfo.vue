@@ -48,7 +48,7 @@
                 <Col span="4">{{$t('transaction_detail.to')}}:</Col>
                 <Col span="18">
                   <template v-if="transaction.contractAddress">
-                    <router-link :to="`/contracts/${transaction.contractAddress}`">
+                    <router-link :to="`/accounts/${transaction.contractAddress}`">
                       Contract Creation
                     </router-link>
                   </template>

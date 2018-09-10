@@ -25,6 +25,10 @@ const ACCOUNT_TRANSACTIONS= function(account) {
   return `${API_BASE}/address/${account}/transaction`
 }
 
+const RECHARGE_URL = function(address) {
+  return `${API_BASE}/recharge/${address}`
+}
+
 const POOL_ACCOUNT_ADDRESS = '0x75cfd81d9ecc6ffa0012625029add6aef4111bae';
 const POOL_ACCOUNT_ADDRESS_PK = '33B9BF81F6F84A1050D0AD9CE53AB2B0C3C3D145BEB60F62A7A046E13E2F60E9';
 export {
@@ -37,5 +41,6 @@ export {
   ACCOUNT_DETAIL,
   ACCOUNT_TRANSACTIONS,
   POOL_ACCOUNT_ADDRESS,
-  POOL_ACCOUNT_ADDRESS_PK
+  POOL_ACCOUNT_ADDRESS_PK,
+  RECHARGE_URL
 }

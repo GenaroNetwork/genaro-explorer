@@ -112,7 +112,7 @@ a {
       head_menu_index: state => state.global.head_menu_index,
     }),
     created() {
-      store.dispatch('get_latest_block_async');
+      this.getData()
     },
     mounted() {
       console.log('sada');
@@ -121,6 +121,9 @@ a {
       })
     },
     methods: {
+      getData() {
+        store.dispatch('get_latest_block_async');
+      },
       handleSearch() {
         const type = this.checkSearchType(this.key)
         console.log(type);
@@ -170,6 +173,9 @@ a {
         return 'error'
         
       }
+    },
+    watch: {
+      '$route': 'getData'
     }
   }
 </script>

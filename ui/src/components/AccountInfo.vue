@@ -10,7 +10,7 @@
                 <td align="right">{{ balanceGNX }} GNX</td>
               </tr>
               <tr>
-                <td width="35%">交易数量</td>
+                <td width="35%">交易发出数量</td>
                 <td align="right">{{account.transactionCount}}笔</td>
               </tr>
             </tbody>

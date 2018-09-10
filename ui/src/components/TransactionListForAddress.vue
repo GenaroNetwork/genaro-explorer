@@ -107,7 +107,7 @@ export default {
                 }),
                 h('router-link', {
                   props: {
-                    to: `/contracts/${params.row.contractAddress}`
+                    to: `/accounts/${params.row.contractAddress}`
                   }
                 }, params.row.contractAddress)
               ])
