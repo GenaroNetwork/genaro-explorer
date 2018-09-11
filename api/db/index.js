@@ -38,6 +38,7 @@ function addBlock (block) {
 
         pUpdateStat.run(block.number, 1, txs.length)
         commit.run()
+        logger.info('real insert block:' + block.number)
     } catch (e) {
         throw e
     } finally {
@@ -228,7 +229,7 @@ function delBlock (block) {
         pDeleteTxsByBlockNumber.run(number)
         pDeleteBlockByNumber.run(number)
         pUpdateStatWithDelete.run(number - 1, 1, txCount)
-        logger.debug('delBlock' + number)
+        logger.info('delBlock' + number)
         commit.run()
     } catch (e) {
         throw e

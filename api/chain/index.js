@@ -28,7 +28,7 @@ async function syncBlock () {
                     logger.info('add block: ' + block.number)
                 }
                 logger.debug('add block: ' + block.number)
-                safeAddBlock(block)
+                await safeAddBlock(block)
                 logger.debug('add block done: ' + block.number)
             } catch (error) {
                 throw error
@@ -56,6 +56,7 @@ async function safeAddBlock (block) {
         db.delBlock(dbLatestBlock)
         // 2. get onchain block info by parentHash
         const chainBlock = await web3.eth.getBlock(pHash)
+        logger.info('链上的块号' + chainBlock.number)
         // 3. safeAddBlock
         safeAddBlock(chainBlock)
         db.addBlock(block)

@@ -61,7 +61,7 @@ function reCharge (address) {
     if (checkRecharge(address)) {
         return transfer(address)
     } else {
-        throw new Error('今天已经充值过了，明天再来吧!')
+        throw new Error('今天已经使用过了，明天再来吧!')
     }
 }
 
