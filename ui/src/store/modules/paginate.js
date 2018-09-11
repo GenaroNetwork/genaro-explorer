@@ -36,8 +36,8 @@ const modulePaginate = {
           break;
         case 'account_transactions':
           dispatch('get_account_transactions_async', {
-            offset: state.paginate.offset,
-            limit: state.paginate.limit,
+            offset: state.offset,
+            limit: state.limit,
             addr: extra
           });
           break;
