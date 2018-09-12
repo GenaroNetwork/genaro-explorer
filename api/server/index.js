@@ -117,6 +117,30 @@ server.route({
     }
 })
 
+server.route({
+    method: 'GET',
+    path: '/currentCommittee',
+    handler: function (request, h) {
+        return service.getCurrentCommittee()
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/prevCommittee',
+    handler: function (request, h) {
+        return service.getPrevCommittee()
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/commiteeInfo',
+    handler: function (request, h) {
+        return service.getCommitteeInfo()
+    }
+})
+
 async function run () {
     logger.info('start Hapi api')
     await server.start()

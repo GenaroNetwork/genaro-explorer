@@ -5,6 +5,7 @@ const Tx = require('ethereumjs-tx')
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const dayJs = require('dayjs')
+const { BLOCK_COUNT_OF_ROUND } = require('../config')
 
 const adapter = new FileSync('./transferDb.json')
 const jsonDb = low(adapter)
@@ -106,11 +107,44 @@ async function transfer (address) {
     })
 }
 
+async function getCurrentCommittee () {
+    const web3 = getWeb3()
+    const bno = await web3.eth.getBlockNumber()
+    const thisRoundFirstBlock = bno - bno % BLOCK_COUNT_OF_ROUND
+    const { committeeRank: currentCommittee } = await web3.genaro.getExtra(thisRoundFirstBlock)
+    return currentCommittee
+}
+
+async function getPrevCommittee () {
+    const web3 = getWeb3()
+    const bno = await web3.eth.getBlockNumber()
+    const thisRoundFirstBlock = bno - bno % BLOCK_COUNT_OF_ROUND
+    const prevRoundFirstBlock = thisRoundFirstBlock - BLOCK_COUNT_OF_ROUND
+    const { committeeRank: prevCommittee } = await web3.genaro.getExtra(prevRoundFirstBlock)
+    return prevCommittee
+}
+
+async function getCommitteeInfo () {
+    const web3 = getWeb3()
+    const bno = await web3.eth.getBlockNumber()
+    const thisRoundFirstBlock = bno - bno % BLOCK_COUNT_OF_ROUND
+    const nextRoundFirstBlock = thisRoundFirstBlock + BLOCK_COUNT_OF_ROUND
+    const session = parseInt(bno / BLOCK_COUNT_OF_ROUND)
+    return {
+        thisRoundFirstBlock,
+        nextRoundFirstBlock,
+        session
+    }
+}
+
 module.exports = {
     // trasaction
     getLatestTxs,
     getTransactionsByAddress,
     // block
     getLatestBlocks,
-    reCharge
+    reCharge,
+    getCurrentCommittee,
+    getPrevCommittee,
+    getCommitteeInfo
 }
