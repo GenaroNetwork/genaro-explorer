@@ -108,11 +108,7 @@ export default {
     }
   },
   created() {
-    store.dispatch('get_blocks_async', {
-      offset: this.offset,
-      limit: this.limit
-    });
-    store.commit('change_head_menu_index', "2")
+    this.initData();
   },
 
 
@@ -127,6 +123,13 @@ export default {
     })
   },
   methods: {
+    initData() {
+      store.dispatch('get_blocks_async', {
+        offset: this.offset,
+        limit: this.limit
+      });
+      store.commit('change_head_menu_index', "2")
+    },
     changePgae(page) {
       store.dispatch('change_current_page_async', {page, type: 'blocks'})
     },
@@ -145,6 +148,10 @@ export default {
     }
 
   },
+
+  watch: {
+    '$route': 'initDate'
+  }
 }
 </script>
 
