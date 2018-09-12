@@ -10,7 +10,7 @@ export default {
     copy_success: '拷贝成功',
     latest_block: '最新块高',
     candidates: '当前委员会',
-    recharge: '充值'
+    recharge: 'Faucet'
   },
   home: {
     transaction_hash: '交易哈希',

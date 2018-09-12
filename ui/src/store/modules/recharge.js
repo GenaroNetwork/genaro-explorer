@@ -11,7 +11,7 @@ const moduleRecharge = {
       state.running = true
     },
     complete_recharge(state) {
-      state.success_tag = '充值成功！'
+      state.success_tag = '成功！'
       state.running = false
     },
     recharge_error(state, error) {

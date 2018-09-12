@@ -5,8 +5,8 @@
       height="800px">
         <template v-if="!running">
           <div class="recharge">
-            <h1>充值中心</h1>
-            <Input search enter-button="充值" placeholder="输入地址..." @on-search="recharge" v-model="address"/>
+            <h1>Rinkeby GNX Faucet</h1>
+            <Input search enter-button="Give Me GNX" placeholder="输入地址..." @on-search="recharge" v-model="address"/>
           </div>
         </template>
         <template v-else>
