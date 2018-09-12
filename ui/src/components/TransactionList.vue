@@ -22,11 +22,28 @@ export default {
           key: 'hash',
           ellipsis: true,
           render: (h, params) => {
-            return h('router-link', {
-              props: {
-                to: `/transaction/${params.row.hash}`
-              }
-            }, params.row.hash)
+            if (params.row.status) {
+              return h('router-link', {
+                  props: {
+                    to: `/transaction/${params.row.hash}`
+                  }
+                }, params.row.hash)
+            } else {
+              return h('span', [
+                h('span', {
+                  attrs: {
+                    class: 'ivu-badge-status-dot ivu-badge-status-error',
+                    style: 'margin-right: 5px;'
+                  }
+                }),
+                h('router-link', {
+                  props: {
+                    to: `/transaction/${params.row.hash}`
+                  }
+                }, params.row.hash)
+              ])
+            }
+           
           }
         },
         {
