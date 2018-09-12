@@ -58,7 +58,7 @@ async function safeAddBlock (block) {
         const chainBlock = await web3.eth.getBlock(pHash)
         logger.info('链上的块号' + chainBlock.number)
         // 3. safeAddBlock
-        safeAddBlock(chainBlock)
+        await safeAddBlock(chainBlock)
         db.addBlock(block)
     } else {
         logger.info('addBlock:' + block.number)
