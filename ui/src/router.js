@@ -56,6 +56,11 @@ export default new Router({
       path: '/recharge',
       name: 'recharge',
       component: () => import('@/views/ReCharge.vue')
+    },
+    {
+      path: '/committee',
+      name: 'committee',
+      component: () => import('@/views/Committee.vue')
     }
     
     // {

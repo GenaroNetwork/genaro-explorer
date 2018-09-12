@@ -1,3 +1,5 @@
+import { GET_CURRENT_COMMITTEE_URL, GET_PREV_COMMITTEE_URL, GET_COMMITEE_INFO_URL } from './constant';
+
 const axios = require('axios');
 
 const { LEASTED_BLOCK, 
@@ -70,6 +72,17 @@ class Api {
     return axios.post(RECHARGE_URL(address))
   }
 
+  static getCurrentCommittee() {
+    return axios.get(GET_CURRENT_COMMITTEE_URL)
+  }
+  
+  static getPrevCommittee() {
+    return axios.get(GET_PREV_COMMITTEE_URL)
+  }
+
+  static getCommitteeInfo() {
+    return axios.get(GET_COMMITEE_INFO_URL)
+  }
 }
 
 export default Api;

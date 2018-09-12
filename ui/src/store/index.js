@@ -7,6 +7,8 @@ import moduleHome from './modules/home'
 import moduleTransaction from './modules/transactions'
 import modulePaginate from './modules/paginate';
 import moduleRecharge from './modules/recharge';
+import moduleCommittee from './modules/committee';
+
 
 
 
@@ -21,10 +23,12 @@ export default new Vuex.Store({
     transaction_component: moduleTransaction,
     paginate: modulePaginate,
     recharge_component: moduleRecharge,
+    committee_component: moduleCommittee
   },
   // plugins: [createLogger()],
   state: {
     latest_block: 0,
+    this_round_block: 0,
     message: {
       error: null,
     },

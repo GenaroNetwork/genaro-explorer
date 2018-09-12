@@ -10,7 +10,8 @@ export default {
     copy_success: '拷贝成功',
     latest_block: '最新块高',
     candidates: '当前委员会',
-    recharge: 'Faucet'
+    recharge: 'Faucet',
+    committee: '委员会'
   },
   home: {
     transaction_hash: '交易哈希',
@@ -69,5 +70,9 @@ export default {
     gas_price: 'Gas价格',
     fee: 'Fee',
     input_data: '输入数据'
+  },
+  committee: {
+    address: '地址',
+    rank: '排名'
   }
 }

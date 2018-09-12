@@ -19,12 +19,12 @@
             {{ $t("title.all_transactions")}}
           </MenuItem>
           <MenuItem name="4" to="/recharge" >
-            <Icon type="ios-people" />
+            <Icon type="md-color-fill" />
             {{ $t("title.recharge")}}
           </MenuItem>
-          <MenuItem name="5" to="http://sentinel.genaro.network" target="_blank">
+          <MenuItem name="5" to="/committee">
             <Icon type="ios-people" />
-            {{ $t("title.candidates")}}
+            {{ $t("title.committee")}}
           </MenuItem>
          
         </Menu>
