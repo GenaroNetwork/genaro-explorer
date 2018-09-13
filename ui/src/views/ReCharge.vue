@@ -1,44 +1,47 @@
 <template>
-  <div class="wrap">
+  <div class="wrap recharge-page">
     <Card
       class="content"
       height="800px">
-        <template v-if="!running">
-          <div class="recharge">
-            <h1>Rinkeby GNX Faucet</h1>
-            <Input search enter-button="Give Me GNX" placeholder="输入地址..." @on-search="recharge" v-model="address"/>
-          </div>
-        </template>
-        <template v-else>
+        <template v-if="running">
           <div class="loading">
             <Spin size="large"></Spin>
           </div>
         </template>
-       
+        <div class="recharge">
+          <h1>Rinkeby GNX Faucet</h1>
+          <Input search :enter-button="buttonText" 
+                        placeholder="输入地址..."
+                        @on-search="recharge" 
+                        v-model="address"/>
+        </div>
     </Card>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .content {
-  height: 800px;
+  height: 400px;
+}
+.recharge-page {
+  margin-top: 100px;
 }
 .recharge {
   width: 60%;
-  margin: 0 auto;
-  margin-top: 400px;
-  transform: translateY(-200%);
   text-align: center;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
   h1 {
     margin: 20px 0;
   }
-  
 }
 </style>
 
 <style lang="scss">
   .loading {
-    height: 800px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -75,22 +78,25 @@ export default {
   data() {
     return {
       address: '',
+      buttonText: 'Give Me GNX'
     }
   },
   methods: {
     recharge() {
-      this.rechargeable = true
-      if (this.address.length == 0) {
-        this.$Message.error('地址不能为空')
-        return        
-      }
-     
-      if (!this.$web3Utils.isAddress(this.address)) {
-        this.$Message.error('地址格式错误')
-        return;
-      }
-      store.dispatch('recharge_async', this.address)
-    },
+      if (!this.running) {
+        this.rechargeable = true
+        if (this.address.length == 0) {
+          this.$Message.error('地址不能为空')
+          return        
+        }
+      
+        if (!this.$web3Utils.isAddress(this.address)) {
+          this.$Message.error('地址格式错误')
+          return;
+        }
+        store.dispatch('recharge_async', this.address)
+        }
+      },
   },
   computed: {
     ...mapState({
@@ -119,6 +125,13 @@ export default {
       }
       store.commit('clear_info')
 
+    },
+    'running': function() {
+      if (this.running) {
+        this.buttonText = '充值中'
+      } else {
+        this.buttonText = 'Give Me GNX'
+      }
     }
   }
 }
