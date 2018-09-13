@@ -93,7 +93,7 @@ export default {
               props: {
                 to: `/accounts/${params.row.miner}`
               },
-            }, params.row.miner)
+            }, params.row.miner.toLowerCase())
           }
         },
         {
