@@ -25,7 +25,7 @@
         <Row class="info">
           <Col span="4" >{{$t('block_detail.transactions')}}:</Col>
           <Col span="18">
-            <router-link :to="`/blocks/${block.number}/txs`">{{block.transactions.split(',').length}}</router-link>
+            <router-link :to="`/blocks/${block.number}/txs`">{{countTx(block.transactions)}}</router-link>
            in this block 
           </Col>
         </Row>
@@ -50,7 +50,7 @@
         <Row class="info">
           <Col span="4" >{{$t('block_detail.miner')}}:</Col>
           <Col span="18">
-            <router-link :to="'/accounts/' + block.miner">{{block.miner}}</router-link>
+            <router-link :to="'/accounts/' + block.miner.toLowerCase()">{{block.miner.toLowerCase()}}</router-link>
             <!-- {{block.miner}} -->
           </Col>
         </Row>
@@ -164,7 +164,14 @@ export default {
     getData() {
       const height = this.height;
       store.dispatch('get_get_block_detail_async', height);
-    }
+    },
+    countTx(transactions) {
+      if (transactions) {
+        return transactions.split(",").length;
+      }else{
+        return 0;
+      }
+    },
   },
   watch: {
     '$route': 'getData'
