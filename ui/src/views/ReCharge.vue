@@ -9,7 +9,7 @@
           </div>
         </template>
         <div class="recharge">
-          <h1>Rinkeby GNX Faucet</h1>
+          <h1>Testnet  GNX Faucet</h1>
           <Input search :enter-button="buttonText" 
                         placeholder="输入地址..."
                         @on-search="recharge" 
