@@ -8,15 +8,29 @@
       stripe="true"
       board="true">
       <h3 slot="title">
-        {{title}}
-        <span class="extraInfo">
-          &nbsp&nbsp
-          第{{ session }}届委员会
-          &nbsp&nbsp
-          更新区块: {{thisRoundFirstBlock}}
-          &nbsp&nbsp&nbsp&nbsp
-          次届委员会更新区块: {{nextRoundFirstBlock}}
-        </span>
+        <template v-if="tabIndex == '1'">
+          本届委员会
+          <span class="extraInfo">
+            &nbsp&nbsp
+            第{{ session }}届委员会
+            &nbsp&nbsp
+            更新区块: {{thisRoundFirstBlock}}
+            &nbsp&nbsp&nbsp&nbsp
+            次届委员会更新区块: {{nextRoundFirstBlock}}
+          </span>
+        </template>
+        <template v-else-if="tabIndex == '2'">
+          当前出块节点
+          <span class="extraInfo">
+            &nbsp&nbsp
+            第{{ session - 1 }}届委员会
+            &nbsp&nbsp
+            更新区块: {{thisRoundFirstBlock - 86400 }}
+            &nbsp&nbsp&nbsp&nbsp
+            次届委员会更新区块: {{nextRoundFirstBlock - 86400}}
+          </span>
+        </template>
+       
       </h3>
       <Tabs value="1" @on-click="switchTab">
         <TabPane label="本届委员会" name="1">
@@ -49,7 +63,7 @@ export default {
   components: { CommitteeList },
   data() {
     return {
-      title: `本届委员会`
+      tabIndex: "1"
     };
   },
   created() {
@@ -59,10 +73,10 @@ export default {
     switchTab(name) {
       switch (name) {
         case "1":
-          this.title = "当前委员会";
+          this.tabIndex = "1";
           break;
         case "2":
-          this.title = "当前出块节点";
+          this.tabIndex = "2";
           break;
         default:
           break;
