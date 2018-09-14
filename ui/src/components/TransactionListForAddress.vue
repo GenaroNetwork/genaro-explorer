@@ -69,7 +69,8 @@ export default {
           ellipsis: true,
           render: (h, params) => {
             let from = params.row.from;
-            if (from == this.addr) {
+            let addr = this.addr.toLowerCase();
+            if (from == addr) {
               return h('span', from)
             }
             return h('router-link', {
@@ -85,21 +86,22 @@ export default {
           render: (h, params) => {
             let from = params.row.from;
             let to   = params.row.to;
-            if (to == from && from == this.addr) {
+            let addr = this.addr.toLowerCase()
+            if (to == from && from == addr) {
               return h('Tag', {
                 props: {
                   color: 'primary'
                 }
               }, 'SALF')
             }
-            if (from == this.addr) {
+            if (from == addr) {
              return h('Tag', {
                 props: {
                   color: 'warning'
                 }
               }, 'OUT') 
             }
-            if (to == this.addr ) {
+            if (to == addr ) {
              return h('Tag', {
                 props: {
                   color: 'success'
@@ -115,6 +117,7 @@ export default {
           render: (h, params) => {
             let is_contract = params.row.contractAddress? true : false;
             let to = params.row.to;
+            let addr = this.addr.toLowerCase();
             if (is_contract) {
               return h('p', [
                 h('Icon', {
@@ -129,7 +132,7 @@ export default {
                 }, params.row.contractAddress)
               ])
             }
-            if (to == this.addr) {
+            if (to == addr) {
               return h('span', to)
             }
             return h('router-link', {

@@ -79,9 +79,9 @@ export default {
   },
   methods: {
     getData() {
-      store.dispatch('get_account_detail_async', this.addr);
+      store.dispatch('get_account_detail_async', this.addr.toLowerCase());
       store.dispatch('get_account_transactions_async', {
-        addr: this.addr
+        addr: this.addr.toLowerCase()
       });
     },
     changePgae(page) {

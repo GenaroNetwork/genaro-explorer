@@ -50,7 +50,7 @@ export default {
   },
   props: ['hash'],
   created() {
-    store.dispatch('get_transaction_detail_async', this.hash)
+    store.dispatch('get_transaction_detail_async', this.hash.toLowerCase())
   },
   computed: {
     ...mapState({
