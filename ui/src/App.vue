@@ -127,12 +127,13 @@ a {
       handleSearch() {
         const type = this.checkSearchType(this.key)
         console.log(type);
+        const key = this.key.toLowerCase()
         switch (type) {
           case "account":
             this.$router.push({
               name: 'account_detail',
               params: {
-                addr: this.key
+                addr: key
               }
             })
             break;
@@ -140,7 +141,7 @@ a {
             this.$router.push({
               name: 'block_detail',
               params: {
-                height: this.key
+                height: key
               }
             })
             break;
@@ -148,7 +149,7 @@ a {
             this.$router.push({
               name: 'transaction_detail',
               params: {
-                hash: this.key
+                hash: key
               }
             });
             break;
