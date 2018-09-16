@@ -129,7 +129,7 @@ async function getCommitteeInfo () {
     const bno = await web3.eth.getBlockNumber()
     const thisRoundFirstBlock = bno - bno % BLOCK_COUNT_OF_ROUND
     const nextRoundFirstBlock = thisRoundFirstBlock + BLOCK_COUNT_OF_ROUND
-    const session = parseInt(bno / BLOCK_COUNT_OF_ROUND)
+    const session = parseInt(bno / BLOCK_COUNT_OF_ROUND) + 1
     return {
         thisRoundFirstBlock,
         nextRoundFirstBlock,
