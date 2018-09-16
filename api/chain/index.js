@@ -10,9 +10,12 @@ async function sync () {
 }
 
 async function syncBlock () {
+    logger.info('syncBlock')
     const web3 = getWeb3()
     const latestBlockHave = db.getStat().latestBlock
     const latestBlockReal = await web3.eth.getBlockNumber()
+    logger.info('latestBlockHave: ' + latestBlockHave)
+    logger.info('latestBlockReal: ' + latestBlockReal)
     if (latestBlockHave < latestBlockReal) {
         logger.info(`sync from ${latestBlockHave} to ${latestBlockReal}`)
         for (let i = latestBlockHave + 1; i <= latestBlockReal; i++) {

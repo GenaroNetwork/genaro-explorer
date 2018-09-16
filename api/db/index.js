@@ -33,6 +33,7 @@ function addBlock (block) {
             tx.logs = JSON.stringify(tx.logs)
             tx.status = tx.status ? 1 : 0
             tx.timestamp = block.timestamp
+            logger.info(`交易: ${JSON.stringify(tx)}`)
             pInsertTx.run(tx)
         })
 
