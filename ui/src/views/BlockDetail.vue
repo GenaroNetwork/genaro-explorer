@@ -163,7 +163,7 @@ export default {
   methods: {
     getData() {
       const height = this.height;
-      store.dispatch('get_get_block_detail_async', height);
+      store.dispatch('block_component/get_get_block_detail_async', height);
     },
     countTx(transactions) {
       if (transactions) {

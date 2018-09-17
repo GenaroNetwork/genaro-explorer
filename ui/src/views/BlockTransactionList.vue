@@ -43,7 +43,7 @@ export default {
   },
 
   created() {
-    store.dispatch('get_transaction_for_block_async', this.height)
+    store.dispatch('transaction_component/get_transaction_for_block_async', this.height)
   },
   computed: {
     ...mapState({
