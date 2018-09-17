@@ -40,7 +40,7 @@ export default {
     TransactionList
   },
    created() {
-    store.dispatch('get_transactions_async', {
+    store.dispatch('transaction_component/get_transactions_async', {
       offset: this.offset,
       limit: this.limit
     });
@@ -52,21 +52,18 @@ export default {
       data: state => state.transaction_component.transactions,
       loading: state => state.transaction_component.loading,
       error: state => state.message.error,
-      total: state => state.paginate.total,
-      offset: state => state.paginate.offset,
-      limit: state => state.paginate.limit,
+      total: state => state.transaction_component.total,
+      offset: state => state.transaction_component.offset,
+      limit: state => state.transaction_component.limit,
     })
   },
 
   methods: {
     changePgae(page) {
-      store.dispatch('change_current_page_async', {
-        page,
-        type: 'all_transactions'
-      })
+      store.dispatch('transaction_component/change_current_page_async', { page })
     },
     changePageLimit(limit) {
-      store.dispatch('change_page_limit_async', limit);
+      store.dispatch('transaction_component/change_page_limit_async', limit);
     }
 
   }

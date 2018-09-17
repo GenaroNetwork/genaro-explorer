@@ -79,20 +79,19 @@ export default {
   },
   methods: {
     getData() {
-      store.dispatch('get_account_detail_async', this.addr.toLowerCase());
-      store.dispatch('get_account_transactions_async', {
+      store.dispatch('account_component/get_account_detail_async', this.addr.toLowerCase());
+      store.dispatch('account_component/get_account_transactions_async', {
         addr: this.addr.toLowerCase()
       });
     },
     changePgae(page) {
-       store.dispatch('change_current_page_async', {
+       store.dispatch('account_component/change_current_page_async', {
         page,
-        type: 'account_transactions',
         extra: this.addr
       })
     },
     changePageLimit(limit) {
-      store.dispatch('change_page_limit_async', limit);
+      store.dispatch('account_component/change_page_limit_async', limit);
     },
     handleClipboard() {
        this.$Message.info(this.$i18n.t('title.copy_success'));
@@ -103,9 +102,9 @@ export default {
       account: state => state.account_component.account,
       error: state => state.account_component.error,
       transactions: state => state.account_component.transactions,
-      total: state => state.paginate.total,
-      offset: state => state.paginate.offset,
-      limit: state => state.paginate.limit,
+      total: state => state.account_component.total,
+      offset: state => state.account_component.offset,
+      limit: state => state.account_component.limit,
     })
   },
   watch: {

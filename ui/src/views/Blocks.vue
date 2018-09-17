@@ -117,24 +117,24 @@ export default {
       data: state => state.block_component.blocks,
       loading: state => state.block_component.loading,
       error: state => state.message.error,
-      total: state => state.paginate.total,
-      offset: state => state.paginate.offset,
-      limit: state => state.paginate.limit,
+      total: state => state.block_component.total,
+      offset: state => state.block_component.offset,
+      limit: state => state.block_component.limit,
     })
   },
   methods: {
     initData() {
-      store.dispatch('get_blocks_async', {
+      store.dispatch('block_component/get_blocks_async', {
         offset: this.offset,
         limit: this.limit
       });
       store.commit('change_head_menu_index', "2")
     },
     changePgae(page) {
-      store.dispatch('change_current_page_async', {page, type: 'blocks'})
+      store.dispatch('block_component/change_current_page_async', { page })
     },
     changePageLimit(pageLimit) {
-      store.dispatch('change_page_limit_async', pageLimit)
+      store.dispatch('block_component/change_page_limit_async', pageLimit)
     },
     count(transactions) {
       if (transactions) {

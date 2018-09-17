@@ -1,11 +1,16 @@
 import Api from '@/api';
 
 const moduleTransactions = {
+  namespaced: true,
   state: {
     transactions: [],
     loading: true,
     transaction: null,
-    error: null
+    error: null,
+    total: 0,
+    current_page: 1,
+    offset: 0,
+    limit: 30, 
   },
   mutations: {
     get_all_transactions_start(state) {
@@ -22,6 +27,17 @@ const moduleTransactions = {
     },
     get_transaction_detail_error(state, error) {
       state.error = error;
+    },
+
+    change_data_total(state, total) {
+      state.total = total;
+    },
+    change_current_page(state, current_page) {
+      state.current_page = current_page;
+      state.offset = (current_page - 1) * state.limit
+    },
+    change_page_limit(state, pageLimit) {
+      state.limit = pageLimit;
     },
   },
 
@@ -59,6 +75,17 @@ const moduleTransactions = {
       Api.getTransactionForBlock(height).then(res => {
         commit('get_all_transactions_complete', res.data)
       })
+    },
+      // paginate
+    change_current_page_async({commit, dispatch, state}, { page } ) {
+      commit('change_current_page', page);
+      dispatch('get_transactions_async', {
+        offset: state.offset,
+        limit: state.limit 
+      });
+    },
+    change_page_limit_async({commit}, page_limit) {
+      commit('change_page_limit', page_limit);
     },
   }
 };

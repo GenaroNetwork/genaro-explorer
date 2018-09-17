@@ -1,11 +1,16 @@
 import Api from '@/api';
 
 const moduleAccount = {
+  namespaced: true,
   state: {
     transactions: [],
     account: null,
     loading: true,
-    error: null
+    error: null,
+    total: 0,
+    current_page: 1,
+    offset: 0,
+    limit: 30, 
   },
   mutations: {
     get_account_transactions_start(state) {
@@ -21,7 +26,17 @@ const moduleAccount = {
     },
     get_account_detail_error(state, error) {
       state.error = error;
-    }
+    },
+    change_data_total(state, total) {
+      state.total = total;
+    },
+    change_current_page(state, current_page) {
+      state.current_page = current_page;
+      state.offset = (current_page - 1) * state.limit
+    },
+    change_page_limit(state, pageLimit) {
+      state.limit = pageLimit;
+    },
   },
   actions: {
     get_account_transactions_async({commit}, {addr, offset, limit}) {
@@ -48,7 +63,19 @@ const moduleAccount = {
         }
         commit('get_account_detail_error', message)
       })
-    }
+    },
+
+    change_current_page_async({commit, dispatch, state}, { page, extra} ) {
+      commit('change_current_page', page);
+      dispatch('get_account_transactions_async', {
+        offset: state.offset,
+        limit: state.limit,
+        addr: extra
+      });
+    },
+    change_page_limit_async({commit}, page_limit) {
+      commit('change_page_limit', page_limit);
+    },
   }
 };
 

@@ -1,11 +1,16 @@
 import Api from '@/api';
 
 const moduleBlocks = {
+  namespaced: true,
   state: {
     blocks: [],
     loading: true,
     block: null,
-    error: null
+    error: null,
+    total: 0,
+    current_page: 1,
+    offset: 0,
+    limit: 30, 
   },
   mutations: {
     get_all_blocks_start(state) {
@@ -23,6 +28,17 @@ const moduleBlocks = {
 
     get_block_detail_error(state, error) {
       state.error = error;
+    },
+
+    change_data_total(state, total) {
+      state.total = total;
+    },
+    change_current_page(state, current_page) {
+      state.current_page = current_page;
+      state.offset = (current_page - 1) * state.limit
+    },
+    change_page_limit(state, pageLimit) {
+      state.limit = pageLimit;
     },
   },
   actions: {
@@ -52,6 +68,16 @@ const moduleBlocks = {
         }
         commit('get_block_detail_error', message)
       });
+    },
+    change_current_page_async({commit, dispatch, state}, { page }) {
+      commit('change_current_page', page);
+      dispatch('get_blocks_async', {
+        offset: state.offset,
+        limit: state.limit
+      });
+    },
+    change_page_limit_async({commit}, page_limit) {
+      commit('change_page_limit', page_limit);
     },
   }
 };
