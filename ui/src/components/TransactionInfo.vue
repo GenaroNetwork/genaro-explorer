@@ -64,7 +64,7 @@
                   {{$t('transaction_detail.value')}}:
                 </Col>
                 <Col span="18">
-                  {{ transaction.value }} GNX
+                  {{ valueGnx }} GNX
                 </Col>
               </Row>
               <Row class="info">
@@ -190,6 +190,10 @@ export default {
         default:
           break;
       }
+    },
+
+    valueGnx: function() {
+      return this.$web3Utils.fromWei(this.transaction.value, 'ether')
     },
 
     gasPriceGnx: function() {
