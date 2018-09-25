@@ -84,9 +84,9 @@ function formatNow () {
 
 async function transfer (address) {
     let web3 = getWeb3()
-    let nonce = await web3.eth.getTransactionCount('0x75cfd81d9ecc6ffa0012625029add6aef4111bae', web3.eth.defaultBlock.pending)
+    let nonce = await web3.eth.getTransactionCount('0x75cfd81d9ecc6ffa0012625029add6aef4111bae')
     let rawTx = {
-        nonce: web3.utils.toHex(nonce++),
+        nonce: web3.utils.toHex(nonce),
         gasLimit: web3.utils.toHex(180000),
         gasPrice: web3.utils.toHex(21000),
         from: '0x75cfd81d9ecc6ffa0012625029add6aef4111bae',
