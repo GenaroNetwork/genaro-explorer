@@ -34,7 +34,10 @@ function addBlock (block) {
             tx.status = tx.status ? 1 : 0
             tx.timestamp = block.timestamp
             logger.info(`交易: ${JSON.stringify(tx)}`)
-            pInsertTx.run(tx)
+            // bug临时解决方案
+            if (tx.blockNumber === block.number) {
+                pInsertTx.run(tx)
+            }
         })
 
         pUpdateStat.run(block.number, 1, txs.length)
