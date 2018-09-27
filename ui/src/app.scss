@@ -34,6 +34,11 @@ body {
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #EFEFEF;
+  .ivu-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
 }
 
 //footer
@@ -66,4 +71,10 @@ html, body, .container{
   color: #ed4014;
   text-align: center;
 }
+
+@media (max-width: 768px) { 
+  .home_tx_list{ 
+    margin-top: 20px;
+  }
+ }
 

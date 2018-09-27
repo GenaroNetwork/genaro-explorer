@@ -20,7 +20,7 @@
           </div>
         </Card>
       </Col>
-      <Col :sm='24' :md='12'>
+      <Col :sm='24' :md='12' class="home_tx_list">
         <Card>
           <template
             slot="title">
