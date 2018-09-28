@@ -28,8 +28,6 @@
 </template>
 <script>
 import TransactionList from '@/components/TransactionList.vue'
-import { mapState } from 'vuex'
-import store from '../store'
 
 export default {
   name: 'all_transaction',

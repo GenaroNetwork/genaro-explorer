@@ -76,6 +76,14 @@ html, body, .container{
   .home_tx_list{ 
     margin-top: 20px;
   }
+  .wrap {
+    padding: 0 10px;
+  }
+  .tx-hash-detail {
+    max-width: 50% !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
  }
 
 
@@ -101,5 +109,9 @@ l.navigation-drawer__border {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.vertical-tag {
+  margin-top: 15px;
+}
+
 
 
