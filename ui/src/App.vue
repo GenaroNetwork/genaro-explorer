@@ -1,52 +1,82 @@
 <template>
-  <div class="container">
-    <div id="header">
-      <div class="head-nav">
-        <Menu mode="horizontal"
-             ref="head_menu"
-             theme="dark"
-             :active-name="head_menu_index">
-          <MenuItem name="1" to="/">
-            <Icon type="ios-home" />
-            {{ $t("title.home")}}
-          </MenuItem>
-          <MenuItem name="2" to="/blocks">
-            <Icon type="ios-apps" />
-            {{ $t("title.all_blocks")}}
-          </MenuItem>
-          <MenuItem name="3" to="/transaction">
-            <Icon type="ios-paper" />
-            {{ $t("title.all_transactions")}}
-          </MenuItem>
-          <MenuItem name="4" to="/recharge" >
-            <Icon type="md-color-fill" />
-            {{ $t("title.recharge")}}
-          </MenuItem>
-          <MenuItem name="5" to="/committee">
-            <Icon type="ios-people" />
-            {{ $t("title.committee")}}
-          </MenuItem>
-         
-        </Menu>
-      </div>
-      <div class="search">
-        <Input search :maxlength="100" placeholder="Search by Address / Txhash / Block" @on-search="handleSearch" v-model.trim="key"/>
-      </div>
-      <div class="latest_block">
-        <span>{{$t("title.latest_block")}}:  {{ latest_block }}</span>
-      </div>
-    </div>
-    <div class="wrap-main">
-      <div id="main">
-        <transition>
-          <router-view></router-view>
-        </transition>
-      </div>
-    </div>
-    <div id="footer">
-      <span class="c-info">@Genaro Explorer</span>
-    </div>
-  </div>
+  <v-app id='genaro'>
+     <v-navigation-drawer
+      class="grey lighten-4"
+      left
+      app
+      fixed
+      v-model="drawer"
+    >
+      <v-list
+        dense
+        class="grey lighten-4"
+      >
+        <template v-for="(item, i) in items">
+          <v-layout
+            row
+            v-if="item.heading"
+            align-center
+            :key="i"
+          >
+            <v-flex xs6>
+              <v-subheader v-if="item.heading">
+                {{ item.heading }}
+              </v-subheader>
+            </v-flex>
+            <v-flex xs6 class="text-xs-right">
+              <v-btn small flat>edit</v-btn>
+            </v-flex>
+          </v-layout>
+          <v-divider
+            dark
+            v-else-if="item.divider"
+            class="my-3"
+            :key="i"
+          ></v-divider>
+          <v-list-tile
+            :key="i"
+            v-else
+            @click="handleClick(item.link)"
+          >
+            <v-list-tile-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="grey--text">
+                {{ item.text }}
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-toolbar color="lime" app fixed >
+      <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
+      <span class="title ml-3 mr-5" to="/" @click="toHome">Genaro&nbsp;<span class="font-weight-light">explore</span></span>
+      <v-text-field
+        solo
+        flat
+        label="Search"
+        prepend-inner-icon="search"
+        v-model="key"
+        @keyup.enter="handleSearch"
+      ></v-text-field>
+      <v-spacer></v-spacer>
+    </v-toolbar>
+     
+    <v-content>
+      <v-container fluid fill-height class="grey lighten-4">
+        <v-layout justify-center align-center>
+          <v-flex >
+            <transition>
+              <router-view></router-view>
+            </transition>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 
 </template>
 
@@ -63,7 +93,7 @@ $HEAD_CLOLR: #515a6e;
 }
 a {
   text-decoration: none;
-  color: rgba(255,255,255,.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 .ivu-menu-item-selected {
   margin-bottom: -1px;
@@ -75,7 +105,7 @@ a {
   line-height: 40px;
   padding: 0 30px;
   .c-info {
-    color: #FFFFFF;
+    color: #ffffff;
   }
 }
 .search {
@@ -88,7 +118,7 @@ a {
 .latest_block {
   height: 60px;
   line-height: 60px;
-  color: #FFFFFF;
+  color: #ffffff;
   float: right;
   margin-right: 30px;
   text-align: center;
@@ -98,85 +128,103 @@ a {
 
 
 <script>
-  import { mapState } from 'vuex'
-  import store from './store'
+import { mapState } from "vuex";
+import store from "./store";
 
-  export default {
-    data: function() {
-      return {
-        key: ''
+export default {
+  data: function() {
+    return {
+      key: "",
+      drawer: false,
+      items: [
+        { icon: "domain", 
+          text: this.$i18n.t("title.all_blocks"),
+          link: '/blocks' },
+        {
+          icon: "insert_drive_file",
+          text: this.$i18n.t("title.all_transactions"),
+          link: '/transaction',
+        },
+        { icon: "attach_money", 
+          text: this.$i18n.t("title.recharge"),
+          link: '/recharge' },
+        { icon: "group", 
+          text: this.$i18n.t("title.committee"),
+          link: '/committee' },
+      ]
+    };
+  },
+  computed: mapState({
+    latest_block: state => state.latest_block,
+    head_menu_index: state => state.global.head_menu_index
+  }),
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      store.dispatch("get_latest_block_async");
+    },
+    handleSearch() {
+      const type = this.checkSearchType(this.key);
+      console.log(type);
+      const key = this.key.toLowerCase();
+      switch (type) {
+        case "account":
+          this.$router.push({
+            name: "account_detail",
+            params: {
+              addr: key
+            }
+          });
+          break;
+        case "block":
+          this.$router.push({
+            name: "block_detail",
+            params: {
+              height: key
+            }
+          });
+          break;
+        case "transaction":
+          this.$router.push({
+            name: "transaction_detail",
+            params: {
+              hash: key
+            }
+          });
+          break;
+        default:
+          this.$Message.warning("请输入正确的值！");
+          break;
       }
+      this.key = "";
     },
-    computed: mapState({
-      latest_block: state => state.latest_block,
-      head_menu_index: state => state.global.head_menu_index,
-    }),
-    created() {
-      this.getData()
-    },
-    mounted() {
-      console.log('sada');
-      this.$nextTick(() => {
-        this.$refs['head_menu'].updateActiveName()
-      })
-    },
-    methods: {
-      getData() {
-        store.dispatch('get_latest_block_async');
-      },
-      handleSearch() {
-        const type = this.checkSearchType(this.key)
-        console.log(type);
-        const key = this.key.toLowerCase()
-        switch (type) {
-          case "account":
-            this.$router.push({
-              name: 'account_detail',
-              params: {
-                addr: key
-              }
-            })
-            break;
-          case "block":
-            this.$router.push({
-              name: 'block_detail',
-              params: {
-                height: key
-              }
-            })
-            break;
-          case "transaction":
-            this.$router.push({
-              name: 'transaction_detail',
-              params: {
-                hash: key
-              }
-            });
-            break;
-          default:
-            this.$Message.warning('请输入正确的值！')
-            break;
+    checkSearchType(key) {
+      if (key.startsWith("0x")) {
+        if (key.length == 42) {
+          return "account";
         }
-        this.key = '';
-      },
-      checkSearchType(key) {
-        if (key.startsWith('0x')) {
-          if (key.length == 42) {
-            return 'account'
-          }
-          if (key.length == 66 ) {
-            return 'transaction'
-          }
+        if (key.length == 66) {
+          return "transaction";
         }
-        if (/^\d+$/.test(key)) {
-          return 'block'
-        }
-        return 'error'
-        
       }
+      if (/^\d+$/.test(key)) {
+        return "block";
+      }
+      return "error";
     },
-    watch: {
-      '$route': 'getData'
+    handleClick(to) {
+      console.log(to)
+      this.$router.push(to);
+      this.drawer = !this.drawer;
+    },
+    toHome() {
+      this.$router.push('/')
     }
+  },
+  watch: {
+    $route: "getData"
   }
+};
 </script>
