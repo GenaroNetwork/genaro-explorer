@@ -1,40 +1,65 @@
 <template>
-  <div class="wrap">
-    <Breadcrumb class="breadcrumb">
-      <BreadcrumbItem to="/">首页</BreadcrumbItem>
-      <BreadcrumbItem >{{ $t('title.all_blocks')}}</BreadcrumbItem>
-    </Breadcrumb>
-    <Card
-      stripe="true"
-      board="true">
-      <h3 slot="title">{{ $t('title.all_blocks')}}</h3>
-      <Table
-        class="table-wrap"
-        :columns="columns"
-        :data="data"
-        :loading="loading"
-        ellipsis="true"
-        page-size="30"
-        size="large">
-      </Table>
-      <Page 
-        :total="total" 
-        show-total
-        show-elevator
-        show-sizer
-        :page-size="limit"
-        :page-size-opts="[30,60]"
-        @on-change="changePgae"
-        @on-page-size-change="changePageLimit"
-        class="paginate"/>
-    </Card>
+  <div>
+    <v-breadcrumbs divider="/">
+      <v-breadcrumbs-item
+        v-for="item in items"
+        :key="item.text"
+        :href="item.to">
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </v-breadcrumbs>
+    <v-layout
+      row>
+      <v-flex>
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">{{$t('title.all_blocks')}}</h3>
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <v-data-table
+              :headers="headers"
+              :items="data"
+              class="elevation-1"
+              :loading="loading"
+              :pagination.sync="pagination"
+              :total-items="total"
+            >
+              <template slot="items" slot-scope="props">
+                <td>
+                  <router-link :to='`/blocks/${props.item.number}`'>
+                    {{ props.item.number }}
+                  </router-link>
+                </td>
+                <td class="text-xs-left">
+                  <router-link :to='`/blocks/${props.item.number}/txs`'>
+                    {{count(props.item.transactions) }}
+                  </router-link>
+                </td>
+                <td class="text-xs-left">{{ formatDateTime(props.item.timestamp)}}</td>
+                <td class="text-xs-left">{{ count(props.item.uncles) }}</td>
+                <td class="text-xs-left">
+                  <router-link :to='`/accounts/${props.item.miner.toLowerCase()}`'>
+                    {{props.item.miner.toLowerCase()}}
+                  </router-link>
+                </td>
+                <td class="text-xs-left">{{ props.item.gasUsed }}</td>
+                <td class="text-xs-left">{{ props.item.gasLimit }}</td>
+
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <style lang="scss">
-  .paginate {
-    margin-top: 10px;
-  }
+.paginate {
+  margin-top: 10px;
+}
 </style>
 
 <script>
@@ -45,68 +70,67 @@ export default {
   name: 'blocks',
   data() {
     return {
-      columns: [
+      pagination: {
+        rowsPerPage: 25
+      },
+      items: [
         {
-          title: this.$i18n.t('blocks.height'),
-          key: 'number',
-          render: (h, params) => {
-            return h('router-link', {
-              props: {
-                to: `/blocks/${params.row.number}`
-              },
-            }, params.row.number)
-          }
+          title: '首页',
+          to: '/'
         },
         {
-          title: this.$i18n.t('blocks.txn'),
-          key: 'txn',
-          render: (h, params) => {
-            return h('router-link', {
-              props: {
-                to: `/blocks/${params.row.number}/txs`
-              }
-            }, this.count(params.row.transactions))
-          }
-        },
-        {
-          title: this.$i18n.t('blocks.timestamp'),
-          key: 'txn',
-          render: (h, params) => {
-            return h('span',[
-              this.formatDateTime(params.row.timestamp)
-            ])
-          }
-        },
-        {
-          title: this.$i18n.t('blocks.uncles'),
-          key: 'uncles',
-          render: (h, params) => {
-            return h('p', this.count(params.row.uncles))
-          }
-        },
-        {
-          title: this.$i18n.t('blocks.miner'),
-          key: 'miner',
-          ellipsis: true,
-          render: (h, params) => {
-            return h('router-link', {
-              props: {
-                to: `/accounts/${params.row.miner.toLowerCase()}`
-              },
-            }, params.row.miner.toLowerCase())
-          }
-        },
-        {
-          title: this.$i18n.t('blocks.gas_used'),
-          key: 'gasUsed',
-        },
-        {
-          title: this.$i18n.t('blocks.gas_limit'),
-          key: 'gasLimit',
+          title: this.$i18n.t('title.all_blocks'),
         }
-      ]
+      ],
+      headers: [
+          {
+            text: this.$i18n.t('blocks.height'),
+            align: 'left',
+            sortable: false,
+            value: 'number'
+          },
+          {
+            text: this.$i18n.t('blocks.txn'),
+            align: 'left',
+            sortable: false,
+            value: 'transactions'
+          },
+          {
+            text: this.$i18n.t('blocks.timestamp'),
+            align: 'left',
+            sortable: false,
+            class: 'timestamp',
+            value: 'timestamp'
+          },
+          {
+            text: this.$i18n.t('blocks.uncles'),
+            align: 'left',
+            sortable: false,
+            value: 'timestamp' 
+          },
+           {
+            text: this.$i18n.t('blocks.miner'),
+            align: 'left',
+            sortable: false,
+            value: 'miner' 
+          },
+          {
+            text: this.$i18n.t('blocks.gas_used'),
+            align: 'left',
+            sortable: false,
+            value: 'gasUsed'
+          },
+           {
+            text: this.$i18n.t('blocks.gas_limit'),
+            align: 'left',
+            sortable: false,
+            value: 'gasLimit'
+          }
+          
+        ],
     }
   },
+
   created() {
     this.initData();
   },
@@ -150,7 +174,22 @@ export default {
   },
 
   watch: {
-    '$route': 'initDate'
+    '$route': 'initDate',
+    "pagination.page": {
+      handler() {
+        const { sortBy, descending, page, rowsPerPage } = this.pagination
+        this.changePgae(page)
+      }
+    },
+    "pagination.rowsPerPage": {
+      handler() {
+        console.log(this.pagination.rowsPerPage)
+        const { sortBy, descending, page, rowsPerPage } = this.pagination
+        this.changePageLimit(rowsPerPage)
+        this.changePgae(page)
+
+      }
+    }
   }
 }
 </script>
