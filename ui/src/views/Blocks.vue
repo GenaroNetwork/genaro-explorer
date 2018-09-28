@@ -4,12 +4,13 @@
       <v-breadcrumbs-item
         v-for="item in items"
         :key="item.text"
-        :href="item.to">
+        append
+        :to="item.to">
         {{ item.title }}
       </v-breadcrumbs-item>
     </v-breadcrumbs>
     <v-layout
-      row>
+      align-start>
       <v-flex>
         <v-card>
           <v-card-title primary-title>

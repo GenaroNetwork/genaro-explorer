@@ -78,6 +78,8 @@ html, body, .container{
   }
  }
 
+
+// vueifty
 l.navigation-drawer__border {
   display: none;
 }
@@ -94,4 +96,10 @@ l.navigation-drawer__border {
 .timestamp {
   min-width: 188px;
 }
+.tx-hash-table, .tx-addr-table {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 

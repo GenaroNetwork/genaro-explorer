@@ -15,7 +15,7 @@
           <v-layout
             row
             v-if="item.heading"
-            align-center
+            align-start
             :key="i"
           >
             <v-flex xs6>
@@ -67,7 +67,7 @@
      
     <v-content>
       <v-container fluid fill-height class="grey lighten-4">
-        <v-layout justify-center align-center>
+        <v-layout justify-center align-start>
           <v-flex >
             <transition>
               <router-view></router-view>
