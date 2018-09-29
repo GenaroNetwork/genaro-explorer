@@ -86,6 +86,15 @@ html, body, .container{
   }
  }
 
+ @media (max-width: 600px) {
+  .tx-addr-table-xs {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+ }
+
 
 // vueifty
 l.navigation-drawer__border {
@@ -108,10 +117,19 @@ l.navigation-drawer__border {
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .vertical-tag {
   margin-top: 15px;
 }
-
+.ellipsis-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.text-container {
+  textarea: {
+    font-size: 12px !important;
+  }
+}
 
 

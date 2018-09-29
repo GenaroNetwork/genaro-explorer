@@ -26,119 +26,119 @@
               <v-layout
                 row
                class="vertical-tag">
-                <v-flex md3 sm5 >
+                <v-flex md3 xs5 >
                   {{$t('block_detail.id')}}:
                 </v-flex>
-                <v-flex md9 sm5 >
+                <v-flex md9 xs5 >
                   {{block.id}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5>
+                 <v-flex md3 xs5>
                   {{$t('block_detail.number')}}:
                 </v-flex>
-                <v-flex md9 sm5>
+                <v-flex md9 xs5>
                   {{block.number}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.timestamp')}}:
                 </v-flex>
-                <v-flex md9 sm5>
+                <v-flex md9 xs5>
                   {{ block.timestamp | toTime | formatTime}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.transactions')}}:
                 </v-flex>
-                <v-flex md9 sm5>
+                <v-flex md9 xs5>
                   <router-link :to="`/blocks/${block.number}/txs`">{{countTx(block.transactions)}}</router-link>  in this block
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.hash')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                  {{block.hash}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.parent_hash')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                  {{block.parentHash}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.sha3uncles')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                  {{block.sha3Uncles}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.miner')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                   <router-link :to="'/accounts/' + block.miner.toLowerCase()">{{block.miner.toLowerCase()}}</router-link>
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.diffculty')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                   {{block.difficulty}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.total_diffculty')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                   {{block.totalDifficulty}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.size')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                   {{block.size}} bytes
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.gas_used')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                   {{block.gasUsed}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.gas_limit')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                   {{block.gasLimit}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.nonce')}}:
                 </v-flex>
-                <v-flex md9 sm5 class="tx-hash-detail">
+                <v-flex md9 xs5 class="tx-hash-detail">
                   {{block.nonce}}
                 </v-flex>
               </v-layout>
               <v-layout class="vertical-tag">
-                 <v-flex md3 sm5 >
+                 <v-flex md3 xs5 >
                   {{$t('block_detail.extra_data')}}:
                 </v-flex>
                 <v-flex md9 sm5 class="tx-hash-detail">
