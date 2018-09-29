@@ -27,7 +27,7 @@ function addBlock (block) {
         block.transactions = txIds
         block.uncles = uncles
         pInsertBlock.run(block)
-
+        let txCounter = 0
         // 2. insert tx table
         txs.forEach(tx => {
             tx.logs = JSON.stringify(tx.logs)
@@ -37,10 +37,11 @@ function addBlock (block) {
             // bug临时解决方案
             if (tx.blockNumber === block.number) {
                 pInsertTx.run(tx)
+                txCounter += 1
             }
         })
 
-        pUpdateStat.run(block.number, 1, txs.length)
+        pUpdateStat.run(block.number, 1, txCounter)
         commit.run()
         logger.info('real insert block:' + block.number)
     } catch (e) {
