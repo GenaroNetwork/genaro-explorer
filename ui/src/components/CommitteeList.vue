@@ -1,9 +1,20 @@
 <template>
-  <Table
-    :columns="columns"
-    :data="data"
+  <v-data-table
+    :headers="headers"
+    :items="data"
+    hide-actions
     :loading="loading">
-  </Table>
+    <template slot="items" slot-scope="props">
+      <td>
+        {{props.item.rank}}
+      </td>
+      <td>
+        <router-link :to=" `/accounts/${props.item.address}`">
+          {{props.item.address}} 
+        </router-link>
+      </td>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -12,22 +23,19 @@ export default {
   props: ['data', 'loading'],
   data() {
     return {
-      columns: [
+      headers: [
         {
-          title: this.$i18n.t('committee.rank'),
-          key: 'rank'
+          text: this.$i18n.t('committee.rank'),
+          align: 'left',
+          sortable: false,
+          value: 'rank'
         },
         {
-          title: this.$i18n.t('committee.address'),
-          key: 'address',
-          render: (h, params) => {
-            return h('router-link', {
-              props: {
-                to: `/accounts/${params.row.address}`
-              }
-            }, params.row.address)
-          }
-        }
+          text: this.$i18n.t('committee.address'),
+          align: 'left',
+          sortable: false,
+          value: 'address'
+        },
       ]
     }
   }
