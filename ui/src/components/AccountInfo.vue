@@ -1,31 +1,44 @@
 <template>
-  <div>
+  <div class="wrap">
     <template v-if="account">
-      <Row>
-        <Col span="12">
-          <table>
-            <tbody>
-              <tr>
-                <td width="35%">GNX余额</td>
-                <td align="right">{{ balanceGNX }} GNX</td>
-              </tr>
-              <tr>
-                <td width="35%">交易发出数量</td>
-                <td align="right">{{account.transactionCount}}笔</td>
-              </tr>
-            </tbody>
-          </table>
-        </Col>
-        <Col span="24" class="mar-top">
-          <Tabs type="card">
-            <TabPane :label="$i18n.t('title.transactions')">
-              <TransactionListForAddress :data="transactions" :addr="addr" :loading="loading" />
-            </TabPane>
-            <!-- <TabPane label="标签二">标签二的内容</TabPane> -->
-            <!-- <TabPane label="标签三">标签三的内容</TabPane> -->
-        </Tabs>
-        </Col>
-      </Row>
+        <v-layout
+          align-start>
+          <v-flex md3 xs6 class="vertical-tag">
+            GNX余额:
+          </v-flex>
+          <v-flex md3 xs6 class="ellipsis-text vertical-tag">
+            {{ balanceGNX }} GNX
+          </v-flex>
+        </v-layout>
+        <v-layout
+          align-start>
+          <v-flex md3 xs6 class="vertical-tag">
+            交易发出数量:
+          </v-flex>
+          <v-flex md3 xs6 class="ellipsis-text vertical-tag">
+            {{account.transactionCount}}笔
+          </v-flex>
+        </v-layout>
+        <v-layout style="margin-top: 20px;" >
+          <v-tabs
+            style="overflow: scroll"
+            v-model="active " >
+            <v-tab
+              key="1">
+              {{$i18n.t('title.transactions')}}
+            </v-tab>
+            <v-tab-item
+              key="1">
+              <transaction-list-for-address 
+                :data="transactions" 
+                :addr="addr" 
+                :loading="loading" 
+                :total="total"
+                :onChangePage="onChangePage"
+                :onChangeLimit="onChangeLimit"/>
+            </v-tab-item>
+          </v-tabs>
+        </v-layout>
     </template>
    
   </div>
@@ -53,9 +66,14 @@ import store from "@/store";
 
 export default {
   name: 'account-info',
-  props: ['account', 'transactions', 'addr', 'error'],
+  props: ['account', 'transactions', 'addr', 'error', 'total', 'onChangePage', 'onChangeLimit'],
   components: {
     TransactionListForAddress
+  },
+  data() {
+    return {
+      active: null
+    }
   },
   computed: {
     balanceGNX() {

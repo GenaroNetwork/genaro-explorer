@@ -1,46 +1,63 @@
 <template>
   <div class="wrap">
-    <Breadcrumb class="breadcrumb">
-      <BreadcrumbItem to="/">首页</BreadcrumbItem>
-      <!-- <BreadcrumbItem to="/address">{{ $t('title.all_transactions')}}</BreadcrumbItem> -->
-      <BreadcrumbItem >{{ $t('title.address_detail')}}</BreadcrumbItem>
-    </Breadcrumb>
-    <Card
-      border="none">
-     
-      <h3 slot="title">
-        {{$t('title.address_detail')}}
-        <span>
-          &nbsp&nbsp # {{addr}}
-        </span>
-       
-        <a class="clipboard"
-           v-clipboard:copy="addr"
-           @click="handleClipboard">
-          <Icon type="md-clipboard"  
-            v-clipboard:copy="addr"/>
-        </a>
-       
-      </h3>
-       <template v-if="error">
-        <div class="show-error">
-          Unable to locate Account #{{addr}}
-        </div>
-      </template>
-      <template v-else>
-         <AccountInfo :account="account" :transactions="transactions" :addr="addr" :error="error"/>
-        <Page 
-          :total="total" 
-          show-total
-          show-elevator
-          show-sizer
-          :page-size="limit"
-          :page-size-opts="[30,60]"
-          @on-change="changePgae"
-          @on-page-size-change="changePageLimit"
-          class="paginate"/>
-      </template>
-    </Card>
+    <v-breadcrumbs divider="/">
+      <v-breadcrumbs-item
+        v-for="item in items"
+        :key="item.text"
+        append
+        :to="item.to">
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </v-breadcrumbs>
+    <v-layout
+      align-start>
+      <v-flex>
+        <v-card>
+          <v-card-title primary-title style="line-height: 32px">
+              <v-layout
+                wrap>
+                <v-flex md1 xs12>
+                  <h3 class="headline mb-0">
+                    {{$t('title.address_detail')}}:
+                  </h3>
+                </v-flex>
+                <v-flex
+                  md11 xs12>
+                  <h4 class="tx-info-title">
+                    <a class="clipboard"
+                      v-clipboard:copy="addr"
+                      @click="handleClipboard">
+                      <Icon type="md-clipboard"  
+                        v-clipboard:copy="addr"/>
+                    </a>
+                    <span>
+                     {{addr}}
+                    </span>
+                  </h4>
+                </v-flex>
+              </v-layout>
+             
+               
+          </v-card-title>
+
+          <v-card-text style="border: 1px solid #EFEFEF;">
+            <template v-if="error">
+               Unable to locate Account #{{addr}}
+            </template>
+            <template v-else>
+              <account-info :account="account" 
+                            :transactions="transactions"
+                            :addr="addr" 
+                            :error="error" 
+                            :total="total"
+                            :onChangePage="changePage"
+                            :onChangeLimit="changePageLimit"
+                            />
+            </template>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
@@ -74,6 +91,19 @@ export default {
   components: {
     AccountInfo
   },
+  data() {
+    return {
+      items: [
+        {
+          title: '首页',
+          to: '/'
+        },
+        {
+          title: this.$i18n.t('title.address_detail'),
+        }
+      ],
+    }
+  },
   created() {
     this.getData();
   },
@@ -84,7 +114,7 @@ export default {
         addr: this.addr.toLowerCase()
       });
     },
-    changePgae(page) {
+    changePage(page) {
        store.dispatch('account_component/change_current_page_async', {
         page,
         extra: this.addr
