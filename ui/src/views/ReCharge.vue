@@ -1,21 +1,29 @@
 <template>
   <div class="wrap recharge-page">
-    <Card
-      class="content"
-      height="800px">
-        <template v-if="running">
-          <div class="loading">
-            <Spin size="large"></Spin>
-          </div>
-        </template>
-        <div class="recharge">
-          <h1>Testnet  GNX Faucet</h1>
-          <Input search :enter-button="buttonText" 
-                        placeholder="输入地址..."
-                        @on-search="recharge" 
-                        v-model="address"/>
-        </div>
-    </Card>
+    <template v-if="running">
+      <div class="loading">
+        <Spin size="large"></Spin>
+      </div>
+    </template>
+    <div class="recharge">
+      <h1>Testnet  GNX Faucet</h1>
+      <v-layout
+        justify-center
+        no-wrap
+        column>
+        <v-flex >
+          <v-text-field
+            value="John Doe"
+            label="输入地址..."
+            solo
+            v-model="address"
+          ></v-text-field>
+        </v-flex>
+        <v-flex>
+          <v-btn color="blue-grey lighten-1" style="color: white" @click="recharge">{{buttonText}}</v-btn>
+        </v-flex>
+      </v-layout>
+    </div>
   </div>
 </template>
 
