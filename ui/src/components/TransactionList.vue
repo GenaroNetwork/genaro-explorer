@@ -1,60 +1,114 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="data"
-    :pagination.sync="pagination"
-    :total-items="total"
-    :loading="loading">
-    <template slot="items" slot-scope="props">
-      <td class="tx-hash-table">
-        <router-link :to='`/transaction/${props.item.hash}`'>
-          {{props.item.hash}}
-        </router-link>
-      </td>
-      <td class="text-xs-left">
-        <router-link :to='`/blocks/${props.item.blockNumber}`'>
-          {{ props.item.blockNumber}}
-        </router-link>
-      </td>
-      <td class="text-xs-left">
-        {{formatDateTime(props.item.timestamp)}}
-      </td>
-      <td class="text-xs-left tx-addr-table">
-        <router-link :to='`/accounts/${props.item.from}`'>
-          {{props.item.from}}
-        </router-link>
-      </td>
-      <td class="text-xs-left">
-        <template v-if="props.item.from === props.item.to">
-          <span> SLEF </span>
-        </template>
-        <template v-else>
-          <img :src="`${require('@/assets/green-arrow-right.png')}`" alt="out">
-        </template>
-      </td>
-      <td class="text-xs-left tx-addr-table">
-        <router-link :to='`/accounts/${props.item.to}`'>
-          {{props.item.to}}
-        </router-link>
-      </td>
-      <td class="text-xs-left">
-        {{formatValueToGnx(props.item.value)}}
-      </td>
-      <td>
-        {{txFee(props.item)}}
-      </td>
-    </template>
-  </v-data-table>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="data"
+      :pagination.sync="pagination"
+      :total-items="total"
+      :loading="loading"
+      v-if="paginate">
+      <template slot="items" slot-scope="props">
+        <td class="tx-hash-table">
+          <router-link :to='`/transaction/${props.item.hash}`'>
+            {{props.item.hash}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          <router-link :to='`/blocks/${props.item.blockNumber}`'>
+            {{ props.item.blockNumber}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          {{formatDateTime(props.item.timestamp)}}
+        </td>
+        <td class="text-xs-left tx-addr-table">
+          <router-link :to='`/accounts/${props.item.from}`'>
+            {{props.item.from}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          <template v-if="props.item.from === props.item.to">
+            <span class="tag primary"> SALE </span>
+          </template>
+          <template v-else>
+            <img :src="`${require('@/assets/green-arrow-right.png')}`" alt="out">
+          </template>
+        </td>
+        <td class="text-xs-left tx-addr-table">
+          <router-link :to='`/accounts/${props.item.to}`'>
+            {{props.item.to}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          {{formatValueToGnx(props.item.value)}}
+        </td>
+        <td>
+          {{txFee(props.item)}}
+        </td>
+      </template>
+    </v-data-table>
+
+    <v-data-table
+      :headers="headers"
+      :items="data"
+      hide-actions
+      :pagination.sync="pagination"
+      :total-items="total"
+      :loading="loading"
+      v-else>
+      <template slot="items" slot-scope="props">
+        <td class="tx-hash-table">
+          <router-link :to='`/transaction/${props.item.hash}`'>
+            {{props.item.hash}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          <router-link :to='`/blocks/${props.item.blockNumber}`'>
+            {{ props.item.blockNumber}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          {{formatDateTime(props.item.timestamp)}}
+        </td>
+        <td class="text-xs-left tx-addr-table">
+          <router-link :to='`/accounts/${props.item.from}`'>
+            {{props.item.from}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          <template v-if="props.item.from === props.item.to">
+            <span> SLEF </span>
+          </template>
+          <template v-else>
+            <img :src="`${require('@/assets/green-arrow-right.png')}`" alt="out">
+          </template>
+        </td>
+        <td class="text-xs-left tx-addr-table">
+          <router-link :to='`/accounts/${props.item.to}`'>
+            {{props.item.to}}
+          </router-link>
+        </td>
+        <td class="text-xs-left">
+          {{formatValueToGnx(props.item.value)}}
+        </td>
+        <td>
+          {{txFee(props.item)}}
+        </td>
+      </template>
+    </v-data-table>
+  </div>
+  
 </template>
 
 
 <script>
 import bn from 'big.js/big.min'
-import { mapState } from 'vuex'
 import store from '../store'
+
 
 export default {
   name: 'transaction_list',
+  props: ['data', 'total', 'loading', 'paginate', 'onChangePage', 'onChangeLimit'],
   data() {
     return {
       pagination: {
@@ -68,12 +122,14 @@ export default {
         },
         {
           text: this.$i18n.t('transaction.block_number'),
-          align: 'left'
+          align: 'left',
+          sortable: false
         },
         {
           text: this.$i18n.t('transaction.timestamp'),
           align: 'left',
-          class: 'timestamp'
+          class: 'timestamp',
+          sortable: false
         },
         {
           text: this.$i18n.t('transaction.from'),
@@ -105,16 +161,6 @@ export default {
       ],
     }
   },
-  computed: {
-    ...mapState({
-      data: state => state.transaction_component.transactions,
-      loading: state => state.transaction_component.loading,
-      error: state => state.message.error,
-      total: state => state.transaction_component.total,
-      offset: state => state.transaction_component.offset,
-      limit: state => state.transaction_component.limit,
-    })
-  },
   methods: {
     txFee(tx) {
       let price = bn(tx.gasPrice);
@@ -129,25 +175,29 @@ export default {
       return this.$web3Utils.fromWei(value, 'ether');
     },
     changePgae(page) {
-      store.dispatch('transaction_component/change_current_page_async', { page })
+      this.onChangePage(page)
     },
     changePageLimit(limit) {
-      store.dispatch('transaction_component/change_page_limit_async', limit);
+      this.onChangeLimit(limit)
     }
   },
   watch: {
     "pagination.page": {
       handler() {
-        const { sortBy, descending, page, rowsPerPage } = this.pagination
-        this.changePgae(page)
+        if (this.paginate) {
+          const { sortBy, descending, page, rowsPerPage } = this.pagination
+          this.changePgae(page)
+        }
       }
     },
     "pagination.rowsPerPage": {
       handler() {
-        console.log(this.pagination.rowsPerPage)
-        const { sortBy, descending, page, rowsPerPage } = this.pagination
-        this.changePageLimit(rowsPerPage)
-        this.changePgae(page)
+        if (this.paginate) {
+          console.log(this.pagination.rowsPerPage)
+          const { sortBy, descending, page, rowsPerPage } = this.pagination
+          this.changePageLimit(rowsPerPage)
+          this.changePgae(page)
+        }
 
       }
     }

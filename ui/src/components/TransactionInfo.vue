@@ -1,7 +1,6 @@
 <template>
   <div>
     <template v-if="transaction">
-    
       <v-tabs
         v-model="active">
         <v-tab

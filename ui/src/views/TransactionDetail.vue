@@ -17,7 +17,7 @@
           <v-card-title primary-title style="line-height: 32px">
             <v-layout
               wrap>
-              <v-flex md3 xs12>
+              <v-flex md2 xs12>
                 <h3 class="headline mb-0">
                   {{$t('title.transaction_detail')}}:
                 </h3>
@@ -59,14 +59,6 @@
     color: #969595;
     cursor: pointer;
   }
- @media (max-width: 768px) { 
-  .tx-info-title {
-    text-overflow: ellipsis; 
-    overflow: hidden;
-    white-space: nowrap;
-  }
-}
-
 </style>
 
 

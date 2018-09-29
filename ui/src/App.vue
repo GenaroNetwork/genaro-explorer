@@ -56,7 +56,6 @@
       <span class="title ml-3 mr-5" to="/" @click="toHome">Genaro&nbsp;<span class="font-weight-light">explore</span></span>
       <v-text-field
         solo
-        flat
         label="Search"
         prepend-inner-icon="search"
         v-model="key"

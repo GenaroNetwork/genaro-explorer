@@ -84,6 +84,11 @@ html, body, .container{
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .tx-info-title {
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
+  }
  }
 
  @media (max-width: 600px) {
@@ -132,4 +137,17 @@ l.navigation-drawer__border {
   }
 }
 
-
+.split-line {
+  border: 1px solid #EFEFEF;
+}
+.tag {
+  padding: 2px 8px;
+  border-radius: 5px;
+  color: white;
+}
+.v-primary {
+  background-color: #19be6b;
+}
+a {
+  text-decoration: none
+}

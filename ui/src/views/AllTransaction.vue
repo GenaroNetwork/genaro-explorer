@@ -19,7 +19,13 @@
             </div>
           </v-card-title>
           <v-card-text>
-            <transaction-list/>
+            <transaction-list
+              :onChangePage="changePgae"
+              :onChangeLimit="changePageLimit"
+              :paginate="true"
+              :data="data"
+              :total="total"
+              :loading="loading"/>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -28,6 +34,8 @@
 </template>
 <script>
 import TransactionList from '@/components/TransactionList.vue'
+import { mapState } from 'vuex'
+import store from '../store'
 
 export default {
   name: 'all_transaction',
@@ -46,6 +54,30 @@ export default {
         }
       ],
     }
+  },
+  created() {
+    store.dispatch('transaction_component/get_transactions_async', {
+      offset: this.offset,
+      limit: this.limit
+    });
+  },
+  methods: {
+    changePgae(page) {
+      store.dispatch('transaction_component/change_current_page_async', { page })
+    },
+    changePageLimit(limit) {
+      store.dispatch('transaction_component/change_page_limit_async', limit);
+    }
+  },
+  computed: {
+    ...mapState({
+      data: state => state.transaction_component.transactions,
+      loading: state => state.transaction_component.loading,
+      error: state => state.message.error,
+      total: state => state.transaction_component.total,
+      offset: state => state.transaction_component.offset,
+      limit: state => state.transaction_component.limit,
+    })
   },
 }
 </script>
