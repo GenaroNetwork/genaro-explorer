@@ -4,6 +4,7 @@
       :headers="headers"
       :items="data"
       :pagination.sync="pagination"
+      :rows-per-page-items="[10, 25, 35]"
       :total-items="total"
       :loading="loading"
       v-if="paginate">
@@ -53,6 +54,7 @@
       :items="data"
       hide-actions
       :pagination.sync="pagination"
+      :rows-per-page-items="[10, 25, 35]"
       :total-items="total"
       :loading="loading"
       v-else>

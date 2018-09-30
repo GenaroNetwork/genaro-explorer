@@ -26,7 +26,8 @@
               :loading="loading"
               :pagination.sync="pagination"
               :total-items="total"
-            >
+              :rows-per-page-items="[10, 25, 35]"
+              >
               <template slot="items" slot-scope="props">
                 <td>
                   <router-link :to='`/blocks/${props.item.number}`'>

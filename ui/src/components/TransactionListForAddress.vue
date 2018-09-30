@@ -5,6 +5,7 @@
       :items="data"
       :pagination.sync="pagination"
       :total-items="total"
+      :rows-per-page-items="[10, 25, 35]"
       :loading="loading">
       <template slot="items" slot-scope="props">
         <td class="tx-hash-table">
