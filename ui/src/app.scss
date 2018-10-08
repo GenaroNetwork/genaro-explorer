@@ -151,3 +151,9 @@ l.navigation-drawer__border {
 a {
   text-decoration: none
 }
+
+.content-box {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

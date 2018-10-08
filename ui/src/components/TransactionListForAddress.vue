@@ -30,7 +30,7 @@
           </template>
         </td>
         <td class="text-xs-left">
-          <template v-if="props.item.from === props.item.to && addr.toLowerCase() === from">
+          <template v-if="props.item.from === props.item.to">
             <span class="tag primary"> SALE </span>
           </template>
           <template v-else-if="props.item.from === addr.toLowerCase()">

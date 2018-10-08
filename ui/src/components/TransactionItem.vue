@@ -1,9 +1,9 @@
 <template>
   <div class="item_wrap">
-    <Row>
-      <Col span="24">
+    <v-layout>
+      <v-flex xs12 class="content-box">
         <p> <span class="info-head">{{$i18n.t('home.transaction_hash')}}</span>
-          <router-link :to="`/transaction/${transaction.hash}`">
+          <router-link :to="`/transaction/${transaction.hash}`" class="hash">
             {{transaction.hash}}
           </router-link>
         </p>
@@ -17,8 +17,8 @@
             {{ transaction.to}}
           </router-link>
         </p>
-      </Col>
-  </Row>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
@@ -30,6 +30,7 @@
 p {
   padding: 5px 0;
 }
+
 </style>
 
 

@@ -1,46 +1,46 @@
 <template>
-  <div class="wrap">
-    <Row :gutter="20">
-      <Col :sm='24' :md='12'>
-        <Card>
-          <template
-            slot="title">
-            <div class="title-wrap">
-              <h2 class="title">
-                <Icon type="ios-apps" />
-                Blocks
-              </h2>
-              <Button class="view_all" to="/blocks">View All</Button>
-            </div>
-          </template>
-          <div class="data-content">
-            <div v-for="data in blocks" :key="data.hash">
-              <BlockItem :block="data" />
-            </div>
-          </div>
-        </Card>
-      </Col>
-      <Col :sm='24' :md='12' class="home_tx_list">
-        <Card>
-          <template
-            slot="title">
-            <div class="title-wrap">
-              <h2 class="title">
-                <Icon type="ios-paper"/>
-                Transactions
-              </h2>
+  <!-- <v-container> -->
+     <v-container fluid grid-list-md>
+      <v-layout
+        row
+        wrap
+        grid-list-md>
+        <v-flex xs12 md6>
+          <v-card>
+            <v-card-title primary-title class="home-title">
+              <v-icon>
+                dialpad
+              </v-icon>
+              <h3>Blocks</h3>
+              <Button class="view_all" to="/blocks" >View All</Button>
+            </v-card-title>
+            <v-card-text class="data-content">
+              <div v-for="data in blocks" :key="data.hash">
+                <BlockItem :block="data" />
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      
+        <v-flex xs12 md6>
+          <v-card>
+            <v-card-title primary-title class="home-title">
+              <v-icon>
+                business
+              </v-icon>
+              <h3>Transactions</h3>
               <Button class="view_all" to="/transaction">View All</Button>
-            </div>
-          </template>
-          <div class="data-content">
-            <div v-for="data in transactions" :key="data.hash">
-              <TransactionItem :transaction="data"/>
-            </div>
-          </div>
-        </Card>
-      </Col>
-    </Row>
-  </div>
+            </v-card-title>
+            <v-card-text class="data-content">
+              <div v-for="data in transactions" :key="data.hash">
+                <TransactionItem :transaction="data"/>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  <!-- </v-container> -->
 </template>
 
 <style lang="scss" scoped>
@@ -55,9 +55,14 @@
       vertical-align: middle;
     }
   }
-  .view_all {
-    float: right;
+  .home-title {
+    position: relative; 
+    border-bottom: 1px solid #EFEFEF;
+    .view_all {
+      position: absolute; right: 20px;
+    }
   }
+  
   .data-content {
     max-height: 600px;
     overflow: scroll;

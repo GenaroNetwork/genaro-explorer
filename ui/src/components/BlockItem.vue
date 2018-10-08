@@ -1,9 +1,9 @@
 <template>
   <div class="item_wrap">
-    <Row>
-      <Col span="12">
+    <v-layout>
+      <v-flex xs12 class="content-box">
         <h3>区块:
-          <router-link :to="`/blocks/${block.number}`">
+          <router-link :to="`/blocks/${block.number}`" style="ovflow: hidden; text-overflow: ellipsis;">
              {{ block.number }}
           </router-link>
         </h3>
@@ -15,8 +15,8 @@
           </router-link>
           in this block
         </p>
-      </Col>
-    </Row>
+      </v-flex  >
+    </v-layout>
   </div>
 </template>
 
