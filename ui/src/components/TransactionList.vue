@@ -114,7 +114,7 @@ export default {
   data() {
     return {
       pagination: {
-        rowsPerPage: 25
+        rowsPerPage: 10
       },
       headers: [
         {

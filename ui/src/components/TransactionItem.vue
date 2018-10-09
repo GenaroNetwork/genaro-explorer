@@ -12,6 +12,8 @@
           <router-link :to="`/accounts/${transaction.from}`">
             {{ transaction.from}}
           </router-link>
+        </p>
+        <p>
           {{$i18n.t('home.transaction_to')}}
           <router-link :to="`/accounts/${transaction.to}`">
             {{ transaction.to}}

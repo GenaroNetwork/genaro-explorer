@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       pagination: {
-        rowsPerPage: 25
+        rowsPerPage: 10
       },
       items: [
         {
@@ -135,6 +135,7 @@ export default {
 
   created() {
     this.initData();
+    console.log(store)
   },
 
 
@@ -152,7 +153,7 @@ export default {
     initData() {
       store.dispatch('block_component/get_blocks_async', {
         offset: this.offset,
-        limit: this.limit
+        limit: this.pagination.rowsPerPage
       });
       store.commit('change_head_menu_index', "2")
     },

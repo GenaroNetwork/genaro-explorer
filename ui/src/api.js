@@ -17,7 +17,7 @@ class Api {
     return axios.get(LEASTED_BLOCK);
   }
 
-  static getAllBlocks(offset=0, limit=25) {
+  static getAllBlocks(offset=0, limit=10) {
     return axios.get(ALL_BLOCKS, {
       params: {
         offset,
@@ -30,7 +30,7 @@ class Api {
     return axios.get(BLOCK_DETAIL(height));
   }
 
-  static getAllTransactions(offset=0, limit=25) {
+  static getAllTransactions(offset=0, limit=10) {
     return axios.get(ALL_TRANSACTIONS, {
       params: {
         offset,
@@ -47,7 +47,7 @@ class Api {
     return axios.get(TRANSACTION_FOR_BLOCK(height));
   }
 
-  static getAccountTransactions(addr, offset=0, limit=25) {
+  static getAccountTransactions(addr, offset=0, limit=10) {
     return axios.get(ACCOUNT_TRANSACTIONS(addr), {
       params: {
         offset,

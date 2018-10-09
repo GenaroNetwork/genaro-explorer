@@ -10,7 +10,7 @@ const moduleAccount = {
     total: 0,
     current_page: 1,
     offset: 0,
-    limit: 30, 
+    limit: 10, 
   },
   mutations: {
     get_account_transactions_start(state) {
