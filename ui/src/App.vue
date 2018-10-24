@@ -53,7 +53,7 @@
 
     <v-toolbar color="lime" app fixed >
       <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
-      <span class="title ml-3 mr-5" to="/" @click="toHome">Genaro&nbsp;<span class="font-weight-light">explore</span></span>
+      <span class="title ml-3 mr-5" to="/" @click="toHome">Genaro&nbsp;<span class="font-weight-light">explorer</span></span>
       <v-text-field
         solo
         label="Search"
