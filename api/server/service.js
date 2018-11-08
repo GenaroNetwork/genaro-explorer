@@ -5,6 +5,10 @@ const Tx = require('ethereumjs-tx')
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const dayJs = require('dayjs')
+const fs = require('fs')
+const tmp = require('tmp')
+const stringSimilarity = require('string-similarity')
+const exec = require('child_process').exec
 const { BLOCK_COUNT_OF_ROUND } = require('../config')
 
 const adapter = new FileSync('./transferDb.json')
@@ -137,6 +141,68 @@ async function getCommitteeInfo () {
     }
 }
 
+async function sendTransaction (rawTx) {
+    if (!rawTx) {
+        throw new Error('缺少rawTx字段')
+    }
+    try {
+        const web3 = getWeb3()
+        const hash = await web3.eth.sendSignedTransaction(rawTx)
+        return {
+            hash
+        }
+    } catch (error) {
+        throw new Error(`Error submitting transaction: ${error.message}`)
+    }
+}
+
+async function verifyContract (address, contractName, source, version, optimize) {
+    const web3 = getWeb3()
+    const code = await web3.eth.getCode(address)
+    if (code === '0x') {
+        throw new Error('Verify Contract Field')
+    }
+    let tmpName = tmp.tmpNameSync()
+    let outputName = tmp.tmpNameSync()
+    let solcCommand = '/usr/local/bin/node ./utils/compile.js ' + tmpName + ' ' + outputName
+    const data = {
+        source,
+        optimize,
+        compilerVersion: version
+    }
+    console.log(solcCommand)
+    fs.writeFileSync(tmpName, JSON.stringify(data), 'utf-8')
+    return new Promise((resolve, reject) => {
+        exec(solcCommand, function (error, stdout, stderr) {
+            if (stderr) {
+                reject(stderr)
+            }
+            if (error || !stdout) {
+                reject(new Error('Compiler is currently unavailable. Please try again later...'))
+            }
+            let data = {}
+            try {
+                data = JSON.parse(fs.readFileSync(outputName).toString())
+            } catch (error) {
+                reject(new Error('An unexpected error occurred during compilation, please try again later...'))
+            }
+            let contractBytecode = ''
+            for (const contract in data.contracts) {
+                if (contract === ':' + contractName || contract === contractName) {
+                    contractBytecode = '0x' + data.contracts[contract].bytecode
+                }
+            }
+            if (code !== contractBytecode) {
+                let similarity = stringSimilarity.compareTwoStrings(code, contractBytecode)
+                let errorStr = 'Unable to verify contract (Similarity: ' + similarity + ') \nGot: ' + contractBytecode + '\n\nExpected:' + code
+                reject(new Error(errorStr))
+            }
+            resolve('Contract verification successful.')
+        })
+    })
+    
+}
+
 module.exports = {
     // trasaction
     getLatestTxs,
@@ -146,5 +212,7 @@ module.exports = {
     reCharge,
     getCurrentCommittee,
     getPrevCommittee,
-    getCommitteeInfo
+    getCommitteeInfo,
+    sendTransaction,
+    verifyContract
 }

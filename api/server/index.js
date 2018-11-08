@@ -141,6 +141,42 @@ server.route({
     }
 })
 
+server.route({
+    method: 'POST',
+    path: '/sendTransaction',
+    handler: async function (request, h) {
+        const { rawTx } = request.payload
+        try {
+            const result = await service.sendTransaction(rawTx)
+            return result
+        } catch (error) {
+            const response = h.response(error.message)
+            response.statusCode = 400
+            return response
+        }
+    }
+})
+
+server.route({
+    method: 'POST',
+    path: '/contract/verify',
+    handler: async function (request, h) {
+        const { address, name, source, version, optimize } = request.payload
+        let useOptimize = !!optimize
+        try {
+            const result = await service.verifyContract(address, name, source, version, useOptimize)
+            console.log('result')
+            console.log(result)
+            return result
+        } catch (error) {
+            console.log(error)
+            const response = h.response('Contract Verify Field')
+            response.statusCode = 400
+            return response
+        }
+    }
+})
+
 async function run () {
     logger.info('start Hapi api')
     await server.start()
