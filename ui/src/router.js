@@ -4,6 +4,9 @@ import Home from '@/views/Home'
 import Blocks from '@/views/Blocks.vue'
 import AllTransaction from '@/views/AllTransaction.vue'
 import AccountDetail from '@/views/AccountDetail.vue'
+import TxSubmit from '@/views/TxSubmit.vue'
+import VerifyContract from '@/views/VerifyContract.vue'
+import VerifySignature from '@/views/VerifySignature.vue'
 
 
 Vue.use(Router)
@@ -61,6 +64,21 @@ export default new Router({
       path: '/committee',
       name: 'committee',
       component: () => import('@/views/Committee.vue')
+    },
+    {
+      path: '/tx/submit',
+      name: 'tx_submit',
+      component: TxSubmit
+    },
+    {
+      path: '/contract/verify',
+      name: 'verify_contract',
+      component: VerifyContract
+    },
+    {
+      path: '/signature/verify',
+      name: 'verify_signature',
+      component: VerifySignature
     }
     
     // {

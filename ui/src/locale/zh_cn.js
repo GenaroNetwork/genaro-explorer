@@ -11,7 +11,11 @@ export default {
     latest_block: '最新块高',
     candidates: '当前委员会',
     recharge: 'Faucet',
-    committee: '委员会'
+    committee: '委员会',
+    tool: '工具',
+    submit_tx: '发送交易',
+    verify_contract: '验证交易',
+    verify_signature: '验证签名'
   },
   home: {
     transaction_hash: '交易哈希',

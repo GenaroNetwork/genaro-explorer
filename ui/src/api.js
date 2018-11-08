@@ -1,4 +1,4 @@
-import { GET_CURRENT_COMMITTEE_URL, GET_PREV_COMMITTEE_URL, GET_COMMITEE_INFO_URL } from './constant';
+import { GET_CURRENT_COMMITTEE_URL, GET_PREV_COMMITTEE_URL, GET_COMMITEE_INFO_URL, SENDTRANSACTION_URL } from './constant';
 
 const axios = require('axios');
 
@@ -10,7 +10,8 @@ const { LEASTED_BLOCK,
         TRANSACTION_FOR_BLOCK,
         ACCOUNT_DETAIL,
         ACCOUNT_TRANSACTIONS,
-        RECHARGE_URL } = require('@/constant');
+        RECHARGE_URL,
+        VERIFY_CONTRACT_URL } = require('@/constant');
 
 class Api {
   static getLeastBlock() {
@@ -82,6 +83,22 @@ class Api {
 
   static getCommitteeInfo() {
     return axios.get(GET_COMMITEE_INFO_URL)
+  }
+
+  static sendTransaction(rawTx) {
+    return axios.post(SENDTRANSACTION_URL, {
+      rawTx
+    })
+  }
+
+  static verifyContract(address, name, source, version, optimize) {
+    return axios.post(VERIFY_CONTRACT_URL, {
+      address,
+      name,
+      source,
+      version,
+      optimize
+    })
   }
 }
 

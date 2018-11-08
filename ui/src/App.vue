@@ -9,15 +9,13 @@
     >
       <v-list
         dense
-        class="grey lighten-4"
-      >
+        class="grey lighten-4">
         <template v-for="(item, i) in items">
           <v-layout
             row
             v-if="item.heading"
             align-start
-            :key="i"
-          >
+            :key="i">
             <v-flex xs6>
               <v-subheader v-if="item.heading">
                 {{ item.heading }}
@@ -31,13 +29,28 @@
             dark
             v-else-if="item.divider"
             class="my-3"
+            :key="i">
+          </v-divider>
+
+          <v-list-group
             :key="i"
-          ></v-divider>
+            prepend-icon="school"
+            v-else-if="item.nested.length > 0">
+            <v-list-tile slot="activator">
+              <v-list-tile-title>{{item.text}}</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile
+              v-for="(n_item,j) in item.nested"
+              :key="j"
+              @click="handleClick(n_item.link)">
+              <v-list-tile-title v-text="n_item.text"></v-list-tile-title>
+            </v-list-tile>
+          </v-list-group>
+
           <v-list-tile
             :key="i"
             v-else
-            @click="handleClick(item.link)"
-          >
+            @click="handleClick(item.link)">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -47,6 +60,8 @@
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+
+          
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -138,18 +153,44 @@ export default {
       items: [
         { icon: "domain", 
           text: this.$i18n.t("title.all_blocks"),
-          link: '/blocks' },
+          link: '/blocks',
+          nested:[],
+        },
         {
           icon: "insert_drive_file",
           text: this.$i18n.t("title.all_transactions"),
           link: '/transaction',
+          nested:[],
         },
         { icon: "attach_money", 
           text: this.$i18n.t("title.recharge"),
-          link: '/recharge' },
+          link: '/recharge',
+          nested:[],
+        },
         { icon: "group", 
           text: this.$i18n.t("title.committee"),
-          link: '/committee' },
+          link: '/committee',
+          nested:[],
+        },
+        {
+          icon: "tool",
+          text: this.$i18n.t("title.tool"),
+          link: null,
+          nested: [
+            {  
+              text: this.$i18n.t("title.submit_tx"),
+              link: '/tx/submit',
+            },
+            {  
+              text: this.$i18n.t("title.verify_contract"),
+              link: '/contract/verify',
+            },
+            {  
+              text: this.$i18n.t("title.verify_signature"),
+              link: '/signature/verify',
+            },
+          ]
+        }
       ]
     };
   },
