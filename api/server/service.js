@@ -92,7 +92,7 @@ async function transfer (address) {
     let rawTx = {
         nonce: web3.utils.toHex(nonce),
         gasLimit: web3.utils.toHex(180000),
-        gasPrice: web3.utils.toHex(21000),
+        gasPrice: web3.utils.toHex(web3.utils.toWei('300', 'gwei')),
         from: '0x75cfd81d9ecc6ffa0012625029add6aef4111bae',
         to: address,
         value: web3.utils.toHex(web3.utils.toWei('5', 'ether'))
