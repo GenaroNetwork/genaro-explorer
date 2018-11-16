@@ -88,7 +88,7 @@
           let recoveredPub = utils.ecrecover(msgSha, sigDecoded.v, sigDecoded.r, sigDecoded.s);
           let recoveredAddress = utils.pubToAddress(recoveredPub).toString("hex");
 
-          if (address === recoveredAddress) {
+          if (_address === recoveredAddress) {
             this.setMessage('success', 'Signature is valid!')
             this.reset()
           } else {
