@@ -14,7 +14,7 @@ export default {
     committee: '委员会',
     tool: '工具',
     submit_tx: '发送交易',
-    verify_contract: '验证交易',
+    verify_contract: '验证合约',
     verify_signature: '验证签名'
   },
   home: {
