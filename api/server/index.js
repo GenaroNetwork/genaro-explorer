@@ -177,6 +177,38 @@ server.route({
     }
 })
 
+server.route({
+    method: 'GET',
+    path: '/statistics',
+    handler: async function (request, h) {
+        return service.statisticsData()
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/charts/transactionCountInLatestTenBlock',
+    handler: async function (request, h) {
+        return service.transactionCountInLatestTenBlock()
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/charts/gnxUsedInLatestTenBlock',
+    handler: async function (request, h) {
+        return service.gnxUsedInLatestTenBlock()
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/charts/gnxUsedInLatestTenTx',
+    handler: async function (request, h) {
+        return service.gnxUsedInLatestTenTx()
+    }
+})
+
 async function run () {
     logger.info('start Hapi api')
     await server.start()

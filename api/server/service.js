@@ -200,7 +200,28 @@ async function verifyContract (address, contractName, source, version, optimize)
             resolve('Contract verification successful.')
         })
     })
-    
+}
+
+async function statisticsData () {
+    const { txCount } = db.getDayTxCount()
+    console.log(txCount)
+    const allAccountCount = db.allAccountCount()
+    return {
+        txCount,
+        allAccountCount
+    }
+}
+
+async function transactionCountInLatestTenBlock () {
+    return db.getTransactionCountInLatestBlocks(10)
+}
+
+async function gnxUsedInLatestTenBlock () {
+    return db.getGnxUsedInLatestBlock(10)
+}
+
+async function gnxUsedInLatestTenTx () {
+    return db.getGnxUsedInLatestTx(10)
 }
 
 module.exports = {
@@ -214,5 +235,9 @@ module.exports = {
     getPrevCommittee,
     getCommitteeInfo,
     sendTransaction,
-    verifyContract
+    verifyContract,
+    statisticsData,
+    transactionCountInLatestTenBlock,
+    gnxUsedInLatestTenBlock,
+    gnxUsedInLatestTenTx
 }

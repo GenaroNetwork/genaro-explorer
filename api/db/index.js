@@ -1,6 +1,8 @@
 const Database = require('better-sqlite3')
 const exitHook = require('exit-hook')
 const logger = require('../log')
+const dayJs = require('dayjs')
+
 
 const db = new Database('chain.db')
 
@@ -245,6 +247,77 @@ function delBlock (block) {
     }
 }
 
+// TODO 待实现 实时总账户数
+function allAccountCount () {
+    return 10
+}
+
+// 查询一天交易量
+function getDayTxCount () {
+    const startTime = dayJs().subtract(1, 'day').startOf('day').unix()
+    const endTime = dayJs().subtract(1, 'day').endOf('day').unix()
+    const querySql = `SELECT COUNT(*) AS txCount FROM TX WHERE timestamp >= ${startTime} AND timestamp <= ${endTime}`
+    return db.prepare(querySql).get()
+}
+
+// 获取指定数量的各个区块的交易数统计
+function getTransactionCountInLatestBlocks (count) {
+    const querySql = `SELECT number, transactions FROM BLOCK ORDER BY number DESC LIMIT ${count}`
+    const datas = db.prepare(querySql).all()
+    const xAxis = datas.map(data => {
+        return data.number
+    })
+    const yAxis = datas.map(data => {
+        let txs = 0
+        if (data.transactions.length > 0) {
+            txs = data.transactions.split(' ').length
+        }
+        return txs
+    })
+    return {
+        xAxis,
+        yAxis
+    }
+}
+
+// 获取指定数量的各个区块的Gnx使用量统计
+function getGnxUsedInLatestBlock (count) {
+    const querySql = `SELECT number, gasUsed FROM BLOCK ORDER BY number DESC LIMIT ${count}`
+    const datas = db.prepare(querySql).all()
+    const xAxis = datas.map(data => {
+        return data.number
+    })
+    const yAxis = datas.map(data => {
+        return data.gasUsed
+    })
+    return {
+        xAxis,
+        yAxis
+    }
+}
+
+// 获取指定数量的各个交易的Gnx使用量统计
+function getGnxUsedInLatestTx (count) {
+    const querySql = `SELECT hash, gasUsed FROM TX ORDER BY id DESC LIMIT ${count}`
+    const datas = db.prepare(querySql).all()
+    console.log(datas)
+
+    // const result = {}
+    // datas.forEach(data => {
+    //     result[data.hash] = data.gasUsed
+    // })
+    const xAxis = datas.map(data => {
+        return data.hash
+    })
+    const yAxis = datas.map(data => {
+        return data.gasUsed
+    })
+    return {
+        xAxis,
+        yAxis
+    }
+}
+
 module.exports = {
     addBlock,
     // query Tx
@@ -260,5 +333,10 @@ module.exports = {
     // query stat
     getStat,
     delBlock,
-    getLatestBlock
+    getLatestBlock,
+    allAccountCount,
+    getDayTxCount,
+    getTransactionCountInLatestBlocks,
+    getGnxUsedInLatestBlock,
+    getGnxUsedInLatestTx
 }
