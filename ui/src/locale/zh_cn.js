@@ -15,7 +15,8 @@ export default {
     tool: '工具',
     submit_tx: '发送交易',
     verify_contract: '验证合约',
-    verify_signature: '验证签名'
+    verify_signature: '验证签名',
+    statistics: '统计数据'
   },
   home: {
     transaction_hash: '交易哈希',

@@ -8,6 +8,8 @@ import moduleTransaction from './modules/transactions'
 import modulePaginate from './modules/paginate';
 import moduleRecharge from './modules/recharge';
 import moduleCommittee from './modules/committee';
+import moduleStatistics from './modules/statistics';
+
 
 
 
@@ -23,7 +25,8 @@ export default new Vuex.Store({
     transaction_component: moduleTransaction,
     paginate: modulePaginate,
     recharge_component: moduleRecharge,
-    committee_component: moduleCommittee
+    committee_component: moduleCommittee,
+    statistics_component: moduleStatistics
   },
   // plugins: [createLogger()],
   state: {

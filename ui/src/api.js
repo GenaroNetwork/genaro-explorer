@@ -1,4 +1,4 @@
-import { GET_CURRENT_COMMITTEE_URL, GET_PREV_COMMITTEE_URL, GET_COMMITEE_INFO_URL, SENDTRANSACTION_URL } from './constant';
+import { GET_CURRENT_COMMITTEE_URL, GET_PREV_COMMITTEE_URL, GET_COMMITEE_INFO_URL, SENDTRANSACTION_URL, TRANSACTION_COUNT_IN_LATEST_TEN_BLOCK_URL, GNX_USED_IN_LATEST_TEN_BLOCK_URL, GNX_USED_IN_LATEST_TEN_TX_URL} from './constant';
 
 const axios = require('axios');
 
@@ -99,6 +99,18 @@ class Api {
       version,
       optimize
     })
+  }
+
+  static getTransactionCountInLatestTenBlockData() {
+    return axios.get(TRANSACTION_COUNT_IN_LATEST_TEN_BLOCK_URL)
+  }
+
+  static getGnxUsedInLatestTenBlockData() {
+    return axios.get(GNX_USED_IN_LATEST_TEN_BLOCK_URL)
+  }
+
+  static getGnxUsedInLatestTenTxData() {
+    return axios.get(GNX_USED_IN_LATEST_TEN_TX_URL)
   }
 }
 

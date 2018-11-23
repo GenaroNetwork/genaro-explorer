@@ -1,5 +1,20 @@
 <template>
   <v-app id='genaro'>
+     <v-snackbar
+          v-model="snackbar"
+          :timeout="6000"
+          :top="true"
+          color="error"
+        >
+        {{ message_text}}
+        <v-btn
+          dark
+          flat
+          @click="snackbar = false">
+            Close
+        </v-btn>
+      </v-snackbar>
+   
      <v-navigation-drawer
       class="grey lighten-4"
       left
@@ -172,6 +187,11 @@ export default {
           link: '/committee',
           nested:[],
         },
+        { icon: "trending_up", 
+          text: this.$i18n.t("title.statistics"),
+          link: '/statistics/chars',
+          nested:[],
+        },
         {
           icon: "tool",
           text: this.$i18n.t("title.tool"),
@@ -191,7 +211,9 @@ export default {
             },
           ]
         }
-      ]
+      ],
+      message_text: '',
+      snackbar: false
     };
   },
   computed: mapState({
@@ -235,7 +257,8 @@ export default {
           });
           break;
         default:
-          this.$Message.warning("请输入正确的值！");
+          this.message_text = "请输入正确的值！";
+          this.snackbar = true;
           break;
       }
       this.key = "";

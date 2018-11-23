@@ -7,6 +7,8 @@ import AccountDetail from '@/views/AccountDetail.vue'
 import TxSubmit from '@/views/TxSubmit.vue'
 import VerifyContract from '@/views/VerifyContract.vue'
 import VerifySignature from '@/views/VerifySignature.vue'
+import StatisticsChars from '@/views/StatisticsChars.vue'
+
 
 
 Vue.use(Router)
@@ -79,6 +81,11 @@ export default new Router({
       path: '/signature/verify',
       name: 'verify_signature',
       component: VerifySignature
+    },
+    {
+      path: '/statistics/chars',
+      name: 'statistics-chars',
+      component: StatisticsChars
     }
     
     // {

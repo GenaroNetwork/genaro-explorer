@@ -20,6 +20,8 @@ import dayis from 'dayjs'
 import web3Utils from 'web3-utils'
 import VueClipboard from 'vue-clipboard2'
 import Vuetify from 'vuetify'
+
+import ECharts from 'vue-echarts/components/ECharts.vue'
  
 
 Object.defineProperty(Vue.prototype, '$dayjs',{
@@ -43,6 +45,7 @@ Vue.use(Vuetify, {
 Vue.use(VueI18n)
 Vue.use(iView)
 Vue.use(VueClipboard)
+Vue.component('v-chart', ECharts)
 
 
 const i18n = new VueI18n({
@@ -51,6 +54,7 @@ const i18n = new VueI18n({
     zh_cn
   }
 })
+
 
 new Vue({
   i18n,

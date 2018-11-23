@@ -20,24 +20,27 @@
           </v-flex>
         </v-layout>
         <v-layout style="margin-top: 20px;" >
-          <v-tabs
-            style="overflow: scroll"
-            v-model="active " >
-            <v-tab
-              key="1">
-              {{$i18n.t('title.transactions')}}
-            </v-tab>
-            <v-tab-item
-              key="1">
-              <transaction-list-for-address 
-                :data="transactions" 
-                :addr="addr" 
-                :loading="loading" 
-                :total="total"
-                :onChangePage="onChangePage"
-                :onChangeLimit="onChangeLimit"/>
-            </v-tab-item>
-          </v-tabs>
+          <v-flex
+            grow=1>
+             <v-tabs
+                style="overflow: scroll"
+                v-model="active " >
+                <v-tab
+                  key="1">
+                  {{$i18n.t('title.transactions')}}
+                </v-tab>
+                <v-tab-item
+                  key="1">
+                  <transaction-list-for-address 
+                    :data="transactions" 
+                    :addr="addr" 
+                    :loading="loading" 
+                    :total="total"
+                    :onChangePage="onChangePage"
+                    :onChangeLimit="onChangeLimit"/>
+                </v-tab-item>
+              </v-tabs>
+          </v-flex>
         </v-layout>
     </template>
    

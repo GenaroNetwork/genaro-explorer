@@ -1,5 +1,19 @@
 <template>
   <div class="wrap">
+    <v-snackbar
+          v-model="snackbar"
+          :timeout="6000"
+          :top="true"
+          color="success"
+        >
+        {{ message_text}}
+        <v-btn
+          dark
+          flat
+          @click="snackbar = false">
+            Close
+        </v-btn>
+    </v-snackbar>
     <v-breadcrumbs divider="/">
       <v-breadcrumbs-item
         v-for="item in items"
@@ -102,6 +116,8 @@ export default {
           title: this.$i18n.t('title.address_detail'),
         }
       ],
+      snackbar: false,
+      message_text: ''
     }
   },
   created() {
@@ -124,7 +140,8 @@ export default {
       store.dispatch('account_component/change_page_limit_async', limit);
     },
     handleClipboard() {
-       this.$Message.info(this.$i18n.t('title.copy_success'));
+       this.message_text = this.$i18n.t('title.copy_success')
+       this.snackbar = true;
     },
   },
   computed: {
