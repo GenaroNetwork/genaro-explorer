@@ -2,8 +2,6 @@ const Database = require('better-sqlite3')
 const exitHook = require('exit-hook')
 const logger = require('../log')
 const dayJs = require('dayjs')
-
-
 const db = new Database('chain.db')
 
 const begin = db.prepare('BEGIN')
