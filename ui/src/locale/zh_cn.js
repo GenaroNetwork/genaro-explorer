@@ -16,7 +16,9 @@ export default {
     submit_tx: '发送交易',
     verify_contract: '验证合约',
     verify_signature: '验证签名',
-    statistics: '统计数据'
+    statistics: '统计数据',
+    mainNet: '主链',
+    testNet: '测试链'
   },
   home: {
     transaction_hash: '交易哈希',

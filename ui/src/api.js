@@ -13,13 +13,23 @@ const { LEASTED_BLOCK,
         RECHARGE_URL,
         VERIFY_CONTRACT_URL } = require('@/constant');
 
+  
+ 
 class Api {
+  static getApiBase() {
+    const API_ENV = localStorage.getItem('api_env') || 'testNet'
+    if (API_ENV == 'testNet') {
+     return 'http://47.100.212.191/';
+    } else {
+      return 'http://47.100.212.191/';
+    }
+  }
   static getLeastBlock() {
-    return axios.get(LEASTED_BLOCK);
+    return axios.get(this.getApiBase() + LEASTED_BLOCK);
   }
 
   static getAllBlocks(offset=0, limit=10) {
-    return axios.get(ALL_BLOCKS, {
+    return axios.get(this.getApiBase() + ALL_BLOCKS, {
       params: {
         offset,
         limit
@@ -28,11 +38,11 @@ class Api {
   }
 
   static getBlockDetail(height) {
-    return axios.get(BLOCK_DETAIL(height));
+    return axios.get(this.getApiBase() + BLOCK_DETAIL(height));
   }
 
   static getAllTransactions(offset=0, limit=10) {
-    return axios.get(ALL_TRANSACTIONS, {
+    return axios.get(this.getApiBase() + ALL_TRANSACTIONS, {
       params: {
         offset,
         limit
@@ -41,15 +51,15 @@ class Api {
   }
 
   static getTransactionDetail(hash) {
-    return axios.get(TRANSACTION_DETAIL(hash))
+    return axios.get(this.getApiBase() + TRANSACTION_DETAIL(hash))
   }
 
   static getTransactionForBlock(height) {
-    return axios.get(TRANSACTION_FOR_BLOCK(height));
+    return axios.get(this.getApiBase() + TRANSACTION_FOR_BLOCK(height));
   }
 
   static getAccountTransactions(addr, offset=0, limit=10) {
-    return axios.get(ACCOUNT_TRANSACTIONS(addr), {
+    return axios.get(this.getApiBase() + ACCOUNT_TRANSACTIONS(addr), {
       params: {
         offset,
         limit
@@ -66,33 +76,33 @@ class Api {
   }
 
   static getAccountDetail(addr) {
-    return axios.get(ACCOUNT_DETAIL(addr))
+    return axios.get(this.getApiBase() + ACCOUNT_DETAIL(addr))
   }
 
   static reCharge(address) {
-    return axios.post(RECHARGE_URL(address))
+    return axios.post(this.getApiBase() + RECHARGE_URL(address))
   }
 
   static getCurrentCommittee() {
-    return axios.get(GET_CURRENT_COMMITTEE_URL)
+    return axios.get(this.getApiBase() + GET_CURRENT_COMMITTEE_URL)
   }
   
   static getPrevCommittee() {
-    return axios.get(GET_PREV_COMMITTEE_URL)
+    return axios.get(this.getApiBase() + GET_PREV_COMMITTEE_URL)
   }
 
   static getCommitteeInfo() {
-    return axios.get(GET_COMMITEE_INFO_URL)
+    return axios.get(this.getApiBase() + GET_COMMITEE_INFO_URL)
   }
 
   static sendTransaction(rawTx) {
-    return axios.post(SENDTRANSACTION_URL, {
+    return axios.post(this.getApiBase() + SENDTRANSACTION_URL, {
       rawTx
     })
   }
 
   static verifyContract(address, name, source, version, optimize) {
-    return axios.post(VERIFY_CONTRACT_URL, {
+    return axios.post(this.getApiBase() + VERIFY_CONTRACT_URL, {
       address,
       name,
       source,
@@ -102,16 +112,17 @@ class Api {
   }
 
   static getTransactionCountInLatestTenBlockData() {
-    return axios.get(TRANSACTION_COUNT_IN_LATEST_TEN_BLOCK_URL)
+    return axios.get(this.getApiBase() + TRANSACTION_COUNT_IN_LATEST_TEN_BLOCK_URL)
   }
 
   static getGnxUsedInLatestTenBlockData() {
-    return axios.get(GNX_USED_IN_LATEST_TEN_BLOCK_URL)
+    return axios.get(this.getApiBase() + GNX_USED_IN_LATEST_TEN_BLOCK_URL)
   }
 
   static getGnxUsedInLatestTenTxData() {
-    return axios.get(GNX_USED_IN_LATEST_TEN_TX_URL)
+    return axios.get(this.getApiBase() + GNX_USED_IN_LATEST_TEN_TX_URL)
   }
 }
+
 
 export default Api;

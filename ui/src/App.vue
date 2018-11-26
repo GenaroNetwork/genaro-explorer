@@ -1,10 +1,10 @@
 <template>
   <v-app id='genaro'>
      <v-snackbar
-          v-model="snackbar"
-          :timeout="6000"
-          :top="true"
-          color="error"
+        v-model="snackbar"
+        :timeout="6000"
+        :top="true"
+        color="error"
         >
         {{ message_text}}
         <v-btn
@@ -92,6 +92,32 @@
         @keyup.enter="handleSearch"
       ></v-text-field>
       <v-spacer></v-spacer>
+      <span class="netMode" v-if="netMode == 'mainNet'">{{ $i18n.t('title.mainNet')}}</span>
+      <span class="netMode" v-if="netMode == 'testNet'">{{ $i18n.t('title.testNet')}}</span>
+
+      <v-menu 
+        left>
+        <v-btn
+          slot="activator"
+          light
+          icon>
+          <v-icon>more_vert</v-icon>
+        </v-btn>
+        <v-list
+          dark>
+          <v-list-tile
+            @click="setNetMode('mainNet')"
+          >
+            <v-list-tile-title >{{$i18n.t('title.mainNet')}}</v-list-tile-title>
+          </v-list-tile>
+           <v-list-tile
+            @click="setNetMode('testNet')"
+          >
+            <v-list-tile-title >{{$i18n.t('title.testNet')}}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+
+      </v-menu>
     </v-toolbar>
      
     <v-content>
@@ -153,6 +179,11 @@ a {
   text-align: center;
   font-size: 14px;
 }
+.netMode {
+  font-size: 16px;
+  color: #000000;
+  font-weight: 400;
+}
 </style>
 
 
@@ -162,58 +193,65 @@ import store from "./store";
 
 export default {
   data: function() {
+    const API_ENV = localStorage.getItem('api_env');
+    let items = [
+    { icon: "domain", 
+      text: this.$i18n.t("title.all_blocks"),
+      link: '/blocks',
+      nested:[],
+    },
+    {
+      icon: "insert_drive_file",
+      text: this.$i18n.t("title.all_transactions"),
+      link: '/transaction',
+      nested:[],
+    },
+    { icon: "attach_money", 
+      text: this.$i18n.t("title.recharge"),
+      link: '/recharge',
+      nested:[],
+    },
+    { icon: "group", 
+      text: this.$i18n.t("title.committee"),
+      link: '/committee',
+      nested:[],
+    },
+    { icon: "trending_up", 
+      text: this.$i18n.t("title.statistics"),
+      link: '/statistics/chars',
+      nested:[],
+    },
+    {
+      icon: "tool",
+      text: this.$i18n.t("title.tool"),
+      link: null,
+      nested: [
+        {  
+          text: this.$i18n.t("title.submit_tx"),
+          link: '/tx/submit',
+        },
+        {  
+          text: this.$i18n.t("title.verify_contract"),
+          link: '/contract/verify',
+        },
+        {  
+          text: this.$i18n.t("title.verify_signature"),
+          link: '/signature/verify',
+        },]
+     },
+    ];
+    if (API_ENV == 'mainNet') {
+      items = items.filter((item) => {
+        return item.icon !== 'attach_money'
+      }) 
+    }
     return {
       key: "",
       drawer: false,
-      items: [
-        { icon: "domain", 
-          text: this.$i18n.t("title.all_blocks"),
-          link: '/blocks',
-          nested:[],
-        },
-        {
-          icon: "insert_drive_file",
-          text: this.$i18n.t("title.all_transactions"),
-          link: '/transaction',
-          nested:[],
-        },
-        { icon: "attach_money", 
-          text: this.$i18n.t("title.recharge"),
-          link: '/recharge',
-          nested:[],
-        },
-        { icon: "group", 
-          text: this.$i18n.t("title.committee"),
-          link: '/committee',
-          nested:[],
-        },
-        { icon: "trending_up", 
-          text: this.$i18n.t("title.statistics"),
-          link: '/statistics/chars',
-          nested:[],
-        },
-        {
-          icon: "tool",
-          text: this.$i18n.t("title.tool"),
-          link: null,
-          nested: [
-            {  
-              text: this.$i18n.t("title.submit_tx"),
-              link: '/tx/submit',
-            },
-            {  
-              text: this.$i18n.t("title.verify_contract"),
-              link: '/contract/verify',
-            },
-            {  
-              text: this.$i18n.t("title.verify_signature"),
-              link: '/signature/verify',
-            },
-          ]
-        }
-      ],
+      items,
       message_text: '',
-      snackbar: false
+      snackbar: false,
+      netMode: localStorage.getItem('api_env')
     };
   },
   computed: mapState({
@@ -284,6 +322,11 @@ export default {
     },
     toHome() {
       this.$router.push('/')
+    },
+    setNetMode(netMode) {
+      this.netMode = netMode;
+      localStorage.setItem('api_env', netMode);
+      location.reload();
     }
   },
   watch: {
