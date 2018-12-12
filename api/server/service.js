@@ -123,6 +123,10 @@ async function getPrevCommittee () {
     const web3 = getWeb3()
     const bno = await web3.eth.getBlockNumber()
     const thisRoundFirstBlock = bno - bno % BLOCK_COUNT_OF_ROUND
+    if (thisRoundFirstBlock === BLOCK_COUNT_OF_ROUND) {
+        const { committeeRank: currentCommittee } = await web3.genaro.getExtra(thisRoundFirstBlock)
+        return currentCommittee
+    }
     const prevRoundFirstBlock = thisRoundFirstBlock - BLOCK_COUNT_OF_ROUND
     const { committeeRank: prevCommittee } = await web3.genaro.getExtra(prevRoundFirstBlock)
     return prevCommittee
