@@ -214,7 +214,7 @@ server.route({
     path: '/extra/getGenBlockCount',
     handler: async function (request, h) {
         let { start, end, miner } = request.query
-        miner = String.toLocaleLowerCase(miner)
+        miner = miner.toLowerCase()
         return service.getGenBlockCount(start, end, miner)
     }
 })
