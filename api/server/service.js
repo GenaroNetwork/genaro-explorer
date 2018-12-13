@@ -107,7 +107,7 @@ async function transfer (address) {
         }).on('receipt', receipt => {
             resolve(receipt)
             recordRecharge(address)
-        })
+        }).on('error', function (error) { reject(error) })
     })
 }
 
@@ -228,6 +228,10 @@ async function gnxUsedInLatestTenTx () {
     return db.getGnxUsedInLatestTx(10)
 }
 
+async function getGenBlockCount (startBlock, endBlock, miner) {
+    return db.getGenBlockNumberInRangeOfMiner(startBlock, endBlock, miner)
+}
+
 module.exports = {
     // trasaction
     getLatestTxs,
@@ -243,5 +247,6 @@ module.exports = {
     statisticsData,
     transactionCountInLatestTenBlock,
     gnxUsedInLatestTenBlock,
-    gnxUsedInLatestTenTx
+    gnxUsedInLatestTenTx,
+    getGenBlockCount
 }

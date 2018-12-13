@@ -209,6 +209,16 @@ server.route({
     }
 })
 
+server.route({
+    method: 'GET',
+    path: '/extra/getGenBlockCount',
+    handler: async function (request, h) {
+        let { start, end, miner } = request.query
+        miner = String.toLocaleLowerCase(miner)
+        return service.getGenBlockCount(start, end, miner)
+    }
+})
+
 async function run () {
     logger.info('start Hapi api')
     await server.start()
