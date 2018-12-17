@@ -4,6 +4,7 @@ const db = require('../db')
 const chain = require('../chain')
 const logger = require('../log')
 const Boom = require('boom')
+const Joi = require('joi')
 
 const server = Hapi.server({
     host: '0.0.0.0',
@@ -216,6 +217,15 @@ server.route({
         let { start, end, miner } = request.query
         miner = miner.toLowerCase()
         return service.getGenBlockCount(start, end, miner)
+    },
+    options: {
+        validate: {
+            query: {
+                start: Joi.string().required(),
+                end: Joi.string().required(),
+                miner: Joi.string().required()
+            }
+        }
     }
 })
 
