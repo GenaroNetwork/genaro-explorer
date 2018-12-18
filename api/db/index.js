@@ -317,7 +317,7 @@ function getGnxUsedInLatestTx (count) {
 }
 
 function getGenBlockNumberInRangeOfMiner (startBlock, endBlock, miner) {
-    const querySqlStatement = db.prepare('SELECT COUNT(*) AS COUNT FROM BLOCK WHERE number > ? AND number < ? AND LOWER(miner) = ?')
+    const querySqlStatement = db.prepare('SELECT COUNT(*) AS COUNT FROM BLOCK WHERE number > ? AND number <= ? AND LOWER(miner) = ?')
     return querySqlStatement.get(startBlock, endBlock, miner)
 }
 
