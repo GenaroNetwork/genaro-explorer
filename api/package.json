@@ -18,6 +18,7 @@
     "exit-hook": "^2.0.0",
     "genaro-web3": "^0.6.4",
     "hapi": "^17.5.4",
+    "lodash": "^4.17.11",
     "lowdb": "^1.0.0",
     "solc": "^0.4.25",
     "string-similarity": "^2.0.0",

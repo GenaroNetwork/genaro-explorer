@@ -229,6 +229,46 @@ server.route({
     }
 })
 
+server.route({
+    method: 'GET',
+    path: '/extra/getGenBlockByMiner',
+    handler: async function (request, h) {
+        let { miner } = request.query
+        let offset = parseInt(request.query.offset) || 0
+        let limit = parseInt(request.query.limit) || 30
+        return service.getGenBlockByMiner(miner.toLowerCase(), offset, limit)
+    },
+    options: {
+        validate: {
+            query: {
+                miner: Joi.string().required()
+            }
+        }
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/genBlock',
+    handler: async function (request, h) {
+        let { session, miner } = request.query
+        console.log(session)
+        let offset = parseInt(request.query.offset) || 0
+        let limit = parseInt(request.query.limit) || 30
+        return service.getGenBlocks(session, miner, offset, limit)
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/getLossGenBlocksBySessionAndMiner',
+    handler: async function (request, h) {
+        let { session, miner } = request.query
+        const r = service.getLossGenBlocks(session, miner)
+        return r
+    }
+})
+
 async function run () {
     logger.info('start Hapi api')
     await server.start()

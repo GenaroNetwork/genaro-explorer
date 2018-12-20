@@ -1,12 +1,14 @@
 const db = require('../db')
 const getWeb3 = require('./web3Manager')
 const logger = require('../log')
+const { sync: syncGenBlockRate } = require('./syncGenBlockRate')
 
 let gPendingTxs = []
 
 async function sync () {
     syncPending()
     syncBlock()
+    syncGenBlockRate()
 }
 
 async function syncBlock () {

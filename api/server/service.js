@@ -10,6 +10,7 @@ const tmp = require('tmp')
 const stringSimilarity = require('string-similarity')
 const exec = require('child_process').exec
 const { BLOCK_COUNT_OF_ROUND } = require('../config')
+const _ = require('lodash')
 
 const adapter = new FileSync('./transferDb.json')
 const jsonDb = low(adapter)
@@ -232,6 +233,51 @@ async function getGenBlockCount (startBlock, endBlock, miner) {
     return db.getGenBlockNumberInRangeOfMiner(startBlock, endBlock, miner)
 }
 
+async function getGenBlockByMiner (miner, offset, limit) {
+    return db.findGenBlockByMiner(miner, offset, limit)
+}
+
+async function getGenBlocks (session, miner, offset, limit) {
+    const { data, total } = db.findGenBlocks(session, miner, offset, limit)
+    return {
+        meta: {
+            total,
+            offset,
+            limit
+        },
+        data
+    }
+}
+
+async function getLossGenBlocks (session, miner) {
+    const committeeInThisSession = await getCommitterBySession(session)
+    const committeeIndex = committeeInThisSession.indexOf(miner)
+    const committeeLength = committeeInThisSession.length
+    const blocksInThisSession = []
+    for (let index = (session - 1) * BLOCK_COUNT_OF_ROUND; index < session * BLOCK_COUNT_OF_ROUND; index++) {
+        blocksInThisSession.push(index)
+    }
+
+    const blocksInThisSessionChunk = _.chunk(blocksInThisSession, 5) // 每人连出5块
+    const chunkBycommitteeLength = _.chunk(blocksInThisSessionChunk, committeeLength)
+    let minerGenBlockInThisSession = []
+    for (let index = 0; index < chunkBycommitteeLength.length; index++) {
+        minerGenBlockInThisSession.push(chunkBycommitteeLength[index][committeeIndex])
+    }
+    minerGenBlockInThisSession = _.flatten(minerGenBlockInThisSession)
+    return db.getLossGenBlocksByMinerAndSession(miner, minerGenBlockInThisSession)
+}
+
+async function getCommitterBySession (session) {
+    const web3 = getWeb3()
+    let headBlock = (session - 2) * BLOCK_COUNT_OF_ROUND
+    if (session < 3) {
+        headBlock = 0
+    }
+    const { committeeRank: currentCommittee } = await web3.genaro.getExtra(headBlock)
+    return currentCommittee
+}
+
 module.exports = {
     // trasaction
     getLatestTxs,
@@ -248,5 +294,8 @@ module.exports = {
     transactionCountInLatestTenBlock,
     gnxUsedInLatestTenBlock,
     gnxUsedInLatestTenTx,
-    getGenBlockCount
+    getGenBlockCount,
+    getGenBlockByMiner,
+    getGenBlocks,
+    getLossGenBlocks
 }

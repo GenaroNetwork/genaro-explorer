@@ -120,6 +120,21 @@ function initTables () {
     );`
     tableSQLs.push(blockSyncSQL)
 
+    const committeeStateSyncSql = `
+        create table if not exists committee_state (
+            start INTEGER,
+            end INTEGER,
+            session INTEGER,
+            miner_addr TEXT,
+            number_of_blocks INTEGER,
+            block_rate INTEGER,
+            id INTEGER PRIMARY KEY
+        )
+    `
+    tableSQLs.push(committeeStateSyncSql)
+    indexSQLs.push(`create INDEX IF NOT EXISTS index_committee_state_session ON committee_state(session)`)
+    indexSQLs.push(`create INDEX IF NOT EXISTS index_committee_state_miner_addr ON committee_state(miner_addr)`)
+
     tableSQLs.forEach(sql => {
         db.exec(sql)
     })
@@ -317,8 +332,64 @@ function getGnxUsedInLatestTx (count) {
 }
 
 function getGenBlockNumberInRangeOfMiner (startBlock, endBlock, miner) {
-    const querySqlStatement = db.prepare('SELECT COUNT(*) AS COUNT FROM BLOCK WHERE number > ? AND number <= ? AND LOWER(miner) = ?')
+    const querySqlStatement = db.prepare('SELECT COUNT(*) AS COUNT FROM BLOCK WHERE number >= ? AND number < ? AND LOWER(miner) = ?')
     return querySqlStatement.get(startBlock, endBlock, miner)
+}
+
+function findGenBlockByMiner (miner, offset, limit) {
+    const querySqlStatement = db.prepare('SELECT * FROM BLOCK WHERE LOWER(miner) = ? ORDER BY number desc  LIMIT ? OFFSET ? ')
+    return querySqlStatement.all(miner, limit, offset)
+}
+
+function findGenBlocks (session, miner, offset, limit) {
+    let querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE session = ?  AND miner_addr = ? LIMIT ? OFFSET ? ')
+    let queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state WHERE session = ?  AND miner_addr = ? ')
+
+    if (session == null && miner == null) {
+        querySqlStatement = db.prepare('SELECT * FROM committee_state LIMIT ? OFFSET ? ')
+        queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state')
+        return {
+            data: querySqlStatement.all(limit, offset),
+            total: queryCountSqlStatement.get().count
+        }
+    }
+    if (session == null) {
+        querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE miner_addr = ? LIMIT ? OFFSET ? ')
+        queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state WHERE miner_addr = ? ')
+        return {
+            data: querySqlStatement.all(miner, limit, offset),
+            total: queryCountSqlStatement.get(miner).count
+        }
+    }
+    if (miner == null) {
+        querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE session = ? LIMIT ? OFFSET ? ')
+        queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state WHERE session = ? ')
+        return {
+            data: querySqlStatement.all(session, limit, offset),
+            total: queryCountSqlStatement.get(session).count
+        }
+    }
+    return {
+        data: querySqlStatement.all(session, miner, limit, offset),
+        total: queryCountSqlStatement.get(session, miner).count
+    }
+}
+
+function insertGenBlockInfo (data) {
+    // console.log(data)
+    const stmt = db.prepare('INSERT INTO committee_state(start, end, session, miner_addr, number_of_blocks, block_rate) VALUES(:start, :end, :session, :miner_addr, :number_of_blocks, :block_rate)')
+    stmt.run(data)
+}
+
+function getLatestSession () {
+    return db.prepare('SELECT max(session) as session FROM committee_state').get().session
+}
+
+function getLossGenBlocksByMinerAndSession (miner, blocks) {
+    const blockQueryString = blocks.join(',')
+    const query = db.prepare(`SELECT * FROM BLOCK WHERE LOWER(miner) <> '${miner.toLowerCase()}' AND number IN (${blockQueryString})`)
+    console.log(query)
+    return query.all().length
 }
 
 module.exports = {
@@ -342,5 +413,10 @@ module.exports = {
     getTransactionCountInLatestBlocks,
     getGnxUsedInLatestBlock,
     getGnxUsedInLatestTx,
-    getGenBlockNumberInRangeOfMiner
+    getGenBlockNumberInRangeOfMiner,
+    findGenBlockByMiner,
+    insertGenBlockInfo,
+    getLatestSession,
+    findGenBlocks,
+    getLossGenBlocksByMinerAndSession
 }
