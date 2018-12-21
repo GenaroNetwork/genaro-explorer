@@ -342,11 +342,11 @@ function findGenBlockByMiner (miner, offset, limit) {
 }
 
 function findGenBlocks (session, miner, offset, limit) {
-    let querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE session = ?  AND miner_addr = ? LIMIT ? OFFSET ? ')
+    let querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE session = ?  AND miner_addr = ?  ORDER BY session desc LIMIT ? OFFSET ?')
     let queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state WHERE session = ?  AND miner_addr = ? ')
 
     if (session == null && miner == null) {
-        querySqlStatement = db.prepare('SELECT * FROM committee_state LIMIT ? OFFSET ? ')
+        querySqlStatement = db.prepare('SELECT * FROM committee_state ORDER BY session desc LIMIT ? OFFSET ?  ')
         queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state')
         return {
             data: querySqlStatement.all(limit, offset),
@@ -354,7 +354,7 @@ function findGenBlocks (session, miner, offset, limit) {
         }
     }
     if (session == null) {
-        querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE miner_addr = ? LIMIT ? OFFSET ? ')
+        querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE miner_addr = ? ORDER BY session desc LIMIT ? OFFSET ? ')
         queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state WHERE miner_addr = ? ')
         return {
             data: querySqlStatement.all(miner, limit, offset),
@@ -362,7 +362,7 @@ function findGenBlocks (session, miner, offset, limit) {
         }
     }
     if (miner == null) {
-        querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE session = ? LIMIT ? OFFSET ? ')
+        querySqlStatement = db.prepare('SELECT * FROM committee_state WHERE session = ? ORDER BY session desc LIMIT ? OFFSET ? ')
         queryCountSqlStatement = db.prepare('SELECT count(*) as count FROM committee_state WHERE session = ? ')
         return {
             data: querySqlStatement.all(session, limit, offset),
