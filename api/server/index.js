@@ -241,7 +241,9 @@ server.route({
     options: {
         validate: {
             query: {
-                miner: Joi.string().required()
+                miner: Joi.string().required(),
+                offset: Joi.string(),
+                limit: Joi.string()
             }
         }
     }

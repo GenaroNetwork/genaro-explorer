@@ -338,7 +338,11 @@ function getGenBlockNumberInRangeOfMiner (startBlock, endBlock, miner) {
 
 function findGenBlockByMiner (miner, offset, limit) {
     const querySqlStatement = db.prepare('SELECT * FROM BLOCK WHERE LOWER(miner) = ? ORDER BY number desc  LIMIT ? OFFSET ? ')
-    return querySqlStatement.all(miner, limit, offset)
+    const queryCountSqlStatement = db.prepare('SELECT COUNT(*) as count FROM BLOCK WHERE LOWER(miner) = ?')
+    return {
+        data: querySqlStatement.all(miner, limit, offset),
+        total: queryCountSqlStatement.get(miner).count
+    }
 }
 
 function findGenBlocks (session, miner, offset, limit) {

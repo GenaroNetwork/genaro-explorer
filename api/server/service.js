@@ -234,7 +234,15 @@ async function getGenBlockCount (startBlock, endBlock, miner) {
 }
 
 async function getGenBlockByMiner (miner, offset, limit) {
-    return db.findGenBlockByMiner(miner, offset, limit)
+    const { data, total } = db.findGenBlockByMiner(miner, offset, limit)
+    return {
+        meta: {
+            total,
+            offset,
+            limit
+        },
+        data
+    }
 }
 
 async function getGenBlocks (session, miner, offset, limit) {
