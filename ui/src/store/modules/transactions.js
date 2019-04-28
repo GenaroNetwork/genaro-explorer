@@ -10,7 +10,7 @@ const moduleTransactions = {
     total: 0,
     current_page: 1,
     offset: 0,
-    limit: 10, 
+    limit: 10,
   },
   mutations: {
     get_all_transactions_start(state) {
@@ -26,6 +26,7 @@ const moduleTransactions = {
       state.loading = false;
     },
     get_transaction_detail_error(state, error) {
+      state.transaction = null;
       state.error = error;
     },
 
@@ -42,7 +43,7 @@ const moduleTransactions = {
   },
 
   actions: {
-     // 交易
+    // 交易
     get_transactions_async({commit}, {offset, limit}) {
       commit('get_all_transactions_start');
       Api.getAllTransactions(offset, limit).then(res => {
@@ -62,12 +63,11 @@ const moduleTransactions = {
           case '404':
             message = '没找到数据'
             break;
-        
           default:
             message = '未知错误'
             break;
         }
-        commit('get_block_detail_error', message)
+        commit('get_transaction_detail_error', message)
       });
     },
     get_transaction_for_block_async({commit}, height) {
@@ -76,12 +76,12 @@ const moduleTransactions = {
         commit('get_all_transactions_complete', res.data)
       })
     },
-      // paginate
+    // paginate
     change_current_page_async({commit, dispatch, state}, { page } ) {
       commit('change_current_page', page);
       dispatch('get_transactions_async', {
         offset: state.offset,
-        limit: state.limit 
+        limit: state.limit
       });
     },
     change_page_limit_async({commit}, page_limit) {

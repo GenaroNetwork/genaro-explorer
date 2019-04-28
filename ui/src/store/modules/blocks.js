@@ -10,7 +10,7 @@ const moduleBlocks = {
     total: 0,
     current_page: 1,
     offset: 0,
-    limit: 10, 
+    limit: 10,
   },
   mutations: {
     get_all_blocks_start(state) {
@@ -61,7 +61,7 @@ const moduleBlocks = {
           case '404':
             message = '没找到数据'
             break;
-        
+
           default:
             message = '未知错误'
             break;

@@ -26,7 +26,7 @@ const moduleHome = {
 
     get_home_transactions_complete(state, transactions) {
       state.transactions.data = transactions;
-      state.transactions.loading = false; 
+      state.transactions.loading = false;
     },
   },
   actions: {

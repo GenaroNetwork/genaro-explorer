@@ -8,6 +8,10 @@ import moduleTransaction from './modules/transactions'
 import modulePaginate from './modules/paginate';
 import moduleRecharge from './modules/recharge';
 import moduleCommittee from './modules/committee';
+import moduleStatistics from './modules/statistics';
+import moduleGenBlocks from './modules/gen_blocks';
+
+
 
 
 
@@ -23,7 +27,9 @@ export default new Vuex.Store({
     transaction_component: moduleTransaction,
     paginate: modulePaginate,
     recharge_component: moduleRecharge,
-    committee_component: moduleCommittee
+    committee_component: moduleCommittee,
+    statistics_component: moduleStatistics,
+    gen_blocks_component: moduleGenBlocks
   },
   // plugins: [createLogger()],
   state: {
@@ -49,7 +55,7 @@ export default new Vuex.Store({
     },
 
   },
-  
+
   actions: {
     get_latest_block_async({commit}) {
       Api.getLeastBlock().then(res => {

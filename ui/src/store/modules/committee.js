@@ -36,7 +36,7 @@ const moduleCommittee = {
         const data = res.data.map((address, index) => {
           return {
             rank: index+1,
-            address 
+            address
           }
         })
         commit('get_current_committee_complete', data)
@@ -48,11 +48,11 @@ const moduleCommittee = {
         const data = res.data.map((address, index) => {
           return {
             rank: index+1,
-            address 
+            address
           }
         })
         commit('get_prev_committee_complete', data)
-      }) 
+      })
     },
     get_committee_info({commit}) {
       Api.getCommitteeInfo().then(res => {

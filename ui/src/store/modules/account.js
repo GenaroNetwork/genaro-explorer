@@ -10,7 +10,7 @@ const moduleAccount = {
     total: 0,
     current_page: 1,
     offset: 0,
-    limit: 10, 
+    limit: 10,
   },
   mutations: {
     get_account_transactions_start(state) {
@@ -56,7 +56,7 @@ const moduleAccount = {
           case '404':
             message = '没找到数据'
             break;
-        
+
           default:
             message = '未知错误'
             break;

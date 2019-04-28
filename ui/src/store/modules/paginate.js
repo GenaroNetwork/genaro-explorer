@@ -3,7 +3,7 @@ const modulePaginate = {
     total: 0,
     current_page: 1,
     offset: 0,
-    limit: 30, 
+    limit: 30,
   },
   mutations: {
     change_data_total(state, total) {
@@ -18,7 +18,7 @@ const modulePaginate = {
     },
   },
   actions: {
-     // paginate
+    // paginate
     change_current_page_async({commit, dispatch, state}, { page, type, extra} ) {
       commit('change_current_page', page);
       switch (type) {
@@ -31,7 +31,7 @@ const modulePaginate = {
         case 'all_transactions':
           dispatch('get_transactions_async', {
             offset: state.offset,
-            limit: state.limit 
+            limit: state.limit
           });
           break;
         case 'account_transactions':
