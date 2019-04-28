@@ -225,7 +225,7 @@ export default {
     },
     countTx(transactions) {
       if (transactions) {
-        return transactions.split(",").length;
+        return transactions.length;
       }else{
         return 0;
       }

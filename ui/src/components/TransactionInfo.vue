@@ -270,10 +270,10 @@ export default {
     },
     hasLogs() {
       if (!this.transaction) return false;
-      return JSON.parse(this.transaction.logs).length > 0;
+      //return JSON.parse(this.transaction.logs).length > 0;
     },
     logs() {
-      return JSON.parse(this.transaction.logs);
+     // return JSON.parse(this.transaction.logs);
     }
   }
 };
