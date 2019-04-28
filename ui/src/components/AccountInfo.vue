@@ -52,7 +52,7 @@
 <script>
     import { mapState } from "vuex";
     import TransactionListForAddress from "@/components/TransactionListForAddress.vue";
-    import GenBlockList from "@/components/GenBlockList"
+    import GenBlockList from "@/components/GenBlockList.vue";
     import store from "@/store";
     import Api from '@/api';
 
