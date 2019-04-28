@@ -1,29 +1,42 @@
 <template>
   <div class="wrap">
-     <Breadcrumb class="breadcrumb">
-      <BreadcrumbItem to="/">首页</BreadcrumbItem>
-      <BreadcrumbItem to="/transaction">{{ $t('title.all_transactions')}}</BreadcrumbItem>
-    </Breadcrumb>
-    <Card
-      strip="true"
-      board="true">
-      <template slot="title">
-        <h3>
-          Transactions
-          <span class="tip">
-            For Block {{ height }}
-          </span>
-        </h3>
-      </template>
-      <TransactionList
-        :data="data"/>
-    </Card>
+    <v-breadcrumbs divider="/">
+      <v-breadcrumbs-item
+        v-for="item in items"
+        :key="item.title"
+        :disable="item.disabled"
+        exact
+        :to="item.to">
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </v-breadcrumbs>
+    <v-layout
+      align-start>
+      <v-flex>
+        <v-card>
+          <v-card-title primary-title style="line-height: 32px">
+            <h2>
+              Transactions
+              <span class="tip">
+                For Block {{ height }}
+              </span>
+            </h2>
+          </v-card-title>
+          <v-card-text>
+            <transaction-list
+              :paginate="false"
+              :data="data"
+              :loading="loading"/>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <style lang="scss" scoped>
   .tip {
-    font-size: 15px;
+    font-size: 10px !important;
     font-weight: normal;
     color: #999999;
   }
@@ -40,6 +53,21 @@ export default {
   props: ['height'],
   components: {
    TransactionList 
+  },
+  data() {
+    return {
+      items: [
+        {
+          title: '首页',
+          to: '/',
+          disabled: false
+        },
+        {
+          title: this.$i18n.t('title.all_transactions'),
+          disabled: true
+        }
+      ]
+    }
   },
 
   created() {

@@ -1,72 +1,82 @@
 <template>
-  <div class="wrap">
-    <Breadcrumb class="breadcrumb">
-      <BreadcrumbItem to="/">首页</BreadcrumbItem>
-      <BreadcrumbItem >{{ $t('title.all_transactions')}}</BreadcrumbItem>
-    </Breadcrumb>
-    <Card
-      stripe="true"
-      board="true">
-      <h3 slot="title">
-        {{ $t('title.all_transactions')}}
-      </h3>
-      <TransactionList :data="data" 
-                       :loading="loading"
-                       ellipsis="true"
-                       size="large"
-                       />
-      <Page 
-        :total="total" 
-        show-total
-        show-elevator
-        show-sizer
-        :page-size="limit"
-        :page-size-opts="[30,60]"
-        @on-change="changePgae"
-        @on-page-size-change="changePageLimit"
-        class="paginate"/>
-
-    </Card>
-  </div> 
+  <div>
+    <v-breadcrumbs>
+      <v-breadcrumbs-item
+              v-for="item in items"
+              :key="item.text"
+              append
+              :to="item.to">
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </v-breadcrumbs>
+    <v-layout
+            align-start>
+      <v-flex>
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">{{$t('title.all_transactions')}}</h3>
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <transaction-list
+                    :onChangePage="changePgae"
+                    :onChangeLimit="changePageLimit"
+                    :paginate="true"
+                    :data="data"
+                    :total="total"
+                    :loading="loading"/>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 <script>
-import TransactionList from '@/components/TransactionList.vue'
-import { mapState } from 'vuex'
-import store from '../store'
+  import TransactionList from '@/components/TransactionList.vue'
+  import { mapState } from 'vuex'
+  import store from '../store'
 
-export default {
-  name: 'all_transaction',
-  components: {
-    TransactionList
-  },
-   created() {
-    store.dispatch('transaction_component/get_transactions_async', {
-      offset: this.offset,
-      limit: this.limit
-    });
-    store.commit('change_head_menu_index', "3")
-  },
-  
-  computed: {
-    ...mapState({
-      data: state => state.transaction_component.transactions,
-      loading: state => state.transaction_component.loading,
-      error: state => state.message.error,
-      total: state => state.transaction_component.total,
-      offset: state => state.transaction_component.offset,
-      limit: state => state.transaction_component.limit,
-    })
-  },
-
-  methods: {
-    changePgae(page) {
-      store.dispatch('transaction_component/change_current_page_async', { page })
+  export default {
+    name: 'all_transaction',
+    components: {
+      TransactionList
     },
-    changePageLimit(limit) {
-      store.dispatch('transaction_component/change_page_limit_async', limit);
-    }
-
+    created() {
+      store.dispatch('transaction_component/get_transactions_async', {
+        offset: this.offset,
+        limit: this.limit
+      });
+    },
+    methods: {
+      changePgae(page) {
+        store.dispatch('transaction_component/change_current_page_async', { page })
+      },
+      changePageLimit(limit) {
+        store.dispatch('transaction_component/change_page_limit_async', limit);
+      }
+    },
+    computed: {
+      ...mapState({
+        data: state => state.transaction_component.transactions,
+        loading: state => state.transaction_component.loading,
+        error: state => state.message.error,
+        total: state => state.transaction_component.total,
+        offset: state => state.transaction_component.offset,
+        limit: state => state.transaction_component.limit,
+      }),
+      items() {
+        return [
+          {
+            title: this.$i18n.t('title.home_page'),
+            to: '/'
+          },
+          {
+            title: this.$i18n.t('title.all_transactions'),
+          }
+        ]
+      }
+    },
   }
-}
 </script>
 

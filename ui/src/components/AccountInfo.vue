@@ -1,70 +1,94 @@
 <template>
-  <div>
-    <template v-if="account">
-      <Row>
-        <Col span="12">
-          <table>
-            <tbody>
-              <tr>
-                <td width="35%">GNX余额</td>
-                <td align="right">{{ balanceGNX }} GNX</td>
-              </tr>
-              <tr>
-                <td width="35%">交易发出数量</td>
-                <td align="right">{{account.transactionCount}}笔</td>
-              </tr>
-            </tbody>
-          </table>
-        </Col>
-        <Col span="24" class="mar-top">
-          <Tabs type="card">
-            <TabPane :label="$i18n.t('title.transactions')">
-              <TransactionListForAddress :data="transactions" :addr="addr" :loading="loading" />
-            </TabPane>
-            <!-- <TabPane label="标签二">标签二的内容</TabPane> -->
-            <!-- <TabPane label="标签三">标签三的内容</TabPane> -->
-        </Tabs>
-        </Col>
-      </Row>
-    </template>
-   
-  </div>
+    <div class="wrap">
+        <template v-if="account">
+            <v-layout align-start>
+                <v-flex md3 xs6 class="vertical-tag">{{$t('global.balance')}}:</v-flex>
+                <v-flex md3 xs6 class="ellipsis-text vertical-tag">{{ balanceGNX }} GNX</v-flex>
+            </v-layout>
+            <v-layout align-start>
+                <v-flex md3 xs6 class="vertical-tag">{{$t('global.tx_number')}}:</v-flex>
+                <v-flex
+                        md3
+                        xs6
+                        class="ellipsis-text vertical-tag"
+                >{{account.transactionCount}} {{ $t('global.count')}}</v-flex>
+            </v-layout>
+            <v-layout style="margin-top: 20px;">
+                <v-flex grow="1">
+                    <v-tabs style="overflow: scroll" v-model="active ">
+                        <v-tab key="1">{{$i18n.t('title.transactions')}}</v-tab>
+                        <v-tab key="2">{{$i18n.t('title.gen_blocks')}}</v-tab>
+                        <v-tab-item key="1">
+                            <transaction-list-for-address :addr="addr"/>
+                        </v-tab-item>
+
+                        <v-tab-item key="2">
+                            <gen-block-list
+                                    :addr="addr">
+                            </gen-block-list>
+                        </v-tab-item>
+                    </v-tabs>
+                </v-flex>
+            </v-layout>
+        </template>
+    </div>
 </template>
 
 <style lang="scss" scoped>
-table {
-  tr {
-    border-bottom: 1px solid #EFEFEF;
-  }
-  td {
-    padding: 10px 0
-  }
-}
-.mar-top {
-  margin-top: 20px;
-}
+    table {
+        tr {
+            border-bottom: 1px solid #efefef;
+        }
+        td {
+            padding: 10px 0;
+        }
+    }
+    .mar-top {
+        margin-top: 20px;
+    }
 </style>
 
 
 <script>
-import { mapState } from 'vuex'
-import TransactionListForAddress from '@/components/TransactionListForAddress.vue'
-import store from "@/store";
+    import { mapState } from "vuex";
+    import TransactionListForAddress from "@/components/TransactionListForAddress.vue";
+    import GenBlockList from "@/components/GenBlockList"
+    import store from "@/store";
+    import Api from '@/api';
 
-export default {
-  name: 'account-info',
-  props: ['account', 'transactions', 'addr', 'error'],
-  components: {
-    TransactionListForAddress
-  },
-  computed: {
-    balanceGNX() {
-      return this.$web3Utils.fromWei(this.account.balance, 'ether')
-    },
-    ...mapState({
-      loading: state => state.account_component.loading,
-    })
 
-  }
-}
+    export default {
+        name: "account-info",
+        props: [
+            "addr",
+        ],
+        components: {
+            TransactionListForAddress,
+            GenBlockList
+        },
+        data() {
+            return {
+                active: null
+            }
+        },
+        created() {
+            this.getData()
+        },
+        computed: {
+            ...mapState({
+                account: state => state.account_component.account
+            }),
+            balanceGNX() {
+                return this.$web3Utils.fromWei(this.account.balance, "ether");
+            }
+        },
+        methods: {
+            getData() {
+                store.dispatch('account_component/get_account_detail_async', this.addr)
+            }
+        },
+        watch: {
+            '$route': 'getData'
+        },
+    };
 </script>

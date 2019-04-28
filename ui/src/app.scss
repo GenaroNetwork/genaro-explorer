@@ -5,7 +5,7 @@ body {
 .wrap {
   margin-top: 10px;
   margin-bottom: 10px;
-  padding: 0 30px;
+  padding: 0 30px
 }
 .breadcrumb {
   padding: 20px 0;
@@ -76,5 +76,84 @@ html, body, .container{
   .home_tx_list{ 
     margin-top: 20px;
   }
+  .wrap {
+    padding: 0 10px;
+  }
+  .tx-hash-detail {
+    max-width: 50% !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tx-info-title {
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
+  }
  }
 
+ @media (max-width: 600px) {
+  .tx-addr-table-xs {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+ }
+
+
+// vueifty
+l.navigation-drawer__border {
+  display: none;
+}
+.grey--text a {
+  color: #9e9e9e!important;
+}
+
+.text {
+  font-weight: 400;
+}
+.title {
+  cursor: pointer;
+}
+.timestamp {
+  min-width: 188px;
+}
+.tx-hash-table, .tx-addr-table {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vertical-tag {
+  margin-top: 15px;
+}
+.ellipsis-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.text-container {
+  textarea: {
+    font-size: 12px !important;
+  }
+}
+
+.split-line {
+  border: 1px solid #EFEFEF;
+}
+.tag {
+  padding: 2px 8px;
+  border-radius: 5px;
+  color: white;
+}
+.v-primary {
+  background-color: #19be6b;
+}
+a {
+  text-decoration: none
+}
+
+.content-box {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

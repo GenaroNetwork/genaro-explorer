@@ -1,124 +1,161 @@
 <template>
   <div class="wrap">
-    <Breadcrumb class="breadcrumb">
-      <BreadcrumbItem to="/">首页</BreadcrumbItem>
-      <BreadcrumbItem to="/blocks">{{ $t('title.all_blocks')}}</BreadcrumbItem>
-      <BreadcrumbItem >{{ $t('title.block_detail')}}</BreadcrumbItem>
-    </Breadcrumb>
-    <Card border="none">
-      <h3 slot="title">{{$t('title.block_detail')}}: <span>&nbsp&nbsp#{{height}}</span> </h3>
-      <template v-if="block != null ">
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.id')}}:</Col>
-          <Col span="18">{{block.id}}</Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.number')}}:</Col>
-          <Col span="18">{{block.number}}</Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.timestamp')}}:</Col>
-          <Col span="18">
-            {{ block.timestamp | toTime | formatTime}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.transactions')}}:</Col>
-          <Col span="18">
-            <router-link :to="`/blocks/${block.number}/txs`">{{countTx(block.transactions)}}</router-link>
-           in this block 
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.hash')}}:</Col>
-          <Col span="18">{{block.hash}}</Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.parent_hash')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.parentHash}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.sha3uncles')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.sha3Uncles}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.miner')}}:</Col>
-          <Col span="18">
-            <router-link :to="'/accounts/' + block.miner.toLowerCase()">{{block.miner.toLowerCase()}}</router-link>
-            <!-- {{block.miner}} -->
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.diffculty')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.difficulty}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.total_diffculty')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.totalDifficulty}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.size')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.size}} bytes
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.gas_used')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.gasUsed}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.gas_limit')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.gasLimit}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.nonce')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            {{block.nonce}}
-          </Col>
-        </Row>
-        <Row class="info">
-          <Col span="4" >{{$t('block_detail.extra_data')}}:</Col>
-          <Col span="18">
-            <!-- <router-link :to="block.parentHash">{{block.parentHash}}</router-link> -->
-            <Input 
-              type="textarea"
-              :autosize="true"
-              :value="block.extraData"
-              class="input-info"/>
-          </Col>
-        </Row>
-      </template>
-      <template v-else-if="error">
-        <div class="show-error">
-          Unable to locate Block #{{height}}
-        </div>
-      </template>
-      <template v-else>
-        <div class="spin-container">
-          <Spin size="large"></Spin>
-        </div>
-      </template>
-    </Card>
+    <v-breadcrumbs divider="/">
+      <v-breadcrumbs-item
+        v-for="item in items"
+        :key="item.title"
+        :disable="item.disabled"
+        exact
+        :to="item.to">
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </v-breadcrumbs>
+    <v-layout
+      align-start>
+      <v-flex>
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">{{$t('title.block_detail')}}: <span>&nbsp&nbsp#{{height}}</span> </h3>
+            </div>
+          </v-card-title>
+          <v-card-text style="border: 1px solid #EFEFEF">
+            <v-container
+              grid-list-md 
+              v-if="block">
+              <v-layout
+                row
+               class="vertical-tag">
+                <v-flex md3 xs5 >
+                  {{$t('block_detail.id')}}:
+                </v-flex>
+                <v-flex md9 xs5 >
+                  {{block.id}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5>
+                  {{$t('block_detail.number')}}:
+                </v-flex>
+                <v-flex md9 xs5>
+                  {{block.number}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.timestamp')}}:
+                </v-flex>
+                <v-flex md9 xs5>
+                  {{ block.timestamp | toTime | formatTime}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.transactions')}}:
+                </v-flex>
+                <v-flex md9 xs5>
+                  <router-link :to="`/blocks/${block.number}/txs`">{{countTx(block.transactions)}}</router-link>  in this block
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.hash')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                 {{block.hash}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.parent_hash')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                 {{block.parentHash}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.sha3uncles')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                 {{block.sha3Uncles}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.miner')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                  <router-link :to="'/accounts/' + block.miner.toLowerCase()">{{block.miner.toLowerCase()}}</router-link>
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.diffculty')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                  {{block.difficulty}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.total_diffculty')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                  {{block.totalDifficulty}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.size')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                  {{block.size}} bytes
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.gas_used')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                  {{block.gasUsed}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.gas_limit')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                  {{block.gasLimit}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.nonce')}}:
+                </v-flex>
+                <v-flex md9 xs5 class="tx-hash-detail">
+                  {{block.nonce}}
+                </v-flex>
+              </v-layout>
+              <v-layout class="vertical-tag">
+                 <v-flex md3 xs5 >
+                  {{$t('block_detail.extra_data')}}:
+                </v-flex>
+                <v-flex md9 sm5 class="tx-hash-detail">
+                  <v-textarea
+                    solo
+                    name="input-7-4"
+                    :disabled="true"
+                    :value="block.extra_data"
+                  ></v-textarea>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+   
   </div> 
 </template>
 
@@ -151,6 +188,27 @@ import store from "@/store";
 export default {
   name: 'block-detail',
   props: ['height'],
+  data() {
+    return {
+      items: [
+        {
+          title: '首页',
+          to: '/',
+          disabled: false
+        },
+        {
+          title: this.$i18n.t('title.all_blocks'),
+          to: '/blocks',
+          disabled: false
+        },
+        {
+          title: this.$i18n.t('title.block_detail'),
+          disabled: true
+        }
+      ],
+      
+    }
+  },
   created() {
     this.getData();
   },

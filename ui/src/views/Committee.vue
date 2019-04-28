@@ -1,46 +1,94 @@
 <template>
   <div class="wrap">
-    <Breadcrumb class="breadcrumb">
-      <BreadcrumbItem to="/">首页</BreadcrumbItem>
-      <BreadcrumbItem >{{ $t('title.committee')}}</BreadcrumbItem>
-    </Breadcrumb>
-    <Card
-      stripe="true"
-      board="true">
-      <h3 slot="title">
-        <template v-if="tabIndex == '1'">
-          本届委员会
-          <span class="extraInfo">
-            &nbsp&nbsp
-            第{{ session }}届委员会
-            &nbsp&nbsp
-            更新区块: {{thisRoundFirstBlock}}
-            &nbsp&nbsp&nbsp&nbsp
-            次届委员会更新区块: {{nextRoundFirstBlock}}
-          </span>
-        </template>
-        <template v-else-if="tabIndex == '2'">
-          当前出块节点
-          <span class="extraInfo">
-            &nbsp&nbsp
-            第{{ session - 1 }}届委员会
-            &nbsp&nbsp
-            更新区块: {{thisRoundFirstBlock - 86400 }}
-            &nbsp&nbsp&nbsp&nbsp
-            次届委员会更新区块: {{nextRoundFirstBlock - 86400}}
-          </span>
-        </template>
-       
-      </h3>
-      <Tabs value="1" @on-click="switchTab">
-        <TabPane label="本届委员会" name="1">
-          <committee-list :data="currentCommittee" :loading="loading" />
-        </TabPane>
-        <TabPane label="当前出块节点" name="2">
-          <committee-list :data="prevCommittee" :loading="loading" />
-        </TabPane>
-       </Tabs>
-    </Card>
+    <v-breadcrumbs divider="/">
+      <v-breadcrumbs-item
+        v-for="item in items"
+        :key="item.title"
+        :disable="item.disabled"
+        exact
+        :to="item.to">
+        {{ item.title }}
+      </v-breadcrumbs-item>
+    </v-breadcrumbs>
+    <v-layout>
+      <v-flex>
+        <v-card>
+          <v-card-title primary-title>
+              <template v-if="active == 0">
+                <v-layout
+                  wrap
+                  row>
+                  <v-flex md2 xs12>
+                     <h3>本届委员会:</h3>
+                  </v-flex>
+                  <v-flex md2 xs12>
+                     <span class="extraInfo">
+                      第{{ session }}届委员会
+                      
+                    </span>
+                  </v-flex>
+                  <v-flex md2 xs12>
+                    <span class="extraInfo">
+                      更新区块: {{thisRoundFirstBlock}}
+                    </span>
+                  </v-flex>
+                  <v-flex md3 xs12>
+                    <span class="extraInfo">
+                      次届委员会更新区块: {{nextRoundFirstBlock}}
+                    </span>
+                  </v-flex>
+                </v-layout>
+              </template>
+              <template v-else-if="active == 1">
+                <v-layout
+                  row
+                  wrap>
+                  <v-flex md2 xs12>
+                    <h3>当前出块节点:</h3>
+                  </v-flex>
+                  <v-flex md2 xs12>
+                    <span class="extraInfo">
+                      第{{ session - 1 }}届委员会
+                      
+                    </span>
+                  </v-flex>
+                  <v-flex md2 xs12>
+                    <span class="extraInfo">
+                      更新区块: {{thisRoundFirstBlock - 86400 }}
+                    </span>
+                  </v-flex>
+                  <v-flex md3 xs12>
+                    <span class="extraInfo">
+                      次届委员会更新区块: {{nextRoundFirstBlock - 86400}}
+                    </span>
+                  </v-flex>
+                </v-layout>
+              </template>
+          </v-card-title>
+          <v-card-text>
+            <v-tabs
+              v-model="active">
+              <v-tab
+                key="1">
+                本届委员会
+              </v-tab>
+              <v-tab
+                key="2">
+                当前出块节点
+              </v-tab>
+              <v-tab-item
+                key="1">
+                <committee-list :data="currentCommittee" :loading="loading" />
+              </v-tab-item>
+              <v-tab-item
+                key="2">
+                <committee-list :data="prevCommittee" :loading="loading" />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
@@ -63,7 +111,20 @@ export default {
   components: { CommitteeList },
   data() {
     return {
-      tabIndex: "1"
+      active: 0,
+      tabIndex: "1",
+      items: [
+        {
+          title: '首页',
+          to: '/',
+          disabled: false
+        },
+        {
+          title: this.$i18n.t('title.committee'),
+          to: '/transaction',
+          disabled: true
+        }
+      ]
     };
   },
   created() {
