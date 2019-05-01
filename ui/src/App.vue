@@ -76,9 +76,9 @@
           <v-list-tile v-if="netMode == 'testNet'" @click="setNetMode('mainNet')">
             <v-list-tile-title>{{$i18n.t('title.mainNet')}}</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile v-if="netMode == 'mainNet'" @click="setNetMode('testNet')">
-            <v-list-tile-title>{{$i18n.t('title.testNet')}}</v-list-tile-title>
-          </v-list-tile>
+          <!--<v-list-tile v-if="netMode == 'mainNet'" @click="setNetMode('testNet')">-->
+            <!--<v-list-tile-title>{{$i18n.t('title.testNet')}}</v-list-tile-title>-->
+          <!--</v-list-tile>-->
         </v-list>
       </v-menu>
     </v-toolbar>

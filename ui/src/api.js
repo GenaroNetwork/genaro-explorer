@@ -20,9 +20,9 @@ class Api {
   static getApiBase() {
     const API_ENV = localStorage.getItem('api_env') || 'testNet'
     if (API_ENV == 'testNet') {
-      return 'http://127.0.0.1:9000/prod/';
+      return 'http://101.132.159.197:9000/prod/';
     } else {
-      return 'http://127.0.0.1:9000/prod/';
+      return 'http://101.132.159.197:9000/prod/';
     }
   }
   static getLeastBlock() {
